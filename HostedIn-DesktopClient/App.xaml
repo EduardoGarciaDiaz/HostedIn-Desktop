@@ -1,7 +1,7 @@
-﻿<Application x:Class="HostedIn_Desktop.App"
+﻿<Application x:Class="HostedIn_DesktopClient.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:HostedIn_Desktop"
+             xmlns:local="clr-namespace:HostedIn_DesktopClient"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

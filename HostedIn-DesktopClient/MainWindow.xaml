@@ -1,0 +1,16 @@
+﻿<Window x:Class="HostedIn_DesktopClient.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HostedIn_DesktopClient"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Button Margin="272,220,259,141" Content="Crear cuenta" Click="Button_Click">
+
+        </Button>
+
+        <TextBlock x:Name="txbBlock" Margin="39,28,33,240" />
+    </Grid>
+</Window>
