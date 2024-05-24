@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HostedInDesktop.Views.Login"
+             xmlns:viewmodel="clr-namespace:HostedInDesktop.viewmodels"
+             Title="Login"
+             Background="White"
+             HeightRequest="800"
+             WidthRequest="1400"
+             MaximumWidthRequest="1400"
+             MaximumHeightRequest="800">
+
+    <ContentPage.BindingContext>
+        <viewmodel:LoginViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <VerticalStackLayout
+            Padding="50,50,50,50"
+            Spacing="25">
+            
+            <Image
+                Source="start_img.png"
+                HeightRequest="185"
+                Aspect="AspectFit"
+                SemanticProperties.Description="dot net bot in a race car number eight" />
+
+            <Label
+                Text="Ingresa a Hosted In"
+                TextColor="Black"
+                FontSize="30"
+                FontAttributes="Bold"
+                SemanticProperties.HeadingLevel="Level1"
+                HorizontalOptions="Center"/>
+
+            <Line BackgroundColor="Black" StrokeThickness="1"/>
+            <Entry 
+                TextColor="Black" 
+                Placeholder="Correo electrónico"
+                Text="{Binding Email, Mode=OneWayToSource}"
+                WidthRequest="300" HorizontalOptions="Center" HorizontalTextAlignment="Start" PlaceholderColor="#7B7B7B">
+            </Entry>
+
+            <Entry 
+                TextColor="Black" 
+                Placeholder="Contraseña"
+                Text="{Binding Password, Mode=OneWayToSource}"
+                WidthRequest="300" HorizontalOptions="Center" HorizontalTextAlignment="Start" PlaceholderColor="#7B7B7B" IsPassword="True">       
+                
+            </Entry>
+
+            <Button Text="Iniciar sesion"
+                    WidthRequest="300"/>
+        </VerticalStackLayout>
+    </Grid>
+</ContentPage>
