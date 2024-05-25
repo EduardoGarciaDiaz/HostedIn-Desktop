@@ -288,6 +288,7 @@ namespace HostedInDesktop.viewmodels
 
             return isResidenceValid;
         }
+
     }
 
     public delegate void DataSavedEventHandler(object sender, DataSavedEventArgs e);

@@ -13,6 +13,7 @@ namespace HostedInDesktop.viewmodels
     {
         [ObservableProperty]
         private ContentView _currentView;
+
         public HostViewViewModel()
         {
             CurrentView = new HostBookedAccommodations();
