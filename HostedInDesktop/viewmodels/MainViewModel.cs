@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HostedInDesktop.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,13 +12,6 @@ namespace HostedInDesktop.viewmodels
 {
     public partial class MainViewModel : ObservableObject
     {
-        [ObservableProperty]
-        private int count;
 
-        [RelayCommand]
-        public void Sumar()
-        {
-            Count++;
-        }
     }
 }

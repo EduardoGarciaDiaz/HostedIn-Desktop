@@ -273,5 +273,6 @@ namespace HostedInDesktop.viewmodels
 
             return isResidenceValid;
         }
+
     }
 }

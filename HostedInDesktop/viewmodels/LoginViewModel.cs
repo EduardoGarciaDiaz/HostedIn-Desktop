@@ -38,7 +38,6 @@ namespace HostedInDesktop.viewmodels
                         {
                             Preferences.Remove(nameof(App.user));
                         }
-                        string userDetails = JsonConvert.SerializeObject(user);
                         App.user = user;
                         if (user.roles.Contains("Guest"))
                         {
@@ -66,6 +65,12 @@ namespace HostedInDesktop.viewmodels
                     return;
                 }
             }
+        }
+
+        [RelayCommand]
+        public void OnSignupClicked()
+        {
+            Shell.Current.GoToAsync(nameof(SignupView));
         }
     }
 }
