@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using HostedInDesktop.viewmodels;
+using HostedInDesktop.Views;
+using Microsoft.Extensions.Logging;
 
 namespace HostedInDesktop
 {
@@ -14,6 +16,9 @@ namespace HostedInDesktop
                     fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
+
+            builder.Services.AddSingleton<LoginViewModel>();
+            builder.Services.AddSingleton<Login>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

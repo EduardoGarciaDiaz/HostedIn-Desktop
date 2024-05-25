@@ -4,7 +4,6 @@
              x:Class="HostedInDesktop.Views.Login"
              xmlns:viewmodel="clr-namespace:HostedInDesktop.viewmodels"
              Title="Login"
-             Background="White"
              HeightRequest="800"
              WidthRequest="1400"
              MaximumWidthRequest="1400"
@@ -26,12 +25,9 @@
                 SemanticProperties.Description="dot net bot in a race car number eight" />
 
             <Label
-                Text="Ingresa a Hosted In"
-                TextColor="Black"
-                FontSize="30"
-                FontAttributes="Bold"
-                SemanticProperties.HeadingLevel="Level1"
-                HorizontalOptions="Center"/>
+                Text="Inicia sesion"
+                Style="{StaticResource Headline}"
+                SemanticProperties.HeadingLevel="Level1"/>          
 
             <Line BackgroundColor="Black" StrokeThickness="1"/>
             <Entry 
@@ -50,6 +46,7 @@
             </Entry>
 
             <Button Text="Iniciar sesion"
+                    Command="{Binding SignInCommand}"
                     WidthRequest="300"/>
         </VerticalStackLayout>
     </Grid>

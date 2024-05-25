@@ -1,14 +1,18 @@
-﻿using HostedInDesktop.Views;
+﻿using HostedInDesktop.Data.Models;
+using HostedInDesktop.Views;
 
 namespace HostedInDesktop
 {
     public partial class App : Application
     {
+
+        public static User user;
+
         public App()
         {
             InitializeComponent();
 
-            MainPage = new Login();
+            MainPage = new AppShell();
         }
 
         protected override Window CreateWindow(IActivationState activationState)
