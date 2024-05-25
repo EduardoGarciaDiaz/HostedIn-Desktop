@@ -19,7 +19,7 @@
                    Margin="0,14,0,7" />
 
             <Frame WidthRequest="140" HeightRequest="140" CornerRadius="70" HorizontalOptions="Center" VerticalOptions="Start" Background="#707070">
-                <Image  Source="ic_user.png" />
+                <Image  Source="{Binding ProfilePhoto}" />
             </Frame>
 
             <Button Text="Editar foto"
@@ -28,7 +28,7 @@
                     HorizontalOptions="End"
                     VerticalOptions="End"/>
 
-            <Label Text="{Binding UserData.fullName}"
+            <Label Text="{Binding Fullname}"
                    HorizontalOptions="Center"
                    VerticalOptions="Start"
                    FontAttributes="Bold"

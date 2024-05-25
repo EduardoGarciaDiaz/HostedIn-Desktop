@@ -10,7 +10,7 @@ namespace HostedInDesktop.Utils
     public class DateFormatterUtils
     {
         private static readonly string NORMAL_DATE_PATTERN = "dd/MM/yyyy";
-        private static readonly string MONGODB_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+        private static readonly string MONGODB_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
         private static readonly string NATURAL_DATE = "dddd d 'de' MMMM 'del' yyyy";
         private static readonly string TIME_ZONE = "UTC";
 
@@ -33,8 +33,11 @@ namespace HostedInDesktop.Utils
 
         public static DateTime? ParseStringToDate(string date)
         {
+            string[] dateParts = date.Split(' ')[0].Split('/');
+            string formattedDate = $"{dateParts[0]}/{dateParts[1]}/{dateParts[2]}";
+
             DateTime parsedDate;
-            if (DateTime.TryParseExact(date, NORMAL_DATE_PATTERN, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+            if (DateTime.TryParseExact(formattedDate, NORMAL_DATE_PATTERN, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
             {
                 return parsedDate;
             }

@@ -1,8 +1,12 @@
-﻿using System;
+﻿using CommunityToolkit.Mvvm.ComponentModel;
+using HostedInDesktop.Data.JsonConverters;
+using Newtonsoft.Json;
+using System;
 
 namespace HostedInDesktop.Data.Models
 {
-    public class User
+    [ObservableObject]
+    public partial class User
     {
         public string _id {  get; set; }
         public string email { get; set; }  

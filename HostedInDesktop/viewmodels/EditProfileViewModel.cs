@@ -16,22 +16,22 @@ namespace HostedInDesktop.viewmodels
     public partial class EditProfileViewModel : ObservableObject
     {
         private readonly IUserService _userService = new UserService();
-        private const int MAX_MB_SIZE_VIDEO = 1;
-
+        private const int MAX_MB_SIZE = 1;
         private string _uriSelectedImage = null;
         private User _user = App.user;
 
         [ObservableProperty]
         private User userData;
 
+        [ObservableProperty]
+        private string fullname;
+
+        [ObservableProperty]
+        private ImageSource profilePhoto;
+
         public EditProfileViewModel()
         {
-            UserData = new User();
-            UserData.birthDate = "17/11/2003";
-            UserData.phoneNumber = "";
-            UserData.occupation = "";
-            UserData.residence = "";
-            
+            UserData = _user;
             loadUserData();
         }
 
@@ -46,6 +46,7 @@ namespace HostedInDesktop.viewmodels
             if (result != null)
             {
                 this._uriSelectedImage = result.FullPath;
+                ProfilePhoto = ImageSource.FromFile(_uriSelectedImage);
             }
         }
 
@@ -58,9 +59,11 @@ namespace HostedInDesktop.viewmodels
                 {
                     if (IsUserDataValid())
                     {
-                        User user = await _userService.EditAccount(_user._id, createUser());
+                        User user = await _userService.EditAccount(_user._id, CreateUser());
                         string userDetails = JsonConvert.SerializeObject(user);
-                        //await Shell.Current.GoToAsync(nameof(ProfileView));
+                        Fullname = user.fullName;
+                        
+                        await Shell.Current.DisplayAlert("Éxito", "Se ha actualizado tu información", "Ok");
                     }
                 }
                 catch (ApiException aex)
@@ -76,7 +79,7 @@ namespace HostedInDesktop.viewmodels
             }
         }
 
-        private User createUser()
+        private User CreateUser()
         {
             User editedUser = new User();
             string userId = UserData._id;
@@ -89,6 +92,7 @@ namespace HostedInDesktop.viewmodels
             {
                 editedUser.birthDate = birthdateMongoDb;
             }
+            editedUser.password = null;
             editedUser.phoneNumber = UserData.phoneNumber.Trim();
             editedUser.residence = UserData.residence.Trim();
             editedUser.occupation = UserData.occupation.Trim();
@@ -101,12 +105,23 @@ namespace HostedInDesktop.viewmodels
             User userToEdit = App.user;
             if (userToEdit != null)
             {
+                Fullname = userToEdit.fullName;
                 UserData.fullName = userToEdit.fullName;
-                //UserData.birthDate = userToEdit.birthDate;
-                //UserData.phoneNumber = userToEdit.phoneNumber;
+                UserData.birthDate = userToEdit.birthDate;
+                UserData.phoneNumber = userToEdit.phoneNumber;
                 UserData.email = userToEdit.email;
-                //UserData.occupation = userToEdit.occupation;
-                //UserData.residence = userToEdit.residence;
+                UserData.occupation = userToEdit.occupation;
+                UserData.residence = userToEdit.residence;
+
+                if (userToEdit.profilePhoto != null && userToEdit.profilePhoto.data != null && userToEdit.profilePhoto.data.Length > 0)
+                {
+                    byte[] imageData = userToEdit.profilePhoto.data;
+                    ProfilePhoto = ImageSource.FromStream(() => new MemoryStream(imageData));
+                }
+                else
+                {
+                    ProfilePhoto = "ic_user.png";
+                }
             }
         }
 
@@ -150,7 +165,7 @@ namespace HostedInDesktop.viewmodels
             {
                 isValid = false;
 
-                Shell.Current.DisplayAlert("Foto no válida", $"La imagen debe ser pesar menos o igual a {MAX_MB_SIZE_VIDEO}MB", "Ok");
+                Shell.Current.DisplayAlert("Foto no válida", $"La imagen debe ser pesar menos o igual a {MAX_MB_SIZE}MB", "Ok");
             }
 
             return isValid;
@@ -166,7 +181,7 @@ namespace HostedInDesktop.viewmodels
                 long fileSizeInBytes = fileInfo.Length;
                 long fileSizeInMegabytes = fileSizeInBytes / (1024 * 1024);
 
-                return fileSizeInMegabytes <= MAX_MB_SIZE_VIDEO;
+                return fileSizeInMegabytes <= MAX_MB_SIZE;
             }
             catch (Exception ex)
             {
@@ -209,9 +224,9 @@ namespace HostedInDesktop.viewmodels
                 try
                 {
                     string[] dateParts = birthdateStr.Split(' ')[0].Split('/');
-                    string formattedDate = $"{dateParts[0]}/{dateParts[1]}/{dateParts[2]}"; 
+                    string formattedDate = $"{dateParts[0]}/{dateParts[1]}/{dateParts[2]}";
 
-                    DateTime birthdate = DateTime.ParseExact(formattedDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    DateTime birthdate = (DateTime)DateFormatterUtils.ParseStringToDate(birthdateStr);
 
                     DateTime minAgeDate = DateTime.Today.AddYears(-18);
 
@@ -274,4 +289,19 @@ namespace HostedInDesktop.viewmodels
             return isResidenceValid;
         }
     }
+
+    public delegate void DataSavedEventHandler(object sender, DataSavedEventArgs e);
+
+    public class DataSavedEventArgs : EventArgs
+    {
+        public string UpdatedFullName { get; }
+        public byte[] ImageData { get; }
+
+        public DataSavedEventArgs(string updatedFullName, byte[] imageData)
+        {
+            UpdatedFullName = updatedFullName;
+            ImageData = imageData;
+        }
+    }
+
 }

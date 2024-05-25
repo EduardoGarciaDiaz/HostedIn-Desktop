@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Utils;
+using HostedInDesktop.Views;
 
 
 namespace HostedInDesktop.viewmodels
@@ -11,6 +12,10 @@ namespace HostedInDesktop.viewmodels
     {
         private readonly IUserService _userService = new UserService();
         private string userId = App.user._id;
+
+
+        [ObservableProperty]
+        private string fullname;
 
         [ObservableProperty]
         private string password;
@@ -27,7 +32,12 @@ namespace HostedInDesktop.viewmodels
                         if (IsMatchPassword() && userId != null)
                         {
                             string idDeleted = await _userService.DeleteAccount(userId);
-                            //await Shell.Current.GoToAsync(nameof(MyProfile));
+                            if (idDeleted != null)
+                            {
+                                App.user = null;
+                                await Shell.Current.DisplayAlert("Cuenta eliminada", "Tu cuenta ha sido eliminada.", "Ok");
+                                await Shell.Current.GoToAsync($"//{nameof(Login)}");
+                            }
                         }
                         else
                         {
@@ -65,7 +75,7 @@ namespace HostedInDesktop.viewmodels
         private bool IsMatchPassword()
         {
             bool isMatchPassword = false;
-            string passwordConfirmation = password.Trim();
+            string passwordConfirmation = Password.Trim();
             string originalPassword = App.user.password;
 
             if (!string.IsNullOrEmpty(originalPassword))

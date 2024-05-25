@@ -29,13 +29,12 @@
 
             <!-- Profile Image -->
             <Frame WidthRequest="140" HeightRequest="140" CornerRadius="70" HorizontalOptions="Center" VerticalOptions="Start" Background="#707070">
-                <Image Source="ic_user.png" />
+                <Image Source="{Binding ProfilePhoto}"/>
             </Frame>
 
             <!-- Full Name -->
             <Label
-                    x:Name="txv_full_name"
-                    Text="{Binding Fullname}"
+                    Text="{Binding Fullname, Mode=TwoWay}"
                     HorizontalOptions="Center"
                     VerticalOptions="Start"
                     Margin="0,5,0,0"
@@ -44,6 +43,7 @@
             <!-- My Account Button -->
             <Button
                     Command="{Binding MyAccountClikedCommand}"
+                    IsEnabled="{Binding IsButtonEnabled}"
                     x:Name="btn_my_account"
                     Text="Mi Cuenta"
                     HorizontalOptions="FillAndExpand"
@@ -55,6 +55,7 @@
             <StackLayout VerticalOptions="EndAndExpand" HorizontalOptions="FillAndExpand" Margin="10,0,10,30">
                 <Button
                         Command="{Binding ChangePasswordClikedCommand}"
+                        IsEnabled="{Binding IsButtonEnabled}"
                         x:Name="btn_change_password"
                         Text="Cambiar contraseña"
                         TextColor="#5280DB"
@@ -99,6 +100,7 @@
 
             <Button
                     Command="{Binding DeleteAccountClikedCommand}"
+                    IsEnabled="{Binding IsButtonEnabled}"
                     x:Name="btn_delete_account"
                     Text="Eliminar cuenta"
                     BorderColor="#D95353"
