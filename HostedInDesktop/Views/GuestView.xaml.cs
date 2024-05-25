@@ -6,4 +6,14 @@ public partial class GuestView : ContentPage
 	{
 		InitializeComponent();
 	}
+
+    private void OnEditClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync(nameof(EditProfile));
+    }
+
+    private void OnDeleteClicked(object sender, EventArgs e)
+    {
+        Shell.Current.GoToAsync(nameof(DeleteAccount));
+    }
 }

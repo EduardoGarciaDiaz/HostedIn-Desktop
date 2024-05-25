@@ -19,6 +19,10 @@ namespace HostedInDesktop
 
             builder.Services.AddSingleton<LoginViewModel>();
             builder.Services.AddSingleton<Login>();
+            builder.Services.AddSingleton<EditProfileViewModel>();
+            builder.Services.AddSingleton<EditProfile>();
+            builder.Services.AddSingleton<DeleteAccountViewModel>();
+            builder.Services.AddSingleton<DeleteAccount>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

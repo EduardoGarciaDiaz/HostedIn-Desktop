@@ -8,5 +8,16 @@
             Text="Welcome to .NET MAUI!"
             VerticalOptions="Center" 
             HorizontalOptions="Center" />
+
+        <Button
+            Clicked="OnEditClicked" 
+            Margin="10"
+            Text="Go To EDIT profile"/>
+
+        <Button     
+                        Clicked="OnDeleteClicked" 
+
+    Text="Go To DELETE account"/>
+
     </VerticalStackLayout>
 </ContentPage>

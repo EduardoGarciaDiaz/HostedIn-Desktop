@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HostedInDesktop.Views.EditProfile"
+             xmlns:viewmodel="clr-namespace:HostedInDesktop.viewmodels"
+             Title="EditProfile">
+
+    <ContentPage.BindingContext>
+    <viewmodel:EditProfileViewModel/>
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+        <StackLayout Padding="10" Spacing="10">
+
+            <Label Text="Mi Perfil"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   FontAttributes="Bold"
+                   Margin="0,14,0,7" />
+
+            <Frame WidthRequest="140" HeightRequest="140" CornerRadius="70" HorizontalOptions="Center" VerticalOptions="Start" Background="#707070">
+                <Image  Source="ic_user.png" />
+            </Frame>
+
+            <Button Text="Editar foto"
+                    Command="{Binding SelectPhotoCommand}"
+                    Style="{StaticResource MaterialIconButtonStyle}"
+                    HorizontalOptions="End"
+                    VerticalOptions="End"/>
+
+            <Label Text="{Binding UserData.fullName}"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   FontAttributes="Bold"
+                   Margin="0,5,0,0" />
+
+            <Frame  CornerRadius="10" Padding="10" HasShadow="True">
+                <StackLayout>
+                    <Label Text="Modificar perfil"
+                           FontSize="16"
+                           VerticalOptions="Start"
+                           HorizontalOptions="Start"
+                           Margin="20,10,0,0" />
+
+                    <Button Text="Cancelar"
+                            Style="{StaticResource TextButtonStyle}"
+                            HorizontalOptions="End"
+                            VerticalOptions="Start"
+                            FontSize="17"
+                            Margin="0,0,5,0" 
+                            />
+
+                    <Label Text="Datos personales"
+                           TextColor="Black"
+                           FontAttributes="Bold"
+                           FontSize="12"
+                           Margin="20,5,0,0" />
+
+                    <StackLayout Padding="10,0">
+                        <Entry Placeholder="Nombre completo"
+                               Text="{Binding UserData.fullName}"
+                               MaxLength="200" />
+
+                        <DatePicker Date="{Binding UserData.birthDate}"
+                                    Format="d"
+                                    HorizontalOptions="FillAndExpand"
+                                    Margin="0,5,0,0"
+                                    />
+
+                        <Entry Placeholder="Número de teléfono"
+                               Text="{Binding UserData.phoneNumber}"
+                               Keyboard="Telephone"
+                               MaxLength="10" />
+
+                        <Entry Placeholder="Correo electrónico"
+                               Text="{Binding UserData.email}"
+                               IsEnabled="False" />
+                    </StackLayout>
+
+                    <Label Text="Sobre mí"
+                           FontAttributes="Bold"
+                           FontSize="12"
+                           Margin="20,30,0,0" />
+
+                    <StackLayout Padding="10,0">
+                        <Entry Placeholder="Ocupación"
+                               Text="{Binding UserData.occupation}"
+                               MaxLength="60" />
+
+                        <Entry Placeholder="¿En dónde vives?"
+                               Text="{Binding UserData.residence}" />
+                    </StackLayout>
+
+                    <Button Text="Guardar"
+                            Command="{Binding EditProfileCommand}"
+                            HorizontalOptions="FillAndExpand"
+                            VerticalOptions="End"
+                            Margin="10,25,10,0" />
+                </StackLayout>
+            </Frame>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"
+                               IsVisible="{Binding IsBusy}" />
+        </StackLayout>
+    </ScrollView>
+
+
+</ContentPage>

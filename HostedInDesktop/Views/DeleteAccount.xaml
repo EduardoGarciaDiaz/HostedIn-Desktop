@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewmodel="clr-namespace:HostedInDesktop.viewmodels"
+             x:Class="HostedInDesktop.Views.DeleteAccount"
+             Title="DeleteAccount">
+
+    <ContentPage.BindingContext>
+        <viewmodel:DeleteAccountViewModel/>
+    </ContentPage.BindingContext>
+
+    <StackLayout Padding="20">
+
+        <Label
+            Text="Eliminar cuenta"
+            TextColor="#FF0000"
+            FontAttributes="Bold"
+            HorizontalTextAlignment="Center"
+            Margin="0,14,0,7"/>
+
+        <Label
+            x:Name="txv_full_name"
+            Text="{Binding UserData.fullName}"
+            FontAttributes="Bold"
+            HorizontalTextAlignment="Center"
+            Margin="0,15,0,0"/>
+
+        <Label
+            Text="Esta es una acción irreversible"
+            TextColor="#FF0000"
+            FontAttributes="Bold"
+            Margin="0,30,0,0"/>
+
+        <Label
+            Text="Una vez que elimines tu cuenta no habrá manera de poder recuperarla. 
+            Si estás seguro de realizar esta acción, ingresa tu contraseña actual para confirmar la eliminación de tu cuenta"
+            Margin="0,10,0,0"/>
+
+        <StackLayout Margin="0,30,0,0">
+            <Entry
+                Text="{Binding Password, Mode=TwoWay}"
+                x:Name="etx_confirm_password"
+                Placeholder="Confirma tu contraseña"
+                IsPassword="True"
+                MaxLength="64"/>
+        </StackLayout>
+
+        <Button
+            Command="{Binding DeleteAccountCommand}"
+            x:Name="btn_delete_account"
+            Text="Eliminar cuenta"
+            TextColor="#FF0000"
+            BackgroundColor="Transparent"
+            BorderColor="#FF0000"
+            BorderWidth="1"
+            Margin="0,30,0,0"/>
+
+        <ProgressBar
+        x:Name="pgb_delete_account"
+        IsVisible="False"
+        Margin="0,30,0,0"/>
+    </StackLayout>
+
+</ContentPage>
