@@ -9,6 +9,7 @@ namespace HostedInDesktop
             InitializeComponent();
             Routing.RegisterRoute(nameof(GuestView), typeof(GuestView));
             Routing.RegisterRoute(nameof(Login), typeof(Login));
+            Routing.RegisterRoute(nameof(HostView), typeof(HostView));
         }
     }
 }

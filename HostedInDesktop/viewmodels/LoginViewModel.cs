@@ -40,7 +40,14 @@ namespace HostedInDesktop.viewmodels
                         }
                         string userDetails = JsonConvert.SerializeObject(user);
                         App.user = user;
-                        await Shell.Current.GoToAsync(nameof(GuestView));
+                        if (user.roles.Contains("Guest"))
+                        {
+                            await Shell.Current.GoToAsync(nameof(GuestView));
+                        } 
+                        else
+                        {
+                            await Shell.Current.GoToAsync(nameof(HostView));
+                        }
                     }
                     else
                     {
