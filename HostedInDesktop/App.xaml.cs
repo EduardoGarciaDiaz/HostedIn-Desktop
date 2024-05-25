@@ -7,6 +7,7 @@ namespace HostedInDesktop
     {
 
         public static User user;
+        public static string token;
 
         public App()
         {
