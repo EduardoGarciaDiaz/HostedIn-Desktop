@@ -29,7 +29,7 @@
                 </MenuFlyoutItem.IconImageSource>
             </MenuFlyoutItem>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Mi perfil">
+            <MenuFlyoutItem Text="Mi perfil" Command="{Binding MyProfileClickedCommandCommand}">
                 <MenuFlyoutItem.IconImageSource>
                     <FileImageSource File="usuario_de_perfil.png"/>
                 </MenuFlyoutItem.IconImageSource>

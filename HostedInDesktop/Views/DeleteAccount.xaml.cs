@@ -1,6 +1,6 @@
 namespace HostedInDesktop.Views;
 
-public partial class DeleteAccount : ContentPage
+public partial class DeleteAccount : ContentView
 {
 	public DeleteAccount()
 	{

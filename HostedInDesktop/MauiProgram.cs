@@ -23,6 +23,8 @@ namespace HostedInDesktop
             builder.Services.AddSingleton<EditProfile>();
             builder.Services.AddSingleton<DeleteAccountViewModel>();
             builder.Services.AddSingleton<DeleteAccount>();
+            builder.Services.AddSingleton<ProfileViewModel>();
+            builder.Services.AddSingleton<Profile>();
 
 #if DEBUG
     		builder.Logging.AddDebug();

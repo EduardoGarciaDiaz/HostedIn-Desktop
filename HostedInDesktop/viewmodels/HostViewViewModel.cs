@@ -41,5 +41,11 @@ namespace HostedInDesktop.viewmodels
         {
             Shell.Current.GoToAsync(nameof(GuestView));
         }
+
+        [RelayCommand]
+        public void MyProfileClicked()
+        {
+            Shell.Current.GoToAsync(nameof(Profile));
+        }
     }
 }
