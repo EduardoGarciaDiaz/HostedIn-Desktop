@@ -12,7 +12,7 @@ namespace HostedInDesktop.Data.Models
         public string phoneNumber { get; set; }
         public string occupation { get; set; }
         public string residence { get; set; }
-        public byte[] profilePhoto { get; set; }
+        public ProfilePhoto profilePhoto { get; set; }
         public string[] roles { get; set; }
     }
 }

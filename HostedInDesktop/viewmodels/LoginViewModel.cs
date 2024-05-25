@@ -25,7 +25,7 @@ namespace HostedInDesktop.viewmodels
         private string password;
 
         [RelayCommand]
-        public async void SignIn()
+        public async Task SignIn()
         {
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
@@ -62,7 +62,7 @@ namespace HostedInDesktop.viewmodels
                 }
                 catch (Exception ex)
                 {
-                    await Shell.Current.DisplayAlert("Error ", ex.Message, email, "Ok");
+                    await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
                     return;
                 }
             }

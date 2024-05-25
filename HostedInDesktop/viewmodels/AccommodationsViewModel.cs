@@ -17,16 +17,7 @@ namespace HostedInDesktop.viewmodels
 
         public AccommodationsViewModel()
         {
-            Accommodations = new ObservableCollection<Accommodation>
-            {
-                new Accommodation { Name = "Hotel A", Location = "City A", ImageUrl = "https://via.placeholder.com/150" },
-                new Accommodation { Name = "Hotel B", Location = "City B", ImageUrl = "https://via.placeholder.com/150" },
-                 new Accommodation { Name = "Hotel A", Location = "City A", ImageUrl = "https://via.placeholder.com/150" },
-                new Accommodation { Name = "Hotel B", Location = "City B", ImageUrl = "https://via.placeholder.com/150" },
-                 new Accommodation { Name = "Hotel A", Location = "City A", ImageUrl = "https://via.placeholder.com/150" },
-                new Accommodation { Name = "Hotel B", Location = "City B", ImageUrl = "https://via.placeholder.com/150" },
-                // Añade más objetos de prueba
-            };
+          
         }
 
         [RelayCommand]
