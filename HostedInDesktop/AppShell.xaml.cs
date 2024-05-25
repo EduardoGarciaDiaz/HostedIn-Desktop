@@ -11,6 +11,7 @@ namespace HostedInDesktop
             Routing.RegisterRoute(nameof(Login), typeof(Login));
             Routing.RegisterRoute(nameof(EditProfile), typeof(EditProfile));
             Routing.RegisterRoute(nameof(DeleteAccount), typeof(DeleteAccount));
+            Routing.RegisterRoute(nameof(HostView), typeof(HostView));
         }
     }
 }

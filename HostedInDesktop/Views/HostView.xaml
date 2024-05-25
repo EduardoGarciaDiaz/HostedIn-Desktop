@@ -1,26 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewmodel="clr-namespace:HostedInDesktop.viewmodels"
-             x:Class="HostedInDesktop.Views.GuestView">
+             x:Class="HostedInDesktop.Views.HostView"
+             xmlns:vm="clr-namespace:HostedInDesktop.viewmodels">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
     </Shell.BackButtonBehavior>
-
     <ContentPage.BindingContext>
-        <viewmodel:GuestViewViewModel/>
+        <vm:HostViewViewModel/>
     </ContentPage.BindingContext>
+    
 
     <ContentPage.MenuBarItems>
         <MenuBarItem x:Name="Menu" Text="Menu">
-            <MenuFlyoutItem Text="Explorar" Command="{Binding ExploreClickedCommand}">
-                <MenuFlyoutItem.IconImageSource>
-                    <FileImageSource File="search.png"/>
-                </MenuFlyoutItem.IconImageSource>
-            </MenuFlyoutItem>
-            <MenuFlyoutItem Text="Reservaciones" Command="{Binding BookingsClickedCommand}">
+            <MenuFlyoutItem Text="Reservaciones" Command="{Binding BookedAccommodationsClikedCommand}">
                 <MenuFlyoutItem.IconImageSource>
                     <FileImageSource File="airplane.png"/>
+                </MenuFlyoutItem.IconImageSource>
+            </MenuFlyoutItem>
+            <MenuFlyoutItem Text="Publicaciones" Command="{Binding AccommodationsClickedCommand}">
+                <MenuFlyoutItem.IconImageSource>
+                    <FileImageSource File="promotion.png"/>
                 </MenuFlyoutItem.IconImageSource>
             </MenuFlyoutItem>
             <MenuFlyoutItem Text="Estadisticas" Command="{Binding StaticticsClickedCommand}">
@@ -35,11 +35,9 @@
                 </MenuFlyoutItem.IconImageSource>
             </MenuFlyoutItem>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem x:Name="menItemChangeMode" Text="Modo anfitrion" Command="{Binding ChangeToHostCommand}"/>
+            <MenuFlyoutItem x:Name="menItemChangeMode" Text="Modo huesped" Command="{Binding ChangeToGuestClickedCommand}"/>
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem Text="Cerrar sesion"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
-
-    <ContentView Content="{Binding CurrentView}" />
 </ContentPage>

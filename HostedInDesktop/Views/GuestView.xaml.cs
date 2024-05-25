@@ -5,15 +5,18 @@ public partial class GuestView : ContentPage
 	public GuestView()
 	{
 		InitializeComponent();
-	}
-
-    private void OnEditClicked(object sender, EventArgs e)
-    {
-        Shell.Current.GoToAsync(nameof(EditProfile));
+		if (!App.user.roles.Contains("Host"))
+		{
+			RemoveChangeModeItem();
+		}
     }
 
-    private void OnDeleteClicked(object sender, EventArgs e)
+    private void RemoveChangeModeItem()
     {
-        Shell.Current.GoToAsync(nameof(DeleteAccount));
+		var menu = menItemChangeMode;
+		if (menu != null)
+		{
+			Menu.Remove(menu);
+		}
     }
 }
