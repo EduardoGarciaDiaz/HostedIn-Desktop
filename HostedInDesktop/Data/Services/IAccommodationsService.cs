@@ -10,5 +10,7 @@ namespace HostedInDesktop.Data.Services
     public interface IAccommodationsService
     {
         Task<List<Accommodation>> GetAccommodationsAsync(string id);
+
+        Task<Accommodation> CreateAccommodationAsync(Accommodation accommodation);
     }
 }
