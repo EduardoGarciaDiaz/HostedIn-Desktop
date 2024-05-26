@@ -12,7 +12,6 @@ using HostedInDesktop.Views;
 using Syncfusion.Maui.Core.Carousel;
 using HostedInDesktop.viewmodels.ModelObservable;
 using HostedInDesktop.Data.Models;
-using Location = HostedInDesktop.Data.Models.Location;
 using HostedInDesktop.Utils;
 using HostedInDesktop.Data.Services;
 

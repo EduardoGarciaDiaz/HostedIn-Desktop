@@ -31,7 +31,7 @@ public partial class AccommodationFormLocation : ContentView
         var configuration = builder.Build();
         _mapServiceToken = configuration["MapService:Token"];
 
-        Data.Models.Location location = new Data.Models.Location
+        Location location = new Location
         {
             latitude = Double.Parse(lblLatitude.Text.ToString()),
             longitude = Double.Parse(lblLongitude.Text.ToString()),
