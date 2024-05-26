@@ -5,7 +5,9 @@ VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostedIn-DesktopClient", "HostedIn-DesktopClient\HostedIn-DesktopClient.csproj", "{1144FB79-0A03-4E71-9A4F-3F20803C8388}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostedInDesktop", "HostedInDesktop\HostedInDesktop.csproj", "{34AF91A5-29E4-49CC-A10D-E690AFD60BAF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostedInDesktop", "HostedInDesktop\HostedInDesktop.csproj", "{34AF91A5-29E4-49CC-A10D-E690AFD60BAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grpc", "Grpc\Grpc.csproj", "{E72CED33-F863-42C6-A5DC-9411BF2A5B2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,6 +25,10 @@ Global
 		{34AF91A5-29E4-49CC-A10D-E690AFD60BAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34AF91A5-29E4-49CC-A10D-E690AFD60BAF}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34AF91A5-29E4-49CC-A10D-E690AFD60BAF}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{E72CED33-F863-42C6-A5DC-9411BF2A5B2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E72CED33-F863-42C6-A5DC-9411BF2A5B2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E72CED33-F863-42C6-A5DC-9411BF2A5B2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E72CED33-F863-42C6-A5DC-9411BF2A5B2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

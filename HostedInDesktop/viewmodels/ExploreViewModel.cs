@@ -16,8 +16,8 @@ namespace HostedInDesktop.viewmodels
     {
         public ObservableCollection<Accommodation> Accommodations { get; } = new ObservableCollection<Accommodation>();
         public ObservableCollection<Place> Places { get; } = new ObservableCollection<Place>();
-
         
+        private readonly MultimediaServiceImpl _multimediaService = new MultimediaServiceImpl();
         private readonly IAccommodationsService _accommodationsService = new AccommodationsService();
         private readonly IPlacesClient _placesClient = new PlacesClient();
 
@@ -49,6 +49,7 @@ namespace HostedInDesktop.viewmodels
                 foreach(var accommodation in accommodations)
                 {
                     Accommodations.Add(accommodation);
+                    LoadAccommodationImageAsync(accommodation);
                 }
             }
             catch(ApiException aex)
@@ -84,6 +85,7 @@ namespace HostedInDesktop.viewmodels
             try
             {
                 IsLoading = true;
+                IsShowingPlaces = false;
                 if (!string.IsNullOrWhiteSpace(Query))
                 {
                     var places = await _placesClient.GetPlaces(Query);
@@ -121,6 +123,7 @@ namespace HostedInDesktop.viewmodels
                 foreach (var accommodation in accommodations)
                 {
                     Accommodations.Add(accommodation);
+                    LoadAccommodationImageAsync(accommodation);
                 }
             }
             catch (ApiException aex)
@@ -136,6 +139,19 @@ namespace HostedInDesktop.viewmodels
             finally
             {
                 IsLoading = false;
+            }
+        }
+
+        private async Task LoadAccommodationImageAsync(Accommodation accommodation)
+        {
+            try
+            {
+                var imageBytes = await _multimediaService.LoadMainImageAccommodation(accommodation._id, 0);
+                accommodation.mainImage = imageBytes;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
             }
         }
 
