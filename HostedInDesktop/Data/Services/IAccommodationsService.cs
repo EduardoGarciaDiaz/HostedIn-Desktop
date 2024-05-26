@@ -12,5 +12,6 @@ namespace HostedInDesktop.Data.Services
         Task<List<Accommodation>> GetAccommodationsAsync(string id);
 
         Task<List<Accommodation>> GetAccommodationsAsync(string id, double lat, double lng);
+        Task<Accommodation> CreateAccommodationAsync(Accommodation accommodation);
     }
 }

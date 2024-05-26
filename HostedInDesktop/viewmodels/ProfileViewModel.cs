@@ -59,6 +59,13 @@ namespace HostedInDesktop.viewmodels
             //TODO: LogOut
         }
 
+        [RelayCommand]
+        public async void GoBack()
+        {
+            AdditionalContent = null;
+            await Shell.Current.GoToAsync(nameof(GuestView));
+        }
+
         public async Task GetUserById()
         {
             isButtonEnabled = false;

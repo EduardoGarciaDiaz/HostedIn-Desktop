@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+            x:Class="HostedInDesktop.Views.AccommodationDetails">
+
+    <ContentPage.BindingContext>
+        <vm:AccommodationDetailsViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid>
+        <!-- Accommodation Name -->
+        <Label x:Name="txv_accommodation_name"
+               Text="{Binding AccommodationData.Title}"
+               TextColor="#113E96"
+               FontSize="20"
+               FontAttributes="Bold"
+               HorizontalTextAlignment="Center"
+               VerticalOptions="Start"
+               Margin="0,14,0,0"/>
+
+        <!-- ScrollView for details -->
+        <ScrollView Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="20,50,20,70">
+            <VerticalStackLayout>
+                <!-- ViewFlipper converted to CarouselView -->
+                <CarouselView x:Name="vflp_accommodation_multimedia"
+                              HeightRequest="250">
+                    <CarouselView.ItemsSource>
+                        <x:Array Type="{x:Type View}">
+                            <Image x:Name="imv_first_image" Source="img_provisional.png"/>
+                            <Image x:Name="imv_second_image" Source="img_provisional.png"/>
+                            <Image x:Name="imv_third_image" Source="img_provisional.png"/>
+                            <toolkit:MediaElement 
+                            Source="" 
+                            ShouldAutoPlay="True"
+                            Aspect="AspectFit" />
+
+                        </x:Array>
+                    </CarouselView.ItemsSource>
+                </CarouselView>
+
+                <!-- Navigation Buttons -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Button x:Name="btn_go_back"
+                            Grid.Column="0"
+                            Text="&#x25C0;" />
+                    <Button x:Name="btn_go_ahead"
+                            Grid.Column="2"
+                            Text="&#x25B6;" />
+                </Grid>
+
+                <!-- Location -->
+                <Label x:Name="txv_location"
+                       Text="{Binding AccommodationData.Location.Address}"
+                       TextColor="#333333"
+                       Margin="0,6,0,0" />
+
+                <!-- Description -->
+                <Label x:Name="txv_description"
+                       Text="{Binding AccommodationData.Description}"
+                       TextColor="#333333"
+                       Margin="0,6,0,0" />
+
+                <Button x:Name="btn_show_more_description"
+                        Text="Mostrar más >"
+                        TextColor="#333333"
+                        FontAttributes="Bold"
+                        HorizontalOptions="End"
+                        HeightRequest="15" 
+                        />
+
+                <!-- Accommodation Services -->
+                <Label x:Name="txv_accommodation_type"
+                       Text=""
+                       TextColor="#333333"
+                       FontAttributes="Bold" />
+
+                <Label x:Name="txv_basics"
+                       Text=""
+                       MaxLines="2" />
+
+                <HorizontalStackLayout Margin="0,8,0,0">
+                    <Label Text="Servicios"
+                           TextColor="#333333"
+                           FontAttributes="Bold"
+                           HorizontalOptions="FillAndExpand" />
+                    <Button x:Name="btn_show_more_services"
+                            Text="Mostrar más >"
+                            TextColor="#333333"
+                            FontAttributes="Bold"
+                            HeightRequest="15" 
+                            HorizontalOptions="End"/>
+                </HorizontalStackLayout>
+
+                <Label x:Name="txv_accommodations_services"
+                       Text=""
+                       MaxLines="3" />
+
+                <!-- Accommodation Rules -->
+                <HorizontalStackLayout Margin="0,6,0,0">
+                    <Label Text="Reglas"
+                           TextColor="#333333"
+                           FontAttributes="Bold"
+                           HorizontalOptions="FillAndExpand" />
+                    <Button x:Name="btn_show_more_rules"
+                            Text="Mostrar más >"
+                            TextColor="#333333"
+                            FontAttributes="Bold"
+                            HeightRequest="15" 
+                            HorizontalOptions="End"
+                            />
+                </HorizontalStackLayout>
+
+                <Label x:Name="txv_accommodation_rules"
+                       Text="{Binding AccommodationData.Rules}"
+                       MaxLines="2" />
+
+                <!-- Divider -->
+                <BoxView HeightRequest="2"
+                         BackgroundColor="#ACAAAA"
+                         Margin="0,6,0,0" />
+
+                <!-- Rating -->
+                <Label Text="Calificación"
+                       TextColor="#333333"
+                       FontAttributes="Bold"
+                       HorizontalOptions="Center" />
+
+                <Label x:Name="txv_score"
+                       Text="Sin calif."
+                       TextColor="#5280DB"
+                       FontAttributes="Bold"
+                       FontSize="50"
+                       HorizontalOptions="Center" />
+
+                <Label Text="Reseñas"
+                       TextColor="#333333"
+                       FontAttributes="Bold" />
+
+                <Label x:Name="txv_without_reviews"
+                       Text="Sin reseñas"
+                       HorizontalOptions="Center" />
+
+                <!-- RecyclerView converted to CollectionView -->
+                <CollectionView x:Name="rcyv_reviews" />
+
+                <!-- Location Map -->
+                <Label Text="Dónde vas a estar"
+                       TextColor="#333333"
+                       FontAttributes="Bold"
+                       Margin="0,6,0,0" />
+
+                <!--<Map x:Name="mpv_accommodation_location"
+                     HeightRequest="190" />-->
+
+                <!-- Host details -->
+                <Label Text="Anfitrión"
+                       TextColor="#333333"
+                       FontAttributes="Bold"
+                       Margin="0,6,0,0" />
+
+                <!-- Include item_host_details layout -->
+                <!--<ContentView x:Name="incl_host_data"
+                             Content="{StaticResource itemHostDetails}" />-->
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <!-- Bottom Sheet for more details -->
+        <Grid IsVisible="{Binding IsBottomSheetVisible}"
+              VerticalOptions="End"
+              BackgroundColor="#BFBFBF">
+            <Label Text="Detalles"
+                   FontSize="17"
+                   FontAttributes="Bold"
+                   Margin="15,13,0,0" />
+
+            <Button x:Name="btn_close_details"
+                    Text="Cerrar"
+                    FontSize="17"
+                    Margin="0,0,5,0"
+                    HorizontalOptions="End" />
+
+            <ScrollView Grid.Row="1">
+                <Label x:Name="txv_more_details_description"
+                       Text="detalles..."
+                       FontSize="18"
+                       Margin="15" />
+            </ScrollView>
+        </Grid>
+
+        <!-- Booking Button -->
+        <Button x:Name="btn_booking"
+                Text="Reservar"
+                VerticalOptions="End"
+                Margin="10,0,10,2" />
+
+        <!-- ProgressBar -->
+        <ActivityIndicator x:Name="pgb_accommodation_details"
+                           IsRunning="{Binding IsLoading}"
+                           IsVisible="{Binding IsLoading}"
+                           Color="Gray"
+                           VerticalOptions="CenterAndExpand"
+                           HorizontalOptions="CenterAndExpand" />
+    </Grid>
+</ContentPage>

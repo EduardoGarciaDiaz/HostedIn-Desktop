@@ -1,7 +1,7 @@
-﻿<?xml version = "1.0" encoding = "UTF-8" ?>
-<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:HostedInDesktop"
+             xmlns:utils="clr-namespace:HostedInDesktop.Utils"
              x:Class="HostedInDesktop.App">
     <Application.Resources>
         <ResourceDictionary>
@@ -23,7 +23,7 @@
                 <Setter Property="ImageSource" Value="ic_edit.png"/>
             </Style>
 
-
+            <utils:BoolToColorConverter x:Key="BoolToColorConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

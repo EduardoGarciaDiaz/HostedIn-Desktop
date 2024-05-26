@@ -9,6 +9,9 @@ namespace HostedInDesktop
         public MainPage()
         {
             InitializeComponent();
+            var mapControl = new Mapsui.UI.Maui.MapControl();
+            mapControl.Map?.Layers.Add(Mapsui.Tiling.OpenStreetMap.CreateTileLayer());
+            content = mapControl;
             content = this.viewMain;
         }
     }

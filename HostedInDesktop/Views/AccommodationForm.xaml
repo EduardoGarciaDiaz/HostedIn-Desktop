@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HostedInDesktop.Views.AccommodationForm"
+             xmlns:viewmodel="clr-namespace:HostedInDesktop.viewmodels"
+             Title="AccommodationForm">
+
+    <ContentPage.BindingContext>
+        <viewmodel:AccommodationFormViewModel/>
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="Auto,*">
+        <StackLayout Grid.Row="0">
+
+            <StackLayout Orientation="Horizontal">
+                <ImageButton
+                    HorizontalOptions="Start"
+                    Source="ic_go_back.png"
+                    Command="{Binding BackCommand}"
+                    />
+                                    <Label
+                        x:Name="txv_accommodation_publishing_message"
+                        Text="¡Hola, vamos a preparar tu publicación!"
+                        FontSize="25"
+                        Margin="40,5,0,0" />
+            </StackLayout>
+            
+
+            <ContentView x:Name="additionalContentView" Content="{Binding CurrentContentView}" IsVisible="True" Margin="20, 0, 20, 0">
+            </ContentView>
+        </StackLayout>
+
+        <StackLayout Grid.Row="1" VerticalOptions="EndAndExpand">
+            <Button
+                Command="{Binding NextCommand}"
+                x:Name="btn_next"
+                Text="Siguiente"
+                Margin="10,2,10,0"
+                VerticalOptions="Center"/>
+
+            <ActivityIndicator
+                x:Name="pgb_create_accommodation"
+                IsRunning="False"
+                IsVisible="False"
+                Margin="0,20,0,0" />
+        </StackLayout>
+    </Grid>
+</ContentPage>

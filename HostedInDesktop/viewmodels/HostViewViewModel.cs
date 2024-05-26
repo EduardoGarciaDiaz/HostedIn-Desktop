@@ -28,7 +28,10 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public void OnAccommodationsClicked()
         {
-            CurrentView = new HostAccommodationsView();
+            //CurrentView = new HostAccommodationsView();
+
+            //TODO: Replace with the correct view:
+            Shell.Current.GoToAsync(nameof(AccommodationForm));
         }
 
         [RelayCommand]
