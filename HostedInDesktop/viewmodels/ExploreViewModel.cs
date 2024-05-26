@@ -15,19 +15,29 @@ namespace HostedInDesktop.viewmodels
     public partial class ExploreViewModel : ObservableObject
     {
         public ObservableCollection<Accommodation> Accommodations { get; } = new ObservableCollection<Accommodation>();
-        private readonly IAccommodationsService _accommodationsService = new AccommodationsService();
+        public ObservableCollection<Place> Places { get; } = new ObservableCollection<Place>();
 
+        
+        private readonly IAccommodationsService _accommodationsService = new AccommodationsService();
+        private readonly IPlacesClient _placesClient = new PlacesClient();
+
+        [ObservableProperty]
+        private bool isShowingPlaces;
 
         [ObservableProperty]
         private bool isLoading;
 
+        [ObservableProperty]
+        private string query;
+
         public ExploreViewModel()
         {
             LoadAccommodationsAsync();
+            IsShowingPlaces = false;
         }
 
         [RelayCommand]
-        private async Task LoadAccommodationsAsync()
+        public async Task LoadAccommodationsAsync()
         {
             if (IsLoading) return;
 
@@ -65,6 +75,67 @@ namespace HostedInDesktop.viewmodels
             if (selectedAccommodation != null)
             {
                 await Shell.Current.DisplayAlert("Ejemplo ", selectedAccommodation.title, "Ok");
+            }
+        }
+
+        [RelayCommand]
+        public async Task OnSearchPressed()
+        {
+            try
+            {
+                IsLoading = true;
+                if (!string.IsNullOrWhiteSpace(Query))
+                {
+                    var places = await _placesClient.GetPlaces(Query);
+                    Places.Clear();
+                    foreach (var place in places)
+                    {
+                        Places.Add(place);
+                    }
+                    IsShowingPlaces = true;
+                }
+                else
+                {
+                    await Shell.Current.DisplayAlert("Accion no permitida", "Ingresa un lugar para buscar", "Aceptar");
+                }
+            } catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "Aceptar");
+            }
+            finally {
+                IsLoading = false;
+            }
+        }
+
+        public async Task OnPlaceSelected(Place selectedPlace)
+        {
+            IsShowingPlaces = false;
+            if (IsLoading) return;
+
+            try
+            {
+                IsLoading = true;
+                var accommodations = await _accommodationsService.GetAccommodationsAsync(App.user._id, 
+                    selectedPlace.Geometry.Location.Latitude, selectedPlace.Geometry.Location.Longitude);
+                Accommodations.Clear();
+                foreach (var accommodation in accommodations)
+                {
+                    Accommodations.Add(accommodation);
+                }
+            }
+            catch (ApiException aex)
+            {
+                await Shell.Current.DisplayAlert("Error", aex.Message, "Ok");
+                return;
+            }
+            catch (Exception ex)
+            {
+                await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                return;
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 

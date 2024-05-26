@@ -8,6 +8,7 @@ namespace HostedInDesktop
 
         public static User user;
         public static string token;
+        public static string Google_API_Keys = "AIzaSyBMCpitlSaWhnRQ5LNuOeUchSDi9sCO364";
 
         public App()
         {

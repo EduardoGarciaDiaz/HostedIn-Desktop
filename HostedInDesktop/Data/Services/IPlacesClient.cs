@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace HostedInDesktop.Data.Services
 {
-    public interface IAccommodationsService
+    public interface IPlacesClient
     {
-        Task<List<Accommodation>> GetAccommodationsAsync(string id);
-
-        Task<List<Accommodation>> GetAccommodationsAsync(string id, double lat, double lng);
+        Task<List<Place>> GetPlaces(string query);
     }
 }
