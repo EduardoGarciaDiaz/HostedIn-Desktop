@@ -1,4 +1,5 @@
-﻿using HostedInDesktop.Data.Models;
+﻿using Grpc;
+using HostedInDesktop.Data.Models;
 using HostedInDesktop.Views;
 
 namespace HostedInDesktop
@@ -13,7 +14,6 @@ namespace HostedInDesktop
         public App()
         {
             InitializeComponent();
-
             MainPage = new AppShell();
         }
 

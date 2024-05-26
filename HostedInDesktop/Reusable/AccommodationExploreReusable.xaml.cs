@@ -50,14 +50,32 @@ public partial class AccommodationExploreReusable : ContentView
 	{
 		var view = (AccommodationExploreReusable)bindable;
 		if (newValue is Accommodation accommodation)
-		{
-			if (accommodation.mainImage != null)
-			{
-				view.imgAccommodation.Source = ImageSource.FromStream(() => new MemoryStream(accommodation.mainImage));
-			}
-			view.lblTitle.Text = accommodation.title;
+        {
+            accommodation.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Accommodation.mainImage))
+                {
+                    UpdateImage(view, accommodation);
+                }
+            };
+
+            UpdateImage(view, accommodation);
+            view.lblTitle.Text = accommodation.title;
 			view.lblDescription.Text = accommodation.description;
 			view.lblPrice.Text = $"${accommodation.nightPrice} por noche";
 		}
 	}
+
+    private static void UpdateImage(AccommodationExploreReusable view, Accommodation accommodation)
+    {
+        if (accommodation.mainImage != null && accommodation.mainImage.Length > 0)
+        {
+            view.imgAccommodation.Source = ImageSource.FromStream(() => new MemoryStream(accommodation.mainImage));
+        }
+        else
+        {
+            view.imgAccommodation.Source = ImageSource.FromFile("img_provisional.png");
+        }
+    }
+
 }
