@@ -50,7 +50,7 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public async void ChangePasswordCliked()
         {
-            //TODO: AdditionalContent = new ChangePassword();
+            AdditionalContent = new ChangePasswordView();
         }
 
         [RelayCommand]

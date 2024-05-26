@@ -2,12 +2,12 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HostedInDesktop.Reusable.AccommodationExploreReusable">
-    <StackLayout Orientation="Vertical" Padding="10">
+    <StackLayout Orientation="Vertical">
         <Frame CornerRadius="20" Padding="0" HasShadow="False">
             <Image x:Name="imgAccommodation" HeightRequest="200" Source="img_provisional.png" Aspect="AspectFill"/>
         </Frame>
         <Label x:Name="lblTitle" FontAttributes="Bold" FontSize="16" />
         <Label x:Name="lblDescription" FontSize="14" />
-        <Label x:Name="lblPrice" FontSize="14" TextColor="Black" />
+        <Label x:Name="lblPrice" FontSize="14" TextColor="{StaticResource Primary}" />
     </StackLayout>
 </ContentView>

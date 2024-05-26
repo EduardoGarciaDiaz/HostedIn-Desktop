@@ -8,17 +8,18 @@
     <ContentView.BindingContext>
         <vm:ExploreViewModel/>
     </ContentView.BindingContext>
-    <StackLayout>
-        <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
-        <StackLayout Orientation="Horizontal" HeightRequest="30" Padding="40, 0">
+    <FlexLayout Direction="Column" JustifyContent="Start" AlignItems="Stretch" Padding="0" Margin="20, 0">
+        <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}" Margin="0,10,0,10"/>
+        <StackLayout  Orientation="Horizontal" HeightRequest="30" Margin="0, 10, 0, 0">
             <Label Text="Hola, vamos a planear ese viaje de tus sueños!"
                    Style="{StaticResource SubHeadline}"
                    />
             <SearchBar Placeholder="Busca lugares" WidthRequest="300" Margin="40, 0, 40, 0"/>
             <Image Source="icono_eliminar.png"/>
         </StackLayout>
-        <ScrollView Margin="0, 30, 0, 0">
-            <CollectionView ItemsSource="{Binding Accommodations}">
+        <ScrollView Margin="0,20,0, 10">
+            <CollectionView ItemsSource="{Binding Accommodations}"
+                            VerticalOptions="FillAndExpand">
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
                              Span="3" 
@@ -33,6 +34,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
         </ScrollView>
-
-    </StackLayout>
+    </FlexLayout>
 </ContentView>
