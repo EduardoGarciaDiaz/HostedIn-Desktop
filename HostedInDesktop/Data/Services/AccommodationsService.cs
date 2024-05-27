@@ -24,7 +24,7 @@ public class AccommodationsService : IAccommodationsService
         {
             var httpClient = APIClient.GetHttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.token);
-            string url = $"accommodations?userId={id}";
+            string url = $"accommodations?id={id}";
             HttpResponseMessage response = await httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {

@@ -9,6 +9,7 @@ using HostedInDesktop.Views;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
 using Syncfusion.Maui.Core.Hosting;
+using HostedInDesktop.Abstract;
 
 namespace HostedInDesktop
 {
@@ -30,6 +31,7 @@ namespace HostedInDesktop
                 });
 
             builder.Services.AddSingleton<IMapService, MapService>();
+
             builder.Services.AddSingleton<LoginViewModel>();
             builder.Services.AddSingleton<Login>();
 
@@ -41,8 +43,10 @@ namespace HostedInDesktop
 
             builder.Services.AddSingleton<ProfileViewModel>();
             builder.Services.AddSingleton<Profile>();
+
             builder.Services.AddSingleton<AccommodationDetailsViewModel>();
             builder.Services.AddSingleton<AccommodationDetails>();
+
             builder.Services.AddSingleton<AccommodationFormViewModel>();
             builder.Services.AddSingleton<AccommodationForm>(); 
             builder.Services.AddSingleton<AccommodationFormType>();
@@ -54,8 +58,15 @@ namespace HostedInDesktop
 
             builder.Services.AddTransient<EditAccommodationForm>();
             builder.Services.AddTransient<EditAccommodationFormViewModel>();
+            builder.Services.AddSingleton<BookingsView>();
+            builder.Services.AddSingleton<BookingDetailsView>();
 
-/*            builder.Services.AddScoped(services =>
+            builder.Services.AddTransient<BookingsGuestViewViewModel>();
+            builder.Services.AddTransient<BookingDetailsViewModel>();
+
+
+            builder.Services.AddSingleton<ISharedService, SharedService>();
+                /*            builder.Services.AddScoped(services =>
             {
                 var channel = GrpcChannel.ForAddress(BaseAddres);
                 return new MultimediaService.MultimediaServiceClient(channel);

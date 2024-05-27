@@ -27,7 +27,7 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public void OnBookingsClicked()
         {
-            CurrentView = new BookingsView(new BookingsGuestViewViewModel());
+            CurrentView = new BookingsView();
         }
 
         [RelayCommand]

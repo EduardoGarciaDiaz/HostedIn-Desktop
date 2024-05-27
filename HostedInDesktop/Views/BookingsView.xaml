@@ -5,10 +5,6 @@
              xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
              xmlns:reusable="clr-namespace:HostedInDesktop.Reusable">
 
-    <ContentView.BindingContext>
-        <vm:BookingsGuestViewViewModel/>
-    </ContentView.BindingContext>
-
     <StackLayout>
         <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
 
@@ -31,7 +27,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <reusable:GuestBookingViewReusable Booking="{Binding .}" />
+                        <reusable:GuestBookingViewReusable/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

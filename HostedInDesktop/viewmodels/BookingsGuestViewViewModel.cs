@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Utils;
+using HostedInDesktop.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,8 +19,8 @@ public partial class BookingsGuestViewViewModel : ObservableObject
 {
     public ObservableCollection<Booking> Bookings { get; } = new ObservableCollection<Booking>();
     readonly IBookingService _bookingService = new BookingService();
+    public ICommand ItemSelectedCommand { get; }
 
-   
     [ObservableProperty]
     private bool isLoading;
 
@@ -28,12 +30,31 @@ public partial class BookingsGuestViewViewModel : ObservableObject
     [ObservableProperty]
     private Color button2Color;
 
-    public BookingsGuestViewViewModel()
-    {
-        LoadCurrentAccommodationsAsync();
-    }
-  
+    ISharedService _sharedService;
 
+    public BookingsGuestViewViewModel(ISharedService sharedService)
+    {
+        ItemSelectedCommand = new RelayCommand<Booking>(OnItemSelected);
+        LoadCurrentAccommodationsAsync();
+        _sharedService = sharedService;
+    }
+
+    private async void OnItemSelected(Booking bookingSelected) {
+        try
+        {
+            if (bookingSelected is null)
+            {
+                return;
+            }
+            _sharedService.Add<Booking>("BookingDetail", bookingSelected);
+            await Shell.Current.GoToAsync(nameof(BookingDetailsView));
+        }
+        catch
+        (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+        }
+    }
 
     [RelayCommand]
     private async Task LoadCurrentAccommodationsAsync()
@@ -101,9 +122,20 @@ public partial class BookingsGuestViewViewModel : ObservableObject
         }
     }
 
-    [RelayCommand]
-    private void WatchBookingDetails(Booking booking)
+   /* private void WatchBookingDetails(Booking booking)
     {
-        Shell.Current.DisplayAlert("Si", "Veamos tu reservacion", "ok");
-    }
+        try
+        {
+            if (booking is null)
+            {
+                return;
+            }
+            _SharedService.Add<Booking>("BookingDetail", booking);
+            Shell.Current.GoToAsync(nameof(BookingDetailsView));
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.ToString());
+        }
+    }*/
 }
