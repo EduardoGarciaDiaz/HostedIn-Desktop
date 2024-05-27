@@ -40,4 +40,6 @@
             <MenuFlyoutItem Text="Cerrar sesion"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
+
+    <ContentView Content="{Binding CurrentView}" />
 </ContentPage>
