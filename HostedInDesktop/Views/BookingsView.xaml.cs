@@ -1,12 +1,13 @@
+using HostedInDesktop.Helper;
 using HostedInDesktop.viewmodels;
 
 namespace HostedInDesktop.Views;
 
 public partial class BookingsView : ContentView
 {
-	public BookingsView(BookingsGuestViewViewModel viewModel)
+	public BookingsView()
 	{
 		InitializeComponent();
-		BindingContext = viewModel;
-	}
+        BindingContext = ServiceHelper.GetService<BookingsGuestViewViewModel>();
+    }
 }
