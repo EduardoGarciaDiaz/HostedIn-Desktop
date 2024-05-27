@@ -8,6 +8,7 @@ using HostedInDesktop.viewmodels;
 using HostedInDesktop.Views;
 using Microsoft.Extensions.Logging;
 using SkiaSharp.Views.Maui.Controls.Hosting;
+using Syncfusion.Maui.Core.Hosting;
 
 namespace HostedInDesktop
 {
@@ -19,6 +20,7 @@ namespace HostedInDesktop
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()
+                .ConfigureSyncfusionCore()
                 .UseSkiaSharp(true)
                 .UseMauiCommunityToolkitMediaElement()
                 .ConfigureFonts(fonts =>

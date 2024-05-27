@@ -41,6 +41,5 @@
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
-    <ContentView Content="{Binding CurrentView}"/>
-    
+    <ContentView Content="{Binding CurrentView}" />
 </ContentPage>

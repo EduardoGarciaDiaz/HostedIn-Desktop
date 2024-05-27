@@ -10,10 +10,12 @@ namespace HostedInDesktop
         public static User user;
         public static string token;
         public static string Google_API_Keys = "AIzaSyBMCpitlSaWhnRQ5LNuOeUchSDi9sCO364";
+        public static bool hostMode;
 
         public App()
         {
             InitializeComponent();
+            Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("MzI5MTcyNEAzMjM1MmUzMDJlMzBtZ3M3dFBiU1NaMFVvZHBjcU5kL0R1UTVyRk1ZTzlTazZHamhaZzU3SW04PQ==");
             MainPage = new AppShell();
         }
 

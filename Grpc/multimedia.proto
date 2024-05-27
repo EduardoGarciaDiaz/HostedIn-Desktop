@@ -29,7 +29,7 @@ service MultimediaService {
 //Estadisticas
 message MostBookedAccommodation {
     string title = 1;
-    int32 bookings_number = 2;
+    int32 bookingsNumber = 2;
 }
 
 message BestRatedAccommodation {

@@ -13,10 +13,11 @@
 			<PrivateAssets>all</PrivateAssets>
 			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
 		</PackageReference>
+		<PackageReference Include="Syncfusion.Maui.Charts" Version="25.2.5" />
 	</ItemGroup>
 
   <ItemGroup>
-	  <Protobuf Include="multimedia.proto" GrpcServices="Client"/>
+	  <Protobuf Include="multimedia.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>
