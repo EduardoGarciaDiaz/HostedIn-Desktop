@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -13,6 +14,9 @@ namespace HostedInDesktop.Utils
         private const string PHONE_NUMBER_REGEX = @"^\d{10}$";
         private const string OCCUPATION_REGEX = @"^[\w\s\d\S]{4,500}$";
         private const string RESIDENCE_REGEX = @"^[\w\s\d\S]{4,50}$";
+        private const string PASSWORD_REGEX = @"^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':""\\|,.<>\/?]).{8,}$";
+        private const string EMAIL_REGEX = @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$";
+
 
         public static bool IsFullNameValid(string fullName)
         {
@@ -61,6 +65,30 @@ namespace HostedInDesktop.Utils
             {
                 Regex residenceRegex = new Regex(RESIDENCE_REGEX);
                 isValid = residenceRegex.IsMatch(residence);
+            }
+
+            return isValid;
+        }
+
+        public static bool IsMailValid(string email)
+        {
+            bool isValid = false;
+
+            if (!string.IsNullOrEmpty(email))
+            {
+                Regex emailRegex = new Regex(EMAIL_REGEX);
+                isValid = emailRegex.IsMatch(email);
+            }
+            return isValid;
+        }
+
+        public static bool IsPasswordValid(string password)
+        {
+            bool isValid = false;
+            if (!string.IsNullOrEmpty(password))
+            {
+                Regex passwordRegex = new Regex(PASSWORD_REGEX);
+                isValid = passwordRegex.IsMatch(password);
             }
 
             return isValid;

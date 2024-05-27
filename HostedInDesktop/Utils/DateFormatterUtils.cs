@@ -10,9 +10,11 @@ namespace HostedInDesktop.Utils
     public class DateFormatterUtils
     {
         private static readonly string NORMAL_DATE_PATTERN = "dd/MM/yyyy";
-        private static readonly string MONGODB_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX";
+        private static readonly string MONGODB_DATE_PATTERN = "yyyy-MM-dd'T'HH:mm:ss";
+        private static readonly string MONGODB_DATE_PATTERN_DB = "yyyy-MM-dd'T'HH:mm:ss.fffK";
         private static readonly string NATURAL_DATE = "dddd d 'de' MMMM 'del' yyyy";
         private static readonly string TIME_ZONE = "UTC";
+        private static readonly string FORMAT_PM_AM = "dd/MM/yyyy hh:mm:ss tt";
 
         public static string ParseDateForMongoDB(string dayFirst)
         {
@@ -31,10 +33,27 @@ namespace HostedInDesktop.Utils
             return formattedDate;
         }
 
+        public static string ConvertDateToMongoDbFormat(DateTime date)
+        {
+            string mongoDbDate = date.ToString(MONGODB_DATE_PATTERN_DB);
+            return mongoDbDate;
+        }
+
+        public static string ConvertPmAmToMongoDbDate(string pmAmDate)
+        {
+            DateTime dateTime = DateTime.ParseExact(pmAmDate, FORMAT_PM_AM, new CultureInfo("en-US"));
+            DateTimeOffset dateTimeOffset = new DateTimeOffset(dateTime, TimeSpan.Zero);
+            string mongoDbDate = dateTimeOffset.ToString(MONGODB_DATE_PATTERN, CultureInfo.InvariantCulture);
+            return mongoDbDate;
+        }
+
         public static DateTime? ParseStringToDate(string date)
         {
+            string[] dateParts = date.Split(' ')[0].Split('/');
+            string formattedDate = $"{dateParts[0]}/{dateParts[1]}/{dateParts[2]}";
+
             DateTime parsedDate;
-            if (DateTime.TryParseExact(date, NORMAL_DATE_PATTERN, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+            if (DateTime.TryParseExact(formattedDate, NORMAL_DATE_PATTERN, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
             {
                 return parsedDate;
             }

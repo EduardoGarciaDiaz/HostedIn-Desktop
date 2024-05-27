@@ -20,7 +20,7 @@
 
         <Label
             x:Name="txv_full_name"
-            Text="{Binding UserData.fullName}"
+            Text="{Binding Fullname}"
             FontAttributes="Bold"
             HorizontalTextAlignment="Center"
             Margin="0,15,0,0"/>

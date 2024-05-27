@@ -9,7 +9,7 @@ namespace HostedInDesktop.Data.Services
 {
     public interface IUserService
     {
-
+        Task<User> GetUserById(string userId);
         Task<User> EditAccount(string userId, User userToEdit);
         Task<string> DeleteAccount(string userId);
     }

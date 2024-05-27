@@ -5,7 +5,7 @@ public partial class HostView : ContentPage
 	public HostView()
 	{
 		InitializeComponent();
-        if (!App.user.roles.Contains("Host"))
+        if (!App.user.roles.Contains("Guest"))
         {
             RemoveChangeModeItem();
         }

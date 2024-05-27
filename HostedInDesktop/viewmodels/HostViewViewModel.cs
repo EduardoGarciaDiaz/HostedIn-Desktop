@@ -13,6 +13,7 @@ namespace HostedInDesktop.viewmodels
     {
         [ObservableProperty]
         private ContentView _currentView;
+
         public HostViewViewModel()
         {
             CurrentView = new HostBookedAccommodations(new AcoommodationsBookedHostViewModel());
@@ -28,6 +29,10 @@ namespace HostedInDesktop.viewmodels
         public void OnAccommodationsClicked()
         {
             CurrentView = new HostAccommodationsView(new AccommodationsOwnedViewModel());
+            //CurrentView = new HostAccommodationsView();
+
+            //TODO: Replace with the correct view:
+            //Shell.Current.GoToAsync(nameof(AccommodationForm));
         }
 
         [RelayCommand]
