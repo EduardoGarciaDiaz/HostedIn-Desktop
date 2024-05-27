@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HostedInDesktop.Views.EditAccommodationForm"
+             Title="EditAccommodationForm"
+             xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
+             x:DataType="vm:EditAccommodationFormViewModel">
+
+    <ContentPage.BindingContext>
+        <vm:EditAccommodationFormViewModel />
+    </ContentPage.BindingContext>
+  
+    
+    <Grid RowDefinitions="Auto,*">
+        <StackLayout Grid.Row="0">
+
+            <StackLayout Orientation="Horizontal">
+                <ImageButton
+                HorizontalOptions="Start"
+                Source="ic_go_back.png"
+                />
+                <Label
+                    x:Name="txv_accommodation_publishing_message"
+                    Text="¡Que deseas editar?"
+                    FontSize="25"
+                    Margin="40,5,0,0" />
+            </StackLayout>
+
+
+            <ContentView x:Name="additionalContentView" Content="{Binding CurrentContentView}" IsVisible="True" Margin="20, 0, 20, 0">
+            </ContentView>
+        </StackLayout>
+
+        <StackLayout Grid.Row="1" VerticalOptions="EndAndExpand">
+            <Button
+            Command="{Binding SaveChangesCommand}"
+            x:Name="btn_next"
+            Text="Guardar Cambios"
+            Margin="10,2,10,10"
+            VerticalOptions="Center"
+             HorizontalOptions="Center"
+             Padding="100,0,100,0"/>
+
+            <ActivityIndicator
+            x:Name="pgb_create_accommodation"
+            IsRunning="False"
+            IsVisible="False"
+            Margin="0,20,0,0" />
+        </StackLayout>
+    </Grid>
+</ContentPage>

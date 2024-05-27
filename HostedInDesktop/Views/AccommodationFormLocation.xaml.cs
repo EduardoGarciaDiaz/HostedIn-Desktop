@@ -15,6 +15,7 @@ namespace HostedInDesktop.Views;
 public partial class AccommodationFormLocation : ContentView
 {
     private readonly AccommodationFormViewModel _viewModel;
+    private readonly EditAccommodationFormViewModel _editViewModel;
     private readonly IMapService _mapService;
     private string _mapServiceToken;
 
@@ -39,6 +40,27 @@ public partial class AccommodationFormLocation : ContentView
         };
 
         _viewModel.SelectedLocation = location;
+    }
+
+    public AccommodationFormLocation(EditAccommodationFormViewModel viewModel)
+    {
+        InitializeComponent();
+        _editViewModel = viewModel;
+        BindingContext = _viewModel;
+
+        var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+        var configuration = builder.Build();
+        _mapServiceToken = configuration["MapService:Token"];
+
+        Location location = new Location
+        {
+            latitude = Double.Parse(lblLongitude.Text.ToString()),
+            longitude = Double.Parse(lblLongitude.Text.ToString()),
+            address = lblAddress.Text.ToString()
+        };
+
+        _editViewModel.SelectedLocation = location;
     }
 
     private async void OnSearchLocationClicked(object sender, EventArgs e)

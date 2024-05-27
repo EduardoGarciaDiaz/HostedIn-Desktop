@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
               xmlns:viewmodel="clr-namespace:HostedInDesktop.viewmodels"
             xmlns:reusable="clr-namespace:HostedInDesktop.Reusable"
-             x:DataType="viewmodel:AccommodationFormViewModel"
              x:Class="HostedInDesktop.Views.AccommodationFormBasics">
 
+
+    <!-- x:DataType="viewmodel:AccommodationFormViewModel" -->
+    
     <StackLayout Padding="20">
 
         <Label Text="Agreguemos datos básicos de tu alojamiento"

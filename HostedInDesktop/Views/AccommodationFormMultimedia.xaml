@@ -21,7 +21,7 @@
                    CornerRadius="5"
                    Margin="0,0,0,10">
                 <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccommodationFormViewModel}}, Path=SelectImageCommand}"
+                    <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectImageCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
                                 CommandParameter="MainImage" />
                 </Frame.GestureRecognizers>
                 <Image x:Name="imvMainImage"
@@ -34,6 +34,8 @@
                 </Image>
             </Frame>
 
+            <!--{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccommodationFormViewModel}}, Path=SelectImageCommand}-->
+
             <StackLayout Orientation="Horizontal" >
                 <Frame x:Name="rtlySecondImage"
        HeightRequest="150"
@@ -41,7 +43,7 @@
        CornerRadius="5"
        Margin="5">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccommodationFormViewModel}}, Path=SelectImageCommand}"
+                        <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectImageCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
                 CommandParameter="SecondImage" />
                     </Frame.GestureRecognizers>
 
@@ -60,15 +62,15 @@ WidthRequest="200"
        CornerRadius="5"
        Margin="5">
                     <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccommodationFormViewModel}}, Path=SelectImageCommand}"
+                        <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectImageCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
                 CommandParameter="ThirdImage" />
                     </Frame.GestureRecognizers>
                     <Image x:Name="imvThirdImage"
            Source="{Binding ThirdImage}"
            HorizontalOptions="Center"
            VerticalOptions="Center"
-                                                      HeightRequest="150"
-WidthRequest="200"
+           HeightRequest="150"
+           WidthRequest="200"
            />
                 </Frame>
             </StackLayout>
@@ -79,7 +81,7 @@ WidthRequest="200"
                 CornerRadius="5"
                 Margin="0,0,0,10">
                 <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccommodationFormViewModel}}, Path=SelectMediaCommand}"
+                    <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectMediaCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
                                 CommandParameter="Video" />
                 </Frame.GestureRecognizers>
                 <!-- You can add MediaElement here -->
@@ -90,7 +92,7 @@ WidthRequest="200"
              ShouldAutoPlay="True"
              Aspect="AspectFit" />
             </Frame>
-           
+            <!--{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccommodationFormViewModel}}, Path=SelectMediaCommand}-->
         </StackLayout>
     </ScrollView>
 </ContentView>
