@@ -1,4 +1,5 @@
-﻿using HostedInDesktop.viewmodels;
+﻿using HostedInDesktop.Reusable;
+using HostedInDesktop.viewmodels;
 using HostedInDesktop.Views;
 using Microsoft.Extensions.Logging;
 
@@ -19,10 +20,13 @@ namespace HostedInDesktop
 
             builder.Services.AddSingleton<LoginViewModel>();
             builder.Services.AddSingleton<Login>();
+
             builder.Services.AddSingleton<EditProfileViewModel>();
             builder.Services.AddSingleton<EditProfile>();
+
             builder.Services.AddSingleton<DeleteAccountViewModel>();
             builder.Services.AddSingleton<DeleteAccount>();
+
             builder.Services.AddSingleton<ProfileViewModel>();
             builder.Services.AddSingleton<Profile>();
 

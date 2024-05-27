@@ -79,7 +79,22 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Reusable\AccommodationsBookedHostReusable.xaml.cs">
+	    <DependentUpon>AccommodationsBookedHostReusable.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
 	  <MauiXaml Update="Reusable\AccommodationExploreReusable.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Reusable\AccommodationOwnedReusable.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Reusable\AccommodationsBookedHostReusable.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Reusable\BookingMainInfoReusable.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\BookingsView.xaml">

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"                         
+             xmlns:local="clr-namespace:HostedInDesktop.Data.Models"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HostedInDesktop.Reusable.BookingMainInfoReusable"
+             xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
+             x:DataType="local:Booking">
+
+    <Grid Padding="10"  Margin="0,10,0,0" >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="9*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <StackLayout Grid.Column="0" Orientation="Vertical">
+            <Label x:Name="lblguestName" Text="x" FontAttributes="Bold" FontSize="14" />
+            <Label x:Name="lblDates" Text="x" TextColor="Gray" />
+        </StackLayout>
+
+        <Button Grid.Column="2" Text="Ver Detalles"  HorizontalOptions="End" VerticalOptions="Center" BackgroundColor="MediumPurple"
+                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:AccommodationBookingsViewModel}}, Path=WatchBookingDetailsCommand}"
+                CommandParameter="{Binding .}">
+            <Button.ImageSource>
+                <FileImageSource File="reservation_icon.png"/>
+            </Button.ImageSource>
+        </Button>
+    </Grid>
+</ContentView>

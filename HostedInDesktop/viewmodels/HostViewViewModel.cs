@@ -15,19 +15,19 @@ namespace HostedInDesktop.viewmodels
         private ContentView _currentView;
         public HostViewViewModel()
         {
-            CurrentView = new HostBookedAccommodations();
+            CurrentView = new HostBookedAccommodations(new AcoommodationsBookedHostViewModel());
         }
 
         [RelayCommand]
         public void OnBookedAccommodationsCliked()
         {
-            CurrentView = new HostBookedAccommodations();
+            CurrentView = new HostBookedAccommodations(new AcoommodationsBookedHostViewModel());
         }
 
         [RelayCommand]
         public void OnAccommodationsClicked()
         {
-            CurrentView = new HostAccommodationsView();
+            CurrentView = new HostAccommodationsView(new AccommodationsOwnedViewModel());
         }
 
         [RelayCommand]

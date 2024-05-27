@@ -8,6 +8,7 @@
     <ContentView.BindingContext>
         <vm:ExploreViewModel/>
     </ContentView.BindingContext>
+    
     <StackLayout>
         <ActivityIndicator IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
         <StackLayout Orientation="Horizontal" HeightRequest="30" Padding="40, 0">

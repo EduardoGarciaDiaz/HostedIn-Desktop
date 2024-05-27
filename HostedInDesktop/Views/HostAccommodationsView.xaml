@@ -1,11 +1,37 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="HostedInDesktop.Views.HostAccommodationsView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to your accommodations!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:Class="HostedInDesktop.Views.HostAccommodationsView"
+             xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
+             xmlns:reusable="clr-namespace:HostedInDesktop.Reusable">
+
+    <ContentView.BindingContext>
+        <vm:AccommodationsOwnedViewModel/>
+    </ContentView.BindingContext>
+
+    <StackLayout>
+        <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
+        
+       <Label Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos"   Style="{StaticResource SubHeadline}"/>
+        
+        <ScrollView Margin="20, 30, 0, 0" Orientation="Vertical">
+            <CollectionView ItemsSource="{Binding Accommodations}" >
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                          Span="3" 
+                          VerticalItemSpacing="10" 
+                          HorizontalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <reusable:AccommodationOwnedReusable Accommodation="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+
+    </StackLayout>
+
+
+
 </ContentView>
