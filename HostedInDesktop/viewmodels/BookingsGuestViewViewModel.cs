@@ -30,8 +30,7 @@ public partial class BookingsGuestViewViewModel : ObservableObject
 
     public BookingsGuestViewViewModel()
     {
-        Button1Color = Colors.MediumPurple;
-        Button2Color = Colors.WhiteSmoke;
+        LoadCurrentAccommodationsAsync();
     }
   
 
