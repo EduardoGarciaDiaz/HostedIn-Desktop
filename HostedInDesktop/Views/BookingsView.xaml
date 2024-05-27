@@ -1,11 +1,42 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="HostedInDesktop.Views.BookingsView">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to bookings!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             x:Class="HostedInDesktop.Views.BookingsView"
+             xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
+             xmlns:reusable="clr-namespace:HostedInDesktop.Reusable">
+
+    <ContentView.BindingContext>
+        <vm:BookingsGuestViewViewModel/>
+    </ContentView.BindingContext>
+
+    <StackLayout>
+        <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
+
+        <Label Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos"   Style="{StaticResource SubHeadline}"/>
+
+        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+            <Button x:Name="bttCurrent" Text="Vigentes" FontSize=" 24" 
+                    Command="{Binding LoadCurrentAccommodationsCommand}" BackgroundColor="{Binding Button1Color}" Margin="10"/>
+
+            <Button x:Name="bttOlds" Text="Antiguos" FontSize=" 24" BackgroundColor="{Binding Button2Color}" 
+                    Command="{Binding LoadOerduedAccommodationsCommand}" Margin="10"/>
+        </StackLayout>
+        <ScrollView Margin="20, 30, 0, 0" Orientation="Vertical">
+            <CollectionView ItemsSource="{Binding Bookings}" >
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical"
+                          Span="3" 
+                          VerticalItemSpacing="10" 
+                          HorizontalItemSpacing="10"/>
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <reusable:GuestBookingViewReusable Booking="{Binding .}" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </ScrollView>
+
+    </StackLayout>
+
 </ContentView>

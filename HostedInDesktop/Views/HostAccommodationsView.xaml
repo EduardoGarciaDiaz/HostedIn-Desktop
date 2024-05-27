@@ -30,7 +30,11 @@
             </CollectionView>
         </ScrollView>
 
+        <Button BackgroundColor="MediumPurple"  HorizontalOptions="End"  VerticalOptions="End" Margin="20" Text="Publicar alojamiento" Command="{Binding CreateAccommodationCommand}"/>
+
     </StackLayout>
+
+    
 
 
 

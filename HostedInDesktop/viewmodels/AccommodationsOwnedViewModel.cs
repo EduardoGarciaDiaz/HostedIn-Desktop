@@ -3,6 +3,7 @@ using CommunityToolkit.Mvvm.Input;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Utils;
+using HostedInDesktop.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -59,6 +60,12 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
     private void EditAccommodation(Accommodation accommodation)
     {
         Shell.Current.DisplayAlert("Ir a editar", $"Vamos a editar tu accommodation: {accommodation.title}", "Ok");
+    }
+
+    [RelayCommand]
+    private void CreateAccommodation()
+    {
+        Shell.Current.GoToAsync(nameof(AccommodationForm));
     }
 
 }

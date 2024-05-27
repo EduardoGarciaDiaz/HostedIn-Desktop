@@ -10,5 +10,6 @@ namespace HostedInDesktop.Data.Services
     public interface IBookingService
     {
         Task<List<Booking>> GetBookingsByAccommodationId(String accommodationId);
+        Task<List<Booking>> GetGuestBookings(String userId, String status);
     }
 }

@@ -129,6 +129,9 @@
 	  <MauiXaml Update="Reusable\AccommodationTypeReusable.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Reusable\GuestBookingViewReusable.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\AccommodationDetails.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
