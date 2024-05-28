@@ -22,7 +22,7 @@ namespace HostedInDesktop.Data.Services
 
             try
             {
-                using var channel = GrpcChannel.ForAddress("http://192.168.50.7:3002");
+                using var channel = GrpcChannel.ForAddress("http://127.0.0.1:3002");
                 global::MultimediaService.MultimediaServiceClient stub = new(channel);
                 DownloadMultimediaRequest downloadMultimediaRequest = new()
                 {

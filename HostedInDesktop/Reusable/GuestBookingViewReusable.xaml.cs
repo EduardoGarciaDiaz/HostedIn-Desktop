@@ -26,15 +26,31 @@ public partial class GuestBookingViewReusable : ContentView
         var view = (GuestBookingViewReusable)bindable;
         if (newValue is Booking booking)
         {
-            if(booking.accommodation.mainImage != null)
+            booking.accommodation.PropertyChanged += (s, e) =>
             {
-                view.imgAccommodation.Source = ImageSource.FromStream(() => new MemoryStream(booking.accommodation.mainImage));
+                if (e.PropertyName == nameof(Accommodation.mainImage))
+                {
+                    UpdateImage(view, booking.accommodation);
+                }
+            };
 
-            }
+            UpdateImage(view, booking.accommodation);
             view.lblTitle.Text = booking.accommodation.title;
             view.lblDescription.Text = booking.accommodation.description;
             view.lblTotalCost.Text = "$" + booking.totalCost.ToString();
             view.lblDates.Text = $"{booking.beginningDate} - {booking.endingDate}";
+        }
+    }
+
+    private static void UpdateImage(GuestBookingViewReusable view, Accommodation accommodation)
+    {
+        if (accommodation.mainImage != null && accommodation.mainImage.Length > 0)
+        {
+            view.imgAccommodation.Source = ImageSource.FromStream(() => new MemoryStream(accommodation.mainImage));
+        }
+        else
+        {
+            view.imgAccommodation.Source = ImageSource.FromFile("img_provisional.png");
         }
     }
 }

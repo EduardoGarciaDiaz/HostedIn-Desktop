@@ -17,6 +17,7 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
 {
     public ObservableCollection<Accommodation> Accommodations { get; } = new ObservableCollection<Accommodation>();
     readonly IAccommodationsService _accommodationsService = new AccommodationsService();
+    private readonly MultimediaServiceImpl _multimediaService = new MultimediaServiceImpl();
 
     [ObservableProperty]
     private bool isLoading;
@@ -24,9 +25,17 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
     [ObservableProperty]
     private ContentView _currentView;
 
+    [ObservableProperty]
+    private bool editVisitble;
+
+    [ObservableProperty]
+    private bool buttonVisitble;
+
     public AccommodationsOwnedViewModel()
     {
         LoadAccommodationsAsync();
+        editVisitble = false;
+        buttonVisitble = !editVisitble;
     }
 
     [RelayCommand]
@@ -41,6 +50,7 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
             foreach (var accommodation in accommodations)
             {
                 Accommodations.Add(accommodation);
+                LoadAccommodationImageAsync(accommodation);
             }
         }
         catch (ApiException ex)
@@ -59,10 +69,25 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
         }
     }
 
+    private async Task LoadAccommodationImageAsync(Accommodation accommodation)
+    {
+        try
+        {
+            var imageBytes = await _multimediaService.LoadMainImageAccommodation(accommodation._id, 0);
+            accommodation.mainImage = imageBytes;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e.Message);
+        }
+    }
+
     [RelayCommand]
     private void EditAccommodation(Accommodation accommodation)
     {
         CurrentView = new EditAccommodation(new EditAccommodationViewModel(accommodation));
+        EditVisitble = true;
+        ButtonVisitble = !EditVisitble;
     }
 
     [RelayCommand]
@@ -76,6 +101,8 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
     private void CloseEditAccommodation()
     {
         CurrentView = new ContentView();
+        EditVisitble = false;
+        ButtonVisitble = !EditVisitble;
     }
 
 

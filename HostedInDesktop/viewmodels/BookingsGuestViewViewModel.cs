@@ -19,6 +19,7 @@ public partial class BookingsGuestViewViewModel : ObservableObject
 {
     public ObservableCollection<Booking> Bookings { get; } = new ObservableCollection<Booking>();
     readonly IBookingService _bookingService = new BookingService();
+    private readonly MultimediaServiceImpl _multimediaService = new MultimediaServiceImpl();
     public ICommand ItemSelectedCommand { get; }
 
     [ObservableProperty]
@@ -35,7 +36,7 @@ public partial class BookingsGuestViewViewModel : ObservableObject
     public BookingsGuestViewViewModel(ISharedService sharedService)
     {
         ItemSelectedCommand = new RelayCommand<Booking>(OnItemSelected);
-        LoadCurrentAccommodationsAsync();
+        LoadCurrentBookingsAsync();
         _sharedService = sharedService;
     }
 
@@ -57,17 +58,18 @@ public partial class BookingsGuestViewViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadCurrentAccommodationsAsync()
+    private async Task LoadCurrentBookingsAsync()
     {
         if (IsLoading) return;
         try
         {
             IsLoading = true;
-            var accommodations = await _bookingService.GetGuestBookings(App.user._id, BookingStatus.CURRENT.GetDescription());
+            var bookings = await _bookingService.GetGuestBookings(App.user._id, BookingStatus.CURRENT.GetDescription());
             Bookings.Clear();
-            foreach (var accommodation in accommodations)
+            foreach (var booking in bookings)
             {
-                Bookings.Add(accommodation);
+                Bookings.Add(booking);
+                LoadAccommodationImageAsync(booking.accommodation);
             }
             Button1Color = Colors.MediumPurple;
             Button2Color = Colors.WhiteSmoke;
@@ -90,17 +92,18 @@ public partial class BookingsGuestViewViewModel : ObservableObject
     }
 
     [RelayCommand]
-    private async Task LoadOerduedAccommodationsAsync()
+    private async Task LoadOverduedBookingsAsync()
     {
         if (IsLoading) return;
         try
         {
             IsLoading = true;
-            var accommodations = await _bookingService.GetGuestBookings(App.user._id, BookingStatus.OVERDUE.GetDescription());
+            var bookings = await _bookingService.GetGuestBookings(App.user._id, BookingStatus.OVERDUE.GetDescription());
             Bookings.Clear();
-            foreach (var accommodation in accommodations)
+            foreach (var booking in bookings)
             {
-                Bookings.Add(accommodation);
+                Bookings.Add(booking);
+                LoadAccommodationImageAsync(booking.accommodation);
             }
             Button2Color = Colors.MediumPurple;
             Button1Color = Colors.WhiteSmoke;
@@ -122,20 +125,33 @@ public partial class BookingsGuestViewViewModel : ObservableObject
         }
     }
 
-   /* private void WatchBookingDetails(Booking booking)
+    private async Task LoadAccommodationImageAsync(Accommodation accommodation)
     {
         try
         {
-            if (booking is null)
-            {
-                return;
-            }
-            _SharedService.Add<Booking>("BookingDetail", booking);
-            Shell.Current.GoToAsync(nameof(BookingDetailsView));
+            var imageBytes = await _multimediaService.LoadMainImageAccommodation(accommodation._id, 0);
+            accommodation.mainImage = imageBytes;
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Console.WriteLine(ex.ToString());
+            Console.WriteLine(e.Message);
         }
-    }*/
+    }
+
+    /* private void WatchBookingDetails(Booking booking)
+     {
+         try
+         {
+             if (booking is null)
+             {
+                 return;
+             }
+             _SharedService.Add<Booking>("BookingDetail", booking);
+             Shell.Current.GoToAsync(nameof(BookingDetailsView));
+         }
+         catch (Exception ex)
+         {
+             Console.WriteLine(ex.ToString());
+         }
+     }*/
 }

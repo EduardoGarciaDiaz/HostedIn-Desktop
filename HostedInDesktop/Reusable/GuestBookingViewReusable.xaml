@@ -2,18 +2,17 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HostedInDesktop.Reusable.GuestBookingViewReusable"
-             xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
-                xmlns:local="clr-namespace:HostedInDesktop.Views">
+             xmlns:vm="clr-namespace:HostedInDesktop.viewmodels">
 
 
     <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" Margin="10">
         <StackLayout Orientation="Vertical" Padding="10">
             <Frame CornerRadius="20" Padding="0" HasShadow="False">
-                <Image x:Name="imgAccommodation" HeightRequest="200" Source="img_provisional.png" Aspect="AspectFill"/>
+                <Image x:Name="imgAccommodation" HeightRequest="200"  Aspect="AspectFill"/>
             </Frame>
-            <Label x:Name="lblTitle" FontAttributes="Bold" FontSize="16" Text="{Binding accommodation.title}" />
-            <Label x:Name="lblDescription" FontSize="14" Text="{Binding accommodation.description}" />
-            <Label x:Name="lblTotalCost" FontSize="14" TextColor="Black" />
+            <Label x:Name="lblTitle" FontAttributes="Bold" FontSize="16" />
+            <Label x:Name="lblDescription" FontSize="14"  />
+            <Label x:Name="lblTotalCost" FontSize="14" TextColor="{StaticResource Primary}"/>
             <Label x:Name="lblDates" FontSize="14" TextColor="Black" />
             <Button x:Name="bttWatchDetails" Text="Ver Detalles"  Margin="0,15,0,0" FontSize="17" 
                     TextColor="Black" 

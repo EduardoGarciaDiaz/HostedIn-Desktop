@@ -12,10 +12,10 @@
 
         <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
             <Button x:Name="bttCurrent" Text="Vigentes" FontSize=" 24" 
-                    Command="{Binding LoadCurrentAccommodationsCommand}" BackgroundColor="{Binding Button1Color}" Margin="10"/>
+                    Command="{Binding LoadCurrentBookingsCommand}" BackgroundColor="{Binding Button1Color}" Margin="10"/>
 
             <Button x:Name="bttOlds" Text="Antiguos" FontSize=" 24" BackgroundColor="{Binding Button2Color}" 
-                    Command="{Binding LoadOerduedAccommodationsCommand}" Margin="10"/>
+                    Command="{Binding LoadOverduedBookingsCommand}" Margin="10"/>
         </StackLayout>
         <ScrollView Margin="20, 30, 0, 0" Orientation="Vertical">
             <CollectionView ItemsSource="{Binding Bookings}" >
@@ -27,7 +27,7 @@
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <reusable:GuestBookingViewReusable/>
+                        <reusable:GuestBookingViewReusable Booking="{Binding .}"/>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>

@@ -36,12 +36,11 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
-                <Button BackgroundColor="MediumPurple"  HorizontalOptions="End"  VerticalOptions="End" Margin="20" Text="Publicar alojamiento" Command="{Binding CreateAccommodationCommand}"/>             
             </StackLayout>
         </ScrollView>
 
-        <ScrollView Grid.Column="1" VerticalScrollBarVisibility="Never" Margin="0,0,0,20">
-            <Frame   BorderColor="LightGray" CornerRadius="15">
+        <ScrollView Grid.Column="1"  VerticalScrollBarVisibility="Never" Margin="0,0,0,20">
+            <Frame  IsVisible="{Binding EditVisitble}" BorderColor="LightGray" CornerRadius="15">
 
                 <Grid >
                     <Grid.ColumnDefinitions>
@@ -72,9 +71,16 @@
 
                     </ContentView>
 
+                    
                 </Grid>
+                
+               
             </Frame>
         </ScrollView>
+        
+        <Button Grid.Column="1" IsVisible="{Binding ButtonVisitble}" BackgroundColor="MediumPurple" Margin="0,20,50,20" Padding="50,0,50,0" HorizontalOptions="End"  VerticalOptions="End"  Text="Publicar alojamiento" 
+                Command="{Binding CreateAccommodationCommand}"/>
+
 
     </Grid>
 

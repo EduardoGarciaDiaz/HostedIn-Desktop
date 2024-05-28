@@ -15,6 +15,7 @@ namespace HostedInDesktop.viewmodels
         public ObservableCollection<AccommodationBookingsViewModel> Accommodations { get; } = new ObservableCollection<AccommodationBookingsViewModel>();
         private readonly IAccommodationsService _accommodationsService = new AccommodationsService();
         private readonly IBookingService _bookingService = new BookingService();
+        private readonly MultimediaServiceImpl _multimediaService = new MultimediaServiceImpl();
 
         [ObservableProperty]
         private bool isLoading;
@@ -37,7 +38,8 @@ namespace HostedInDesktop.viewmodels
                 {
                     var accommodationViewModel = new AccommodationBookingsViewModel(accommodation);
                     await accommodationViewModel.LoadBookingsAsync(_bookingService);
-                    Accommodations.Add(accommodationViewModel);
+                    await LoadAccommodationImageAsync(accommodationViewModel);
+                    Accommodations.Add(accommodationViewModel); 
                 }
             }
             catch (ApiException aex)
@@ -55,16 +57,30 @@ namespace HostedInDesktop.viewmodels
                 IsLoading = false;
             }
         }
+
+        public async Task LoadAccommodationImageAsync(AccommodationBookingsViewModel accommodation)
+        {
+            try
+            {
+                var imageBytes = await _multimediaService.LoadMainImageAccommodation(accommodation.Accommodation._id, 0);
+                accommodation.Accommodation.mainImage = imageBytes;
+                
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+
     }
 
     public partial class AccommodationBookingsViewModel : ObservableObject
     {
-        private readonly Accommodation _accommodation;
+        [ObservableProperty]
+        private Accommodation _accommodation;
 
-        public string AccommodationTitle => _accommodation.title;
-        public string AccommodationDescription => _accommodation.description;
-        public string AccommodationPrize => _accommodation.nightPrice.ToString();
-        //public ImageSource AccommodationImage => ImageSource.FromStream(() => new MemoryStream(_accommodation.mainImage));
+       
         public ObservableCollection<Booking> Bookings { get; }
 
 
@@ -103,6 +119,8 @@ namespace HostedInDesktop.viewmodels
         {
             Shell.Current.DisplayAlert("Ir a detalles", $"Ver detalles reservacion: {booking.guestUser.fullName}", "Ok");
         }
+
+        
 
     }
 }

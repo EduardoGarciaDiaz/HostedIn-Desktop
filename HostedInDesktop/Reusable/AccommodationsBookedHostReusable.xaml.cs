@@ -9,36 +9,52 @@ namespace HostedInDesktop.Reusable;
 
 public partial class AccommodationsBookedHostReusable : ContentView
 {
-	public static readonly BindableProperty AccommodationProperty = BindableProperty.Create(nameof(Accommodation), typeof(Accommodation), 
-																	typeof(AccommodationsBookedHostReusable),null);
+	public static readonly BindableProperty AccommodationProperty = BindableProperty.Create(nameof(Accommodation), typeof(AccommodationBookingsViewModel), 
+																	typeof(AccommodationsBookedHostReusable),null, propertyChanged: OnAccommodationChanged);
 
     public AccommodationsBookedHostReusable()
     {
         InitializeComponent();
     }
        
-    public Accommodation Accommodation
+    public AccommodationBookingsViewModel Accommodation
     {
-        get => (Accommodation)GetValue(AccommodationProperty);
+        get => (AccommodationBookingsViewModel)GetValue(AccommodationProperty);
         set => SetValue(AccommodationProperty, value);
     }
 
 
-    //private static void OnAccommodationChanged(BindableObject bindable, object oldValue, object newValue)
-    //{
-    //    var view = (AccommodationsBookedHostReusable)bindable;
-    //    if (newValue is Accommodation accommodation)
-    //    {
-    //        if (accommodation.mainImage != null)
-    //        {
-    //            view.imgAccommodation.Source = ImageSource.FromStream(() => new MemoryStream(accommodation.mainImage));
-    //        }
-    //        view.lblTitle.Text = accommodation.title;
-    //        view.lblDescription.Text = accommodation.description;
-    //        view.lblPrice.Text = $"${accommodation.nightPrice} por noche";
-            
-    //    }
-        
-    //}
+    private static void OnAccommodationChanged(BindableObject bindable, object oldValue, object newValue)
+    {
+        var view = (AccommodationsBookedHostReusable)bindable;
+        if (newValue is AccommodationBookingsViewModel accommodation)
+        {
+            accommodation.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(Accommodation.Accommodation.mainImage))
+                {
+                    UpdateImage(view, accommodation.Accommodation);
+                }
+            };
+            UpdateImage(view, accommodation.Accommodation  );
+            view.lblTitle.Text = accommodation.Accommodation.title;
+            view.lblDescription.Text = accommodation.Accommodation.description;
+            view.lblPrice.Text = $"${accommodation.Accommodation.nightPrice} por noche";
+
+        }
+
+    }
+
+    private static void UpdateImage(AccommodationsBookedHostReusable view, Accommodation accommodation)
+    {
+        if (accommodation.mainImage != null && accommodation.mainImage.Length > 0)
+        {
+            view.imgAccommodation.Source = ImageSource.FromStream(() => new MemoryStream(accommodation.mainImage));
+        }
+        else
+        {
+            view.imgAccommodation.Source = ImageSource.FromFile("img_provisional.png");
+        }
+    }
 
 }
