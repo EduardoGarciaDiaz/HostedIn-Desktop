@@ -19,6 +19,8 @@ namespace HostedInDesktop
             Routing.RegisterRoute(nameof(EditAccommodationForm), typeof(EditAccommodationForm));
             Routing.RegisterRoute(nameof(BookingDetailsView), typeof(BookingDetailsView));
             Routing.RegisterRoute(nameof(BookingsView), typeof(BookingsView));
+            Routing.RegisterRoute(nameof(CancelationReasonsView), typeof(CancelationReasonsView));
+            Routing.RegisterRoute(nameof(CancellationConfirmationView), typeof(CancellationConfirmationView));
         }
     }
 }

@@ -62,7 +62,7 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public async void GoBack()
         {
-            AdditionalContent = null;
+            App.contentToShow = new ExploreView();
             await Shell.Current.GoToAsync(nameof(GuestView));
         }
 

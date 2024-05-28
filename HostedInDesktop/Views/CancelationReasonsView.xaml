@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
+             x:Class="HostedInDesktop.Views.CancelationReasonsView">
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+
+    <VerticalStackLayout Padding="100">
+        <ImageButton Source="ic_go_back.png" HorizontalOptions="Start" Command="{Binding GoBackCommand}" Margin="0, 0, 0, 40"/>
+        <Label 
+            Text="¡Lamentamos que tengas que cancelar!"
+            FontSize="Medium"
+            HorizontalOptions="Start" />
+
+        <Label
+            Text="Selecciona un motivo *"
+            FontSize="Subtitle"
+            HorizontalOptions="Start" 
+            Margin="0, 50, 0, 0"/>
+
+        <StackLayout x:Name="RadioGroup" Spacing="10" Margin="0,20,0,0">
+            <RadioButton x:Name="rbtnReasonOne" Content="Motivo 1" GroupName="CancelationReasons" Value="Reason1" IsChecked="True" CheckedChanged="RadioButton_CheckedChanged" />
+            <BoxView HeightRequest="1" BackgroundColor="Gray"/>
+            <RadioButton x:Name="rbtnReasonTwo" Content="Motivo 2" GroupName="CancelationReasons" Value="Reason2" CheckedChanged="RadioButton_CheckedChanged"/>
+            <BoxView HeightRequest="1" BackgroundColor="Gray"/>
+            <RadioButton x:Name="rbtnReasonThree" Content="Motivo 3" GroupName="CancelationReasons" Value="Reason3" CheckedChanged="RadioButton_CheckedChanged"/>
+            <BoxView HeightRequest="1" BackgroundColor="Gray"/>
+            <RadioButton x:Name="rbtnReasonFour" Content="Motivo 4" GroupName="CancelationReasons" Value="Reason4" CheckedChanged="RadioButton_CheckedChanged"/>
+            <BoxView HeightRequest="1" BackgroundColor="Gray"/>
+        </StackLayout>
+
+        <!-- Submit Button -->
+        <Button Text="Cancelar reservacion"
+                Margin="0, 100, 0, 0"
+                BackgroundColor="MediumPurple"
+                HorizontalOptions="End"
+                TextColor="White"
+                Command="{Binding SubmitCommand}" />
+    </VerticalStackLayout>
+</ContentPage>

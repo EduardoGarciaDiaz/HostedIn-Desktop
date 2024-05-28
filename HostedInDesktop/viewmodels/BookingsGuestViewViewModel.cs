@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
+using HostedInDesktop.Messages;
 using HostedInDesktop.Utils;
 using HostedInDesktop.Views;
 using System;
@@ -48,6 +50,7 @@ public partial class BookingsGuestViewViewModel : ObservableObject
                 return;
             }
             _sharedService.Add<Booking>("BookingDetail", bookingSelected);
+            WeakReferenceMessenger.Default.Send(new BookingSelectedMessage(bookingSelected));
             await Shell.Current.GoToAsync(nameof(BookingDetailsView));
         }
         catch

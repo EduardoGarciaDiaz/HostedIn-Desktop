@@ -41,10 +41,13 @@ namespace HostedInDesktop.viewmodels
                         App.user = user;
                         if (user.roles.Contains("Guest"))
                         {
+                            App.hostMode = false;
+                            App.contentToShow = new ExploreView();
                             await Shell.Current.GoToAsync(nameof(GuestView));
                         } 
                         else
                         {
+                            App.hostMode = true;
                             await Shell.Current.GoToAsync(nameof(HostView));
                         }
                     }
