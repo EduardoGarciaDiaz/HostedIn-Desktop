@@ -15,20 +15,19 @@
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-    
 
-        <StackLayout Grid.Column="0" >
-            <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
+        <ScrollView  Margin="0, 30, 0, 0" HorizontalOptions="Start"  Orientation="Vertical"  >
+            <StackLayout Grid.Column="0">
+                <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
 
-            <Label Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos" TextColor="{StaticResource Primary}"   Style="{StaticResource SubHeadline}"/>
-        
-            <ScrollView Margin="0, 30, 0, 0" HorizontalOptions="Start"  Orientation="Vertical">
+                <Label Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos" TextColor="{StaticResource Primary}"   Style="{StaticResource SubHeadline}"/>
+
                 <CollectionView ItemsSource="{Binding Accommodations}" >
                     <CollectionView.ItemsLayout>
                         <GridItemsLayout Orientation="Vertical"
-                              Span="2" 
-                              VerticalItemSpacing="10" 
-                              HorizontalItemSpacing="10"/>
+                                  Span="2" 
+                                  VerticalItemSpacing="10" 
+                                  HorizontalItemSpacing="10"/>
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
@@ -36,12 +35,10 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-            </ScrollView>
 
-            <Button BackgroundColor="MediumPurple"  HorizontalOptions="End"  VerticalOptions="End" Margin="20" Text="Publicar alojamiento" Command="{Binding CreateAccommodationCommand}"/>
-
-             
-        </StackLayout>
+                <Button BackgroundColor="MediumPurple"  HorizontalOptions="End"  VerticalOptions="End" Margin="20" Text="Publicar alojamiento" Command="{Binding CreateAccommodationCommand}"/>             
+            </StackLayout>
+        </ScrollView>
 
         <ScrollView Grid.Column="1" VerticalScrollBarVisibility="Never" Margin="0,0,0,20">
             <Frame   BorderColor="LightGray" CornerRadius="15">
