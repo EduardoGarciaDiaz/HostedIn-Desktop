@@ -27,7 +27,7 @@ public partial class ExploreView : ContentView
 
     private async void OnSearchBarTextChanged(object sender, TextChangedEventArgs e)
     {
-        if (string.IsNullOrEmpty(e.NewTextValue))
+        if (string.IsNullOrEmpty(e.NewTextValue) && exploreViewModel!= null)
         {
             lvPlaces.IsVisible = false;
             await exploreViewModel.LoadAccommodationsAsync();
