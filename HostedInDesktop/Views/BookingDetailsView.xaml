@@ -7,7 +7,7 @@
     </Shell.BackButtonBehavior>
 
     <Grid RowDefinitions="Auto, *" ColumnDefinitions="*, *">
-        <Grid Padding="30" Grid.Row="0" Grid.Column="0">
+        <Grid Padding="0" Grid.Row="0" Grid.Column="0" Margin="30, 30, 0, 0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto"/>
                 <!-- Columna para el botón -->
@@ -33,43 +33,44 @@
             <Grid Grid.Row="1" HorizontalOptions="Fill" Margin="0, 30, 0, 0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <StackLayout Grid.Column="0">
-                    <Label Text="Fecha de inicio" />
-                    <Label Text="{Binding StartDate}" />
+                    <Label Text="Fecha de inicio" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                    <Label Text="{Binding StartDate}" FontSize="Small" />
                 </StackLayout>
-                <StackLayout Grid.Column="1">
-                    <Label Text="Fecha de fin" HorizontalOptions="End" />
-                    <Label Text="{Binding EndDate}" HorizontalOptions="End" />
+
+                <!-- Línea vertical -->
+                <BoxView Grid.Column="1" WidthRequest="1" BackgroundColor="Gray" HorizontalOptions="Center" VerticalOptions="Fill" />
+
+                <StackLayout Grid.Column="2">
+                    <Label Text="Fecha de fin" HorizontalOptions="End" FontSize="Medium" FontAttributes="Bold" TextColor="{StaticResource Primary}"/>
+                    <Label Text="{Binding EndDate}" HorizontalOptions="End" FontSize="Small"/>
                 </StackLayout>
             </Grid>
         </Grid>
 
-        <!-- Right Column - Booking Information -->
-        <StackLayout Grid.Row="1" Grid.Column="1" Padding="30" Orientation="Vertical">
-            <Label Text="Información de la reservación" FontSize="Medium" FontAttributes="Bold"
-                   Margin="0, 10"/>
-            <Label x:Name="LblQuantity" Text="¿Cuántos van?" FontSize="Subtitle" Margin="0, 0, 0, 5"/>
-            <Label Text="{Binding PersonsNumber}"  FontSize="Subtitle" Margin="0, 0, 0, 3"/>
-            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10,0,10"/>
-            <Label x:Name="LblCost" Text="¿Cuánto vas a pagar?"  FontSize="Subtitle" Margin="0, 0, 0, 3"/>
-            <Label Text="{Binding TotalCost}"  FontSize="Subtitle" Margin="0, 0, 0, 5"/>
-            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10,0,10"/>
-            <Label x:Name="LblUser" Text="¿Quién será tu huésped?"  FontSize="Subtitle" Margin="0, 0, 0, 3"/>
-            <Label Text="{Binding Person}"  FontSize="Subtitle" Margin="0, 0, 0, 5"/>
-
-            <Button Text="Cancelar reservación" 
-                    BackgroundColor="Transparent" 
-                    BorderColor="{StaticResource Magenta}"
-                    TextColor="{StaticResource Magenta}"
-                    BorderWidth="1"
-                    HorizontalOptions="End"
-                    Margin="0,20,0,0" 
-                    VerticalOptions="EndAndExpand"
-                    Command="{Binding CancelClickedCommand}"/>
-        </StackLayout>
+        <Frame Grid.Row="1" Grid.Column="1" Margin="0, 30, 30, 30" Background="Transparent">
+            <StackLayout Orientation="Vertical">
+                <Label Text="Información de la reservación" FontSize="Medium" FontAttributes="Bold"
+           Margin="0, 10"/>
+                <Label x:Name="LblQuantity" FontAttributes="Bold" Text="¿Cuántos van?" FontSize="Subtitle" Margin="0, 0, 0, 5"/>
+                <Label Text="{Binding PersonsNumber}"  FontSize="Subtitle" Margin="0, 0, 0, 3"/>
+                <BoxView HeightRequest="1"  BackgroundColor="Gray" Margin="0,10,0,10"/>
+                <Label x:Name="LblCost" FontAttributes="Bold" Text="¿Cuánto vas a pagar?"  FontSize="Subtitle" Margin="0, 0, 0, 3"/>
+                <Label Text="{Binding TotalCost}"  FontSize="Subtitle" Margin="0, 0, 0, 5"/>
+                <BoxView HeightRequest="1"  BackgroundColor="Gray" Margin="0,10,0,10"/>
+                <Label x:Name="LblUser" FontAttributes="Bold" Text="¿Quién será tu anfitrion?"  FontSize="Subtitle" Margin="0, 0, 0, 3"/>
+                <Label Text="{Binding Person}"  FontSize="Subtitle" Margin="0, 0, 0, 5"/>
+                <Button Text="Cancelar reservación" 
+            HorizontalOptions="End"
+            Margin="0,20,0,0" 
+            VerticalOptions="EndAndExpand"
+            Command="{Binding CancelClickedCommand}"/>
+            </StackLayout>
+        </Frame>
 
     </Grid>
 </ContentPage>

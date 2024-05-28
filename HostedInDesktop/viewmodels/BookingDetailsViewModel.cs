@@ -8,6 +8,7 @@ using HostedInDesktop.Messages;
 using HostedInDesktop.Views;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -37,7 +38,7 @@ namespace HostedInDesktop.viewmodels
         private int _personsNumber;
 
         [ObservableProperty]
-        private double _totalCost;
+        private string _totalCost;
 
         [ObservableProperty]
         private string person;
@@ -58,7 +59,8 @@ namespace HostedInDesktop.viewmodels
                     SetValues(SelectedBooking);
                 });
                 GetSelectedBooking();
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
             }
@@ -80,11 +82,11 @@ namespace HostedInDesktop.viewmodels
         private void SetValues(Booking selectedBooking)
         {
             Image = selectedBooking.accommodation.mainImage;
-            StartDate = selectedBooking.beginningDate;
-            EndDate = selectedBooking.endingDate;
+            StartDate = ConvertToReadableDate(selectedBooking.beginningDate);
+            EndDate = ConvertToReadableDate(selectedBooking.endingDate);
             Title = selectedBooking.accommodation.title;
             PersonsNumber = selectedBooking.numberOfGuests;
-            TotalCost = selectedBooking.totalCost;
+            TotalCost = $"${selectedBooking.totalCost:F2} MXN";
             _ = GetImage(selectedBooking.accommodation._id);
             if (!App.hostMode)
             {
@@ -92,14 +94,14 @@ namespace HostedInDesktop.viewmodels
             }
             else
             {
-                Person = "";
+                Person = selectedBooking.guestUser.fullName;
             }
         }
 
         [RelayCommand]
         public async Task OnCancelClicked()
         {
-            if (SelectedBooking is  null)
+            if (SelectedBooking is null)
             {
                 return;
             }
@@ -113,7 +115,8 @@ namespace HostedInDesktop.viewmodels
         {
             if (App.hostMode)
             {
-
+                App.ContentViewHost = new HostBookedAccommodations(new AcoommodationsBookedHostViewModel());
+                await Shell.Current.GoToAsync(nameof(HostView));
             }
             else
             {
@@ -134,5 +137,15 @@ namespace HostedInDesktop.viewmodels
                 Console.WriteLine(ex.Message);
             }
         }
-    }   
+
+
+        public string ConvertToReadableDate(string mongoDate)
+        {
+            if (DateTime.TryParse(mongoDate, out DateTime date))
+            {
+                return date.ToString("dd 'de' MMMM 'de' yyyy", new CultureInfo("es-ES"));
+            }
+            return string.Empty;
+        }
+    }
 }

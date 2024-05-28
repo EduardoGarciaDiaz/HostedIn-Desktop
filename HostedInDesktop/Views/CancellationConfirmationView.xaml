@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="HostedInDesktop.Views.CancellationConfirmationView"
-            >
+             x:Class="HostedInDesktop.Views.CancellationConfirmationView">
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
     </Shell.BackButtonBehavior>
@@ -11,40 +10,65 @@
         <!-- Title -->
         <Label Grid.Row="0" Grid.ColumnSpan="2"
                Style="{StaticResource Headline}"
-               Text="Reservacion Cancelada"
+               Text="Reservación Cancelada"
                HorizontalOptions="Start"
+               FontAttributes="Bold"
                VerticalOptions="Start"
-               Margin="30, 0, 0, 0"/>
+               Margin="30, 30, 0, 0"/>
 
         <!-- Left Column - Image and accommodation details -->
         <StackLayout Grid.Row="1" Grid.Column="0" Padding="30" Spacing="10">
             <Frame CornerRadius="20" Padding="0" HasShadow="False" MaximumHeightRequest="400">
                 <Image Aspect="AspectFill" Source="{Binding ImageSource}"/>
             </Frame>
-            <Label Text="{Binding Title}" FontSize="Medium" FontAttributes="Bold"/>
-            <Label Text="{Binding Type}" />
-            <Label Text="{Binding Address}" />
-            <Label Text="{Binding Price}" />
-            <Label Text="{Binding HostName}" />
-            <Label Text="{Binding HostPhoneNumber}" />
-        </StackLayout>
+            <Label Text="{Binding Title}" Style="{StaticResource SubHeadline}" HorizontalOptions="Start"/>
+            <Grid HorizontalOptions="Fill">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
 
+                <Label Grid.Row="0" Grid.Column="0" Text="Tipo" FontAttributes="Bold"/>
+                <Label Grid.Row="1" Grid.Column="0" Text="{Binding Type}" />
+
+                <Label Grid.Row="0" Grid.Column="1" Text="Dirección" FontAttributes="Bold"/>
+                <Label Grid.Row="1" Grid.Column="1" Text="{Binding Address}" />
+
+                <Label Grid.Row="0" Grid.Column="2" Text="Precio por noche" FontAttributes="Bold"/>
+                <Label Grid.Row="1" Grid.Column="2" Text="{Binding Price}" />
+            </Grid>
+
+            <Label Text="Datos del anfitrión" FontAttributes="Bold"/>
+            <Frame CornerRadius="10" Padding="10" HasShadow="True">
+                <StackLayout>
+                    <Label Text="{Binding HostName}" FontSize="Micro"/>
+                    <Label Text="{Binding HostPhoneNumber}" FontSize="Micro"/>
+                </StackLayout>
+            </Frame>
+        </StackLayout>
         <!-- Right Column - Cancellation Information -->
-        <StackLayout Grid.Row="1" Grid.Column="1" Padding="30" Orientation="Vertical">
-            <Label Text="Detalles de la cancelación" FontSize="Medium" FontAttributes="Bold" Margin="0, 10"/>
-            <Label x:Name="LblQuantity" Text="Fecha" FontSize="Subtitle" Margin="0, 0, 0, 5"/>
-            <Label Text="{Binding Date}" FontSize="Subtitle" Margin="0, 0, 0, 3"/>
-            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10,0,10"/>
-            <Label x:Name="LblCost" Text="Hora" FontSize="Subtitle" Margin="0, 0, 0, 3"/>
-            <Label Text="{Binding Time}" FontSize="Subtitle" Margin="0, 0, 0, 5"/>
-            <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10,0,10"/>
-            <Label x:Name="LblUser" Text="Motivo" FontSize="Subtitle" Margin="0, 0, 0, 3"/>
-            <Label Text="{Binding Reason}" FontSize="Subtitle" Margin="0, 0, 0, 5"/>
-            <Button Text="Aceptar"
-                    HorizontalOptions="End"
+        <Frame Grid.Row="1" Grid.Column="1" Margin="30">
+            <StackLayout Padding="30" Orientation="Vertical">
+                <Label Text="Detalles de la cancelación" FontSize="Medium" FontAttributes="Bold" Margin="0, 10"/>
+                <Label x:Name="LblQuantity" Text="Fecha" FontSize="Subtitle" Margin="0, 0, 0, 5" FontAttributes="Bold"/>
+                <Label Text="{Binding Date}" FontSize="Subtitle" Margin="0, 0, 0, 3"/>
+                <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10,0,10"/>
+                <Label x:Name="LblCost" Text="Hora" FontSize="Subtitle" Margin="0, 0, 0, 3" FontAttributes="Bold"/>
+                <Label Text="{Binding Time}" FontSize="Subtitle" Margin="0, 0, 0, 5"/>
+                <BoxView HeightRequest="1" BackgroundColor="Gray" Margin="0,10,0,10"/>
+                <Label x:Name="LblUser" Text="Motivo" FontSize="Subtitle" Margin="0, 0, 0, 3" FontAttributes="Bold"/>
+                <Label Text="{Binding Reason}" FontSize="Subtitle" Margin="0, 0, 0, 5"/>
+                <Button Text="Aceptar"
                     Margin="0,20,0,0"
                     VerticalOptions="EndAndExpand"
                     Command="{Binding GoBookingsCommand}"/>
-        </StackLayout>
+            </StackLayout>
+        </Frame>
+
     </Grid>
 </ContentPage>

@@ -40,6 +40,7 @@ namespace HostedInDesktop.viewmodels
         public void OnChangeToHost()
         {
             App.hostMode = true;
+            App.ContentViewHost = new HostBookedAccommodations(new AcoommodationsBookedHostViewModel());
             Shell.Current.GoToAsync(nameof(HostView));
         }
 

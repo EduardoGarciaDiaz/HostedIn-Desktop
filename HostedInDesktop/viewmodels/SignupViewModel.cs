@@ -71,6 +71,7 @@ namespace HostedInDesktop.viewmodels
                         else
                         {
                             App.hostMode = true;
+                            App.ContentViewHost = new HostBookedAccommodations(new AcoommodationsBookedHostViewModel());
                             await Shell.Current.GoToAsync(nameof(HostView));
                         }
                     }
