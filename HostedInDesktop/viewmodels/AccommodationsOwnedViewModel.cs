@@ -21,6 +21,9 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
     [ObservableProperty]
     private bool isLoading;
 
+    [ObservableProperty]
+    private ContentView _currentView;
+
     public AccommodationsOwnedViewModel()
     {
         LoadAccommodationsAsync();
@@ -59,7 +62,7 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
     [RelayCommand]
     private void EditAccommodation(Accommodation accommodation)
     {
-        Shell.Current.DisplayAlert("Ir a editar", $"Vamos a editar tu accommodation: {accommodation.title}", "Ok");
+        CurrentView = new EditAccommodation(new EditAccommodationViewModel(accommodation));
     }
 
     [RelayCommand]
@@ -67,5 +70,13 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
     {
         Shell.Current.GoToAsync(nameof(AccommodationForm));
     }
+
+
+    [RelayCommand]
+    private void CloseEditAccommodation()
+    {
+        CurrentView = new ContentView();
+    }
+
 
 }

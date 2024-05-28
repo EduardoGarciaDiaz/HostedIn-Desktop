@@ -9,32 +9,76 @@
         <vm:AccommodationsOwnedViewModel/>
     </ContentView.BindingContext>
 
-    <StackLayout>
-        <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
-        
-       <Label Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos"   Style="{StaticResource SubHeadline}"/>
-        
-        <ScrollView Margin="20, 30, 0, 0" Orientation="Vertical">
-            <CollectionView ItemsSource="{Binding Accommodations}" >
-                <CollectionView.ItemsLayout>
-                    <GridItemsLayout Orientation="Vertical"
-                          Span="3" 
-                          VerticalItemSpacing="10" 
-                          HorizontalItemSpacing="10"/>
-                </CollectionView.ItemsLayout>
-                <CollectionView.ItemTemplate>
-                    <DataTemplate>
-                        <reusable:AccommodationOwnedReusable Accommodation="{Binding .}" />
-                    </DataTemplate>
-                </CollectionView.ItemTemplate>
-            </CollectionView>
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <ScrollView  Margin="0, 30, 0, 0" HorizontalOptions="Start"  Orientation="Vertical"  >
+            <StackLayout Grid.Column="0">
+                <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
+
+                <Label Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos" TextColor="{StaticResource Primary}"   Style="{StaticResource SubHeadline}"/>
+
+                <CollectionView ItemsSource="{Binding Accommodations}" >
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Vertical"
+                                  Span="2" 
+                                  VerticalItemSpacing="10" 
+                                  HorizontalItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <reusable:AccommodationOwnedReusable Accommodation="{Binding .}" />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Button BackgroundColor="MediumPurple"  HorizontalOptions="End"  VerticalOptions="End" Margin="20" Text="Publicar alojamiento" Command="{Binding CreateAccommodationCommand}"/>             
+            </StackLayout>
         </ScrollView>
 
-        <Button BackgroundColor="MediumPurple"  HorizontalOptions="End"  VerticalOptions="End" Margin="20" Text="Publicar alojamiento" Command="{Binding CreateAccommodationCommand}"/>
+        <ScrollView Grid.Column="1" VerticalScrollBarVisibility="Never" Margin="0,0,0,20">
+            <Frame   BorderColor="LightGray" CornerRadius="15">
 
-    </StackLayout>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="auto" />
+                    </Grid.ColumnDefinitions>
 
-    
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" 
+                       Text="¡Hola, selecciona el apartado que desea modificar de tu alojamiento!"
+                       Style="{StaticResource SubHeadline}"
+                       VerticalOptions="Start"
+                       HorizontalOptions="StartAndExpand" 
+                      />
+                    <Button Grid.Row="0" Grid.Column="1" 
+                        ImageSource="cancell_icon.png"
+                        VerticalOptions="Start"
+                        HorizontalOptions="End" 
+                        BackgroundColor="Transparent" Command="{Binding CloseEditAccommodationCommand}"/>
+
+
+
+                    <ContentView Grid.ColumnSpan="2" Grid.Row="1" Content="{Binding CurrentView}" >
+
+                    </ContentView>
+
+                </Grid>
+            </Frame>
+        </ScrollView>
+
+    </Grid>
+
+
 
 
 

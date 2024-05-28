@@ -1,4 +1,5 @@
-﻿using GoogleApi.Entities.Search.Video.Common;
+﻿using GoogleApi.Entities.Maps.Directions.Response;
+using GoogleApi.Entities.Search.Video.Common;
 using HostedInDesktop.Data.JsonConverters;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services.Responses;
@@ -199,5 +200,46 @@ public class AccommodationsService : IAccommodationsService
                 throw;
             }
         }
+
+    public async Task<Accommodation> UpdateAccommodation(Accommodation accommodation)
+    {
+        try
+        {
+            var httpClient = APIClient.GetHttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.token);
+
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            var json = JsonConvert.SerializeObject(accommodation, settings);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            string url = $"accommodations/{accommodation._id}/";
+            HttpResponseMessage response = await httpClient.PutAsync(url, content);
+            if (response.IsSuccessStatusCode)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    Converters = { new ProfilePhotoConverter() }
+                };
+
+                AccommodationResponse accommodationResponse = await response.Content.ReadFromJsonAsync<AccommodationResponse>(options);
+                return await Task.FromResult(accommodationResponse.Accommodation);
+            }
+            else
+            {
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                JObject jsonObject = JObject.Parse(jsonResponse);
+                string errorMessage = (string)jsonObject["message"];
+                throw new ApiException(errorMessage);
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
 }
 

@@ -57,6 +57,8 @@ namespace HostedInDesktop
             builder.Services.AddSingleton<AccommodationFormMultimedia>();
             builder.Services.AddSingleton<AccommodationFormInformation>();
 
+            builder.Services.AddTransient<EditAccommodationForm>();
+            builder.Services.AddTransient<EditAccommodationFormViewModel>();
             builder.Services.AddSingleton<BookingsView>();
             builder.Services.AddSingleton<BookingDetailsView>();
 

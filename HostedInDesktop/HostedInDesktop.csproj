@@ -109,11 +109,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Reusable\AccommodationsBookedHostReusable.xaml.cs">
-	    <DependentUpon>AccommodationsBookedHostReusable.xaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
-	<ItemGroup>
 	  <MauiXaml Update="Reusable\AccommodationBasicReusable.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -124,15 +119,6 @@
 	<ItemGroup>
 	  <MauiXaml Update="Reusable\AccommodationExploreReusable.xaml">
 	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Reusable\AccommodationOwnedReusable.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Reusable\AccommodationsBookedHostReusable.xaml">
-	    <Generator>MSBuild:Compile</Generator>
-	  </MauiXaml>
-	  <MauiXaml Update="Reusable\BookingMainInfoReusable.xaml">
-	  	<Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Reusable\AccommodationServiceReusable.xaml">
 	    <Generator>MSBuild:Compile</Generator>
@@ -177,6 +163,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ChangePasswordView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\EditAccommodation.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\EditAccommodationForm.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\ExploreView.xaml">
