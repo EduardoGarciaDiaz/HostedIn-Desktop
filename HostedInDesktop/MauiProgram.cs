@@ -62,6 +62,12 @@ namespace HostedInDesktop
             builder.Services.AddTransient<BookingsGuestViewViewModel>();
             builder.Services.AddTransient<BookingDetailsViewModel>();
 
+            builder.Services.AddTransient<BookingDetailsViewModel>();
+            builder.Services.AddTransient<CancelationReasonsViewModel>();
+            builder.Services.AddTransient<CancellationConfirmationViewModel>();
+
+            builder.Services.AddTransient<GuestViewViewModel>();
+            builder.Services.AddTransient<HostViewViewModel>();
 
             builder.Services.AddSingleton<ISharedService, SharedService>();
                 /*            builder.Services.AddScoped(services =>

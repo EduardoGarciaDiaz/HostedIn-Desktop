@@ -11,6 +11,7 @@ namespace HostedInDesktop
         public static string token;
         public static string Google_API_Keys = "AIzaSyBMCpitlSaWhnRQ5LNuOeUchSDi9sCO364";
         public static bool hostMode;
+        public static ContentView contentToShow;
 
         public App()
         {

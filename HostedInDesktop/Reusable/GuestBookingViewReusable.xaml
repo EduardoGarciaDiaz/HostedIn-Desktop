@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HostedInDesktop.Reusable.GuestBookingViewReusable"
              xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
-                xmlns:local="clr-namespace:HostedInDesktop.Views">
+                xmlns:local="clr-namespace:HostedInDesktop.Views"
+             xmlns:conv="clr-namespace:HostedInDesktop.Converters">
 
 
     <Frame BorderColor="LightGray" CornerRadius="10" Padding="5" Margin="10">
@@ -13,8 +14,9 @@
             </Frame>
             <Label x:Name="lblTitle" FontAttributes="Bold" FontSize="16" Text="{Binding accommodation.title}" />
             <Label x:Name="lblDescription" FontSize="14" Text="{Binding accommodation.description}" />
-            <Label x:Name="lblTotalCost" FontSize="14" TextColor="Black" />
-            <Label x:Name="lblDates" FontSize="14" TextColor="Black" />
+            <Label x:Name="lblTotalCost" FontSize="14" TextColor="Black" Text="{Binding totalCost, Converter={StaticResource TotalCostConverter}}" />
+            <Label x:Name="lblDates" FontSize="14" TextColor="Black" Text="{Binding beginningDate, Converter={StaticResource DateConverter}}" />
+            <Label x:Name="lblEndDate" FontSize="14" TextColor="Black" Text="{Binding endingDate, Converter={StaticResource DateConverter}}" />
             <Button x:Name="bttWatchDetails" Text="Ver Detalles"  Margin="0,15,0,0" FontSize="17" 
                     TextColor="Black" 
                     BackgroundColor="MediumPurple" VerticalOptions="End"  HorizontalOptions="End"

@@ -16,7 +16,7 @@ namespace HostedInDesktop.viewmodels
     {
         public ObservableCollection<Accommodation> Accommodations { get; } = new ObservableCollection<Accommodation>();
         public ObservableCollection<Place> Places { get; } = new ObservableCollection<Place>();
-        
+
         private readonly MultimediaServiceImpl _multimediaService = new MultimediaServiceImpl();
         private readonly IAccommodationsService _accommodationsService = new AccommodationsService();
         private readonly IPlacesClient _placesClient = new PlacesClient();
@@ -123,7 +123,7 @@ namespace HostedInDesktop.viewmodels
                 foreach (var accommodation in accommodations)
                 {
                     Accommodations.Add(accommodation);
-                    LoadAccommodationImageAsync(accommodation);
+                    _ = LoadAccommodationImageAsync(accommodation);
                 }
             }
             catch (ApiException aex)

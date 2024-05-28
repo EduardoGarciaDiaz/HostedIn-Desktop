@@ -40,6 +40,8 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public void OnChangeToGuestClicked()
         {
+            App.hostMode = false;
+            App.contentToShow = new ExploreView();
             Shell.Current.GoToAsync(nameof(GuestView));
         }
 

@@ -15,7 +15,7 @@ namespace HostedInDesktop.viewmodels
         private ContentView _currentView;
         public GuestViewViewModel() 
         {
-            CurrentView = new ExploreView();
+            CurrentView = App.contentToShow;
         }
 
         [RelayCommand]
@@ -39,6 +39,7 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public void OnChangeToHost()
         {
+            App.hostMode = true;
             Shell.Current.GoToAsync(nameof(HostView));
         }
 

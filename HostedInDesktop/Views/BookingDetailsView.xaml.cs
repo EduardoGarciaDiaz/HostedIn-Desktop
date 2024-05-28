@@ -10,4 +10,5 @@ public partial class BookingDetailsView : ContentPage
 		InitializeComponent();
         BindingContext = ServiceHelper.GetService<BookingDetailsViewModel>();
     }
+
 }
