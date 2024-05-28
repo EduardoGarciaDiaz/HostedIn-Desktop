@@ -3,22 +3,41 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-            x:Class="HostedInDesktop.Views.AccommodationDetails">
+             xmlns:rating="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+             xmlns:reusable="clr-namespace:HostedInDesktop.Reusable"
+    x:Class="HostedInDesktop.Views.AccommodationDetails">
 
-    <ContentPage.BindingContext>
-        <vm:AccommodationDetailsViewModel />
-    </ContentPage.BindingContext>
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
 
     <Grid>
-        <!-- Accommodation Name -->
-        <Label x:Name="txv_accommodation_name"
-               Text="{Binding AccommodationData.Title}"
-               TextColor="#113E96"
-               FontSize="20"
-               FontAttributes="Bold"
-               HorizontalTextAlignment="Center"
-               VerticalOptions="Start"
-               Margin="0,14,0,0"/>
+
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <ImageButton Grid.Column="0"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Start"
+                         Source="ic_go_back.png"
+                         Command="{Binding GoBackCommand}"
+                         Margin="0,0,20,0" />
+
+            <!-- Accommodation Name -->
+            <Label x:Name="txv_accommodation_name"
+                   Grid.Column="1"
+                   Text="{Binding AccommodationData.title}"
+                   TextColor="#113E96"
+                   FontSize="20"
+                   FontAttributes="Bold"
+                   HorizontalTextAlignment="Center"
+                   VerticalOptions="Start"
+                   Margin="0,14,0,0"/>
+        </Grid>
+
 
         <!-- ScrollView for details -->
         <ScrollView Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="20,50,20,70">
@@ -57,32 +76,38 @@
 
                 <!-- Location -->
                 <Label x:Name="txv_location"
-                       Text="{Binding AccommodationData.Location.Address}"
+                       Text="{Binding AccommodationData.location.address}"
                        TextColor="#333333"
                        Margin="0,6,0,0" />
 
                 <!-- Description -->
+                <Label
+               Text="Descripción"
+               TextColor="#333333"
+                FontAttributes="Bold"
+               Margin="0,15,0,0" />
+                
                 <Label x:Name="txv_description"
-                       Text="{Binding AccommodationData.Description}"
+                       Text="{Binding AccommodationData.description}"
                        TextColor="#333333"
                        Margin="0,6,0,0" />
 
-                <Button x:Name="btn_show_more_description"
+                <!--<Button x:Name="btn_show_more_description"
                         Text="Mostrar más >"
                         TextColor="#333333"
                         FontAttributes="Bold"
                         HorizontalOptions="End"
                         HeightRequest="15" 
-                        />
+                        />-->
 
                 <!-- Accommodation Services -->
                 <Label x:Name="txv_accommodation_type"
-                       Text=""
+                       Text="{Binding AccommodationType}"
                        TextColor="#333333"
                        FontAttributes="Bold" />
 
                 <Label x:Name="txv_basics"
-                       Text=""
+                       Text="{Binding AccommodationBasics}"
                        MaxLines="2" />
 
                 <HorizontalStackLayout Margin="0,8,0,0">
@@ -90,16 +115,16 @@
                            TextColor="#333333"
                            FontAttributes="Bold"
                            HorizontalOptions="FillAndExpand" />
-                    <Button x:Name="btn_show_more_services"
+                    <!--<Button x:Name="btn_show_more_services"
                             Text="Mostrar más >"
                             TextColor="#333333"
                             FontAttributes="Bold"
                             HeightRequest="15" 
-                            HorizontalOptions="End"/>
+                            HorizontalOptions="End"/>-->
                 </HorizontalStackLayout>
 
                 <Label x:Name="txv_accommodations_services"
-                       Text=""
+                       Text="{Binding AccommodationServices}"
                        MaxLines="3" />
 
                 <!-- Accommodation Rules -->
@@ -108,17 +133,17 @@
                            TextColor="#333333"
                            FontAttributes="Bold"
                            HorizontalOptions="FillAndExpand" />
-                    <Button x:Name="btn_show_more_rules"
+                    <!--<Button x:Name="btn_show_more_rules"
                             Text="Mostrar más >"
                             TextColor="#333333"
                             FontAttributes="Bold"
                             HeightRequest="15" 
                             HorizontalOptions="End"
-                            />
+                            />-->
                 </HorizontalStackLayout>
 
                 <Label x:Name="txv_accommodation_rules"
-                       Text="{Binding AccommodationData.Rules}"
+                       Text="{Binding AccommodationData.rules}"
                        MaxLines="2" />
 
                 <!-- Divider -->
@@ -133,7 +158,7 @@
                        HorizontalOptions="Center" />
 
                 <Label x:Name="txv_score"
-                       Text="Sin calif."
+                       Text="{Binding AccommodationScore}"
                        TextColor="#5280DB"
                        FontAttributes="Bold"
                        FontSize="50"
@@ -144,17 +169,54 @@
                        FontAttributes="Bold" />
 
                 <Label x:Name="txv_without_reviews"
-                       Text="Sin reseñas"
+                       Text="{Binding WithOutReviews}"
                        HorizontalOptions="Center" />
 
                 <!-- RecyclerView converted to CollectionView -->
-                <CollectionView x:Name="rcyv_reviews" />
+                <CollectionView ItemsSource="{Binding UserReview}">
+                    <CollectionView.ItemsLayout>
+                        <GridItemsLayout Orientation="Horizontal" Span="1" VerticalItemSpacing="10" HorizontalItemSpacing="10"/>
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <reusable:UserAccommodationReviewReusable />
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
 
                 <!-- Location Map -->
                 <Label Text="Dónde vas a estar"
                        TextColor="#333333"
                        FontAttributes="Bold"
                        Margin="0,6,0,0" />
+
+                <HorizontalStackLayout>
+                    <StackLayout Margin="10,0,10,0">
+                        <Label Text="Dirección"
+                           TextColor="#333333"
+                           Margin="0,6,0,0" />
+                        <Label Text="{Binding AccommodationData.location.address}"
+                            TextColor="#333333"
+                            Margin="0,6,0,0" />
+                    </StackLayout>
+                    <StackLayout Margin="10,0,10,0">
+                        <Label Text="Latitud"
+                            TextColor="#333333"
+                            Margin="0,6,0,0" />
+                                                <Label Text="{Binding Latitude}"
+                            TextColor="#333333"
+                            Margin="0,6,0,0" />
+                    </StackLayout>
+                    <StackLayout Margin="10,0,10,0">
+                        <Label Text="Longitud"
+                        TextColor="#333333"
+                        Margin="0,6,0,0" />
+                    <Label Text="{Binding Longitude}"
+                        TextColor="#333333"
+                        Margin="0,6,0,0" />
+                    </StackLayout>
+                    
+                </HorizontalStackLayout>
 
                 <!--<Map x:Name="mpv_accommodation_location"
                      HeightRequest="190" />-->
@@ -166,13 +228,75 @@
                        Margin="0,6,0,0" />
 
                 <!-- Include item_host_details layout -->
-                <!--<ContentView x:Name="incl_host_data"
-                             Content="{StaticResource itemHostDetails}" />-->
+                <Grid RowSpacing="0" ColumnSpacing="0" Padding="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Frame BackgroundColor="White"
+                   Margin="0,0,10,0"
+                   Padding="0"
+                   HasShadow="True"
+                   VerticalOptions="Start"
+                   WidthRequest="390">
+                        <StackLayout Orientation="Vertical">
+                            <Grid RowSpacing="0" ColumnSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Profile Picture -->
+                                <Grid Grid.Row="0" Grid.Column="0" Padding="10">
+                                    <Frame WidthRequest="60" HeightRequest="60" CornerRadius="70" HorizontalOptions="Center" VerticalOptions="Start" Background="#707070">
+                                        <Image Source="{Binding ProfilePhotoHost}"/>
+                                    </Frame>
+                                </Grid>
+
+                                <!-- Guest Name and Rating -->
+                                <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Vertical" Padding="10,5,0,0">
+                                    <Label Text="{Binding AccommodationData.user.fullName}"
+                                   FontAttributes="Bold"
+                                   LineBreakMode="TailTruncation"/>
+                                    <Label Text="{Binding AccommodationData.user.phoneNumber}"
+                                    FontAttributes="Bold"
+                                    LineBreakMode="TailTruncation"/>
+                                </StackLayout>
+                            </Grid>
+                            
+                            <Label 
+                                Grid.Row="1"
+                                Grid.ColumnSpan="0"
+                                Margin="10,0,10,0"
+                                Text="{Binding AccommodationData.user.residence}"
+                                FontSize="12"
+                                MaxLines="1"/>
+                            <Label
+                                Grid.Row="1"
+                                Grid.ColumnSpan="0"
+                                Text="{Binding AccommodationData.user.occupation}"
+                                FontSize="12"
+                                Margin="10,0,10,0"
+                                MaxLines="1"/>
+
+                        </StackLayout>
+                    </Frame>
+                </Grid>
             </VerticalStackLayout>
         </ScrollView>
 
         <!-- Bottom Sheet for more details -->
-        <Grid IsVisible="{Binding IsBottomSheetVisible}"
+        <!--<Grid IsVisible="{Binding IsBottomSheetVisible}"
               VerticalOptions="End"
               BackgroundColor="#BFBFBF">
             <Label Text="Detalles"
@@ -192,7 +316,7 @@
                        FontSize="18"
                        Margin="15" />
             </ScrollView>
-        </Grid>
+        </Grid>-->
 
         <!-- Booking Button -->
         <Button x:Name="btn_booking"

@@ -32,7 +32,7 @@ namespace HostedInDesktop.viewmodels
         public EditProfileViewModel()
         {
             UserData = _user;
-            loadUserData();
+            LoadUserData();
         }
 
         [RelayCommand]
@@ -100,7 +100,7 @@ namespace HostedInDesktop.viewmodels
             return editedUser;
         }
 
-        public void loadUserData()
+        public void LoadUserData()
         {
             User userToEdit = App.user;
             if (userToEdit != null)

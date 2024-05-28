@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Utils;
+using HostedInDesktop.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,6 +23,8 @@ namespace HostedInDesktop.viewmodels
         private readonly IAccommodationsService _accommodationsService = new AccommodationsService();
         private readonly IPlacesClient _placesClient = new PlacesClient();
 
+        ISharedService _sharedService = new SharedService();
+
         [ObservableProperty]
         private bool isShowingPlaces;
 
@@ -30,10 +34,11 @@ namespace HostedInDesktop.viewmodels
         [ObservableProperty]
         private string query;
 
-        public ExploreViewModel()
+        public ExploreViewModel(ISharedService sharedService)
         {
             LoadAccommodationsAsync();
             IsShowingPlaces = false;
+            _sharedService = sharedService;
         }
 
         [RelayCommand]
@@ -71,11 +76,10 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         private async Task OnAccommodationSelected(Accommodation selectedAccommodation)
         {
-            // Maneja el evento de selección aquí
-            // Por ejemplo, navega a otra página o muestra detalles del alojamiento
             if (selectedAccommodation != null)
             {
-                await Shell.Current.DisplayAlert("Ejemplo ", selectedAccommodation.title, "Ok");
+                _sharedService.Add<Accommodation>(AccommodationDetailsViewModel.ACCOMMODATION_KEY, selectedAccommodation);
+                await Shell.Current.GoToAsync(nameof(AccommodationDetails));
             }
         }
 

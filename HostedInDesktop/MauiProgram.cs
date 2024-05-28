@@ -23,6 +23,7 @@ namespace HostedInDesktop
                 .UseMauiApp<App>()
                 .ConfigureSyncfusionCore()
                 .UseSkiaSharp(true)
+                .ConfigureSyncfusionCore()
                 .UseMauiCommunityToolkitMediaElement()
                 .ConfigureFonts(fonts =>
                 {
@@ -58,6 +59,8 @@ namespace HostedInDesktop
 
             builder.Services.AddSingleton<BookingsView>();
             builder.Services.AddSingleton<BookingDetailsView>();
+
+            builder.Services.AddSingleton<ExploreViewModel>();
 
             builder.Services.AddTransient<BookingsGuestViewViewModel>();
             builder.Services.AddTransient<BookingDetailsViewModel>();

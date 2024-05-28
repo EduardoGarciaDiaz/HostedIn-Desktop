@@ -1,4 +1,5 @@
 using HostedInDesktop.Data.Models;
+using HostedInDesktop.Helper;
 using HostedInDesktop.viewmodels;
 
 namespace HostedInDesktop.Views;
@@ -9,7 +10,9 @@ public partial class ExploreView : ContentView
 	public ExploreView()
 	{
 		InitializeComponent();
+        BindingContext = ServiceHelper.GetService<ExploreViewModel>();
 		exploreViewModel = (ExploreViewModel)BindingContext;
+
 	}
 
     private void ListView_ItemTapped(object sender, ItemTappedEventArgs e)

@@ -15,4 +15,21 @@ namespace HostedInDesktop.Enums
         camper,
         ship
     }
+
+    public static class AccommodationTypeDescriptions
+    {
+        public static string GetDescriptionForType(string type)
+        {
+            return type switch
+            {
+                "house" => "Casa",
+                "apartement" => "Departamento",
+                "cabin" => "Cabaña",
+                "camp" => "Campamento",
+                "camper" => "Casa rodante",
+                "ship" => "Barco",
+                _ => type,
+            };
+        }
+    }
 }

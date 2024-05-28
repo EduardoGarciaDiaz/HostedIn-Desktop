@@ -18,6 +18,6 @@ namespace HostedInDesktop.viewmodels.ModelObservable
         {
             get => _isSelected;
             set => SetProperty(ref _isSelected, value);
-        }
+        }        
     }
 }

@@ -5,9 +5,9 @@
              xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
              xmlns:reusable="clr-namespace:HostedInDesktop.Reusable">
 
-    <ContentView.BindingContext>
+    <!--<ContentView.BindingContext>
         <vm:ExploreViewModel/>
-    </ContentView.BindingContext>
+    </ContentView.BindingContext>-->
 
     <Grid Padding="0" Margin="20, 0">
         <Grid.RowDefinitions>
