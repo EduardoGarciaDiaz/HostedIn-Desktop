@@ -60,33 +60,41 @@
                             <Label Text="Fecha de inicio"
                                    FontAttributes="Bold"
                                    MaxLines="1" />
-
-                                <calendar:SfCalendar x:Name="calendar"
-                                               MaximumDate="{Binding MaximumDate}"
-                                               ShowActionButtons="True"
-                                               EnablePastDates="false"  
-                                               SelectableDayPredicate="{Binding SelectableDayPredicate}"
-                                               View="Month"
-                                               SelectionMode="Range" />
-
+                                <Button
+                                    Text="{Binding StartDateSelected}"
+                                    Command="{Binding DateClickedCommand}"
+                                    
+                                    WidthRequest="150"
+                                    HeightRequest="40"
+                            />
                             </StackLayout>
 
                     <StackLayout HorizontalOptions="StartAndExpand"
-                                     Margin="20,15,0,0">
+                                     Margin="40,15,0,0">
                             <Label Text="Fecha de fin"
                                    FontAttributes="Bold"
                                    MaxLines="1" />
-                                <DatePicker x:Name="dpk_ending_date"
-                                        Date="{Binding EndingDate}"
-                                        Format="d"
-                                        MinimumDate="{Binding MinimumDate}"
-                                        MaximumDate="{Binding MaximumDate}"
-                                        WidthRequest="150"
-                                        HeightRequest="40" />
+                                <Button
+                                    Text="{Binding EndDateSelected}"
+                                    Command="{Binding DateClickedCommand}"
+                                    WidthRequest="150"
+                                    HeightRequest="40"
+                                    />
                             </StackLayout>
                     </StackLayout>
 
-                    <Label Text="Huéspedes"
+                        <calendar:SfCalendar x:Name="calendar"
+                           IsVisible="{Binding CalendarBookingVisibility}"
+                           MaximumDate="{Binding MaximumDate}"
+                           EnablePastDates="false"  
+                           SelectableDayPredicate="{Binding SelectableDayPredicate}"
+                           View="Month"
+                           SelectionMode="Range"
+                           SelectionChanged="OnSelectionChanged"
+                           SelectedDateRange="{Binding SelectedBookingDates}"/>
+
+
+                        <Label Text="Huéspedes"
                            FontAttributes="Bold"
                            Margin="20,6,0,0" />
                     <StackLayout Orientation="Horizontal">
@@ -319,9 +327,10 @@
                 </Grid>
 
                 <Button x:Name="btn_save_booking"
-    Text="Confirmar reservación"
-    Margin="20,20,20,20"
-    VerticalOptions="End" />
+                    Text="Confirmar reservación"
+                    Margin="20,20,20,20"
+                    VerticalOptions="End" 
+                    Command="{Binding SaveBookingCommand}"/>
 
 
             </StackLayout>

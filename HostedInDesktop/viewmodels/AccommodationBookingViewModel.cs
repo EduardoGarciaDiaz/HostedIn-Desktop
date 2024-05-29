@@ -4,13 +4,11 @@ using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Enums;
+using HostedInDesktop.Utils;
 using HostedInDesktop.Views;
-using System;
-using System.Collections.Generic;
+using Syncfusion.Maui.Calendar;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace HostedInDesktop.viewmodels
 {
@@ -54,13 +52,27 @@ namespace HostedInDesktop.viewmodels
         [ObservableProperty]
         private ImageSource profilePhotoHost;
 
+        [ObservableProperty]
+        private CalendarDateRange selectedBookingDates;
+
+        [ObservableProperty]
+        private string startDateSelected;
+
+        [ObservableProperty]
+        private string endDateSelected;
+
+        [ObservableProperty]
+        private bool calendarBookingVisibility;
+
+        private double finalPrice;
+
         public AccommodationBookingViewModel(ISharedService sharedService)
         {
             //get booked dates
 
             _sharedService = sharedService;
             LoadAccommodationData();
-
+            CalendarBookingVisibility = false;
         }
 
         [RelayCommand]
@@ -84,6 +96,51 @@ namespace HostedInDesktop.viewmodels
             if (GuestsNumber < AccommodationData.guestsNumber)
             {
                 GuestsNumber++;
+            }
+        }
+
+        [RelayCommand]
+        public async Task SaveBooking()
+        {
+            if (IsBookingValid())
+            {
+                Booking newBooking = CollectBookingData();
+                if (newBooking != null)
+                {
+                    CreateBooking(newBooking);
+                }
+            }
+        }
+
+        [RelayCommand]
+        public async void DateClicked()
+        {
+            if (!CalendarBookingVisibility)
+            {
+                CalendarBookingVisibility = true;
+            } 
+            else
+            {
+                CalendarBookingVisibility = false;
+            }
+        }
+
+        public async void SelectBookingDates()
+        {
+            DateTime? startDate = SelectedBookingDates.StartDate;
+            DateTime? endDate = SelectedBookingDates.EndDate;
+
+            if (startDate != null && endDate != null)
+            {
+                TimeSpan dateDifference = (TimeSpan)(endDate - startDate);
+                int daysBetween = dateDifference.Days;
+                StartDateSelected = startDate.Value.ToShortDateString();
+                EndDateSelected = endDate.Value.ToShortDateString();
+
+                LoadPricePerNights(daysBetween + 1);
+                double subtotal = LoadSubtotal(daysBetween);
+                double priceIVA = LoadIVA(subtotal);
+                LoadTotal(subtotal, priceIVA);
             }
         }
 
@@ -118,7 +175,6 @@ namespace HostedInDesktop.viewmodels
             GuestsNumberLimit = limit;
         }
 
-        //TODO call this method when dates are selected
         private void LoadPricePerNights(int nights)
         {
             double pricePerNight = AccommodationData.nightPrice;
@@ -126,24 +182,30 @@ namespace HostedInDesktop.viewmodels
             PricePerNights = price;
         }
 
-        private void LoadSubtotal(int nights)
+        private double LoadSubtotal(int nights)
         {
             double pricePerNight = AccommodationData.nightPrice;
             double subtotal = pricePerNight * nights;
             string price = $"${subtotal} MXN";
             Subtotal = price;
+
+            return subtotal;
         }
 
-        private void LoadIVA(int nights)
+        private double LoadIVA(double subtotal)
         {
-            //TODO:
-            //string price = $"${total} MXN";
-            //PriceIVA = price;
+            double ivaPercentage = .16;
+            double priceIVA = subtotal * ivaPercentage;
+            PriceIVA = $"${priceIVA} MXN";
+
+            return priceIVA;
         }
 
-        private void LoadTotal(int nights)
+        private void LoadTotal(double subtotal, double priceIVA)
         {
-            //TotalPrice = $"${total} MXN";
+            double total = subtotal + priceIVA;
+            finalPrice = total;
+            TotalPrice = $"${total} MXN";
         }
 
         private void LoadAccommodationType()
@@ -182,8 +244,6 @@ namespace HostedInDesktop.viewmodels
         //    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         //}
 
-
-
         private void LoadHostData()
         {
             ProfilePhotoHost = "ic_user.png";
@@ -195,5 +255,100 @@ namespace HostedInDesktop.viewmodels
             }
         }
 
+        private bool IsBookingValid()
+        {
+            bool isBookingValid = true;
+
+            if (SelectedBookingDates.StartDate == null && SelectedBookingDates.EndDate == null) {
+                isBookingValid = false;
+                Shell.Current.DisplayAlert("Fechas no válidas", "Debes seleccionar la fecha de inicio y la de fin", "Ok");
+            }
+
+            return isBookingValid;
+        }
+
+        private Booking CollectBookingData()
+        {
+            Booking newBooking = new Booking();
+
+            string beginDate = DateFormatterUtils.ParseDateForMongoDB(SelectedBookingDates.StartDate.ToString());
+            string endDate = DateFormatterUtils.ParseDateForMongoDB(SelectedBookingDates.EndDate.ToString());
+
+            newBooking.accommodation = AccommodationData;
+            if (string.IsNullOrEmpty(beginDate) || string.IsNullOrEmpty(endDate))
+            {
+                Shell.Current.DisplayAlert("Error", "Las fechas de inicio y fin no pueden ser nulas", "Ok");
+                return null;
+            } 
+            else
+            {
+                newBooking.beginningDate = beginDate;
+                newBooking.endingDate = endDate;
+            }
+            
+            newBooking.numberOfGuests = GuestsNumber;
+            newBooking.bookingStatus = BookingStatus.CURRENT.GetDescription();
+            newBooking.totalCost = finalPrice;
+            newBooking.hostUser = AccommodationData.user;
+            newBooking.guestUser = App.user;
+
+            return newBooking;
+        }
+
+        private DateTime? FormatDate(string dateStr)
+        {
+            DateTime? dateParsed = null;
+
+            if (!string.IsNullOrEmpty(dateStr))
+            {
+                try
+                {
+                    string[] dateParts = dateStr.Split(' ')[0].Split('/');
+                    string formattedDate = $"{dateParts[0]}/{dateParts[1]}/{dateParts[2]}";
+
+                    dateParsed = (DateTime)DateFormatterUtils.ParseStringToDate(dateStr);
+                    return dateParsed;
+                }
+                catch (FormatException e)
+                {
+                    Shell.Current.DisplayAlert("Fecha no válida", "El formato de la fecha no es válido", "Ok");
+                }
+            } 
+            else
+            {
+                Console.WriteLine("La fecha viene nula o vacía");
+            }
+
+            return dateParsed;
+        }
+
+        private async void CreateBooking(Booking bookingCreation)
+        {
+            if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+            {
+                try
+                {
+                    
+                    Booking newBooking = await _bookingService.CreateBooking(bookingCreation);
+
+                    if (newBooking != null)
+                    {
+                        await Shell.Current.DisplayAlert("Reservación exitosa", "Reservación registrada con éxito", "Ok");
+                        await Shell.Current.GoToAsync(nameof(GuestView));
+                    }
+
+                }
+                catch (ApiException aex)
+                {
+                    await Shell.Current.DisplayAlert("Error", aex.Message, "Ok");
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                    return;
+                }
+            }
+        }
     }
 }

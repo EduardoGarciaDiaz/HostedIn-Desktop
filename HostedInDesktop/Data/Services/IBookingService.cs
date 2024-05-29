@@ -11,5 +11,6 @@ namespace HostedInDesktop.Data.Services
     {
         Task<List<Booking>> GetBookingsByAccommodationId(String accommodationId);
         Task<List<Booking>> GetGuestBookings(String userId, String status);
+        Task<Booking> CreateBooking(Booking booking);
     }
 }
