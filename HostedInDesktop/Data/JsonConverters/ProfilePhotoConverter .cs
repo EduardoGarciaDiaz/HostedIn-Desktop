@@ -38,8 +38,21 @@ namespace HostedInDesktop.Data.JsonConverters
                     case "data":
                         if (reader.TokenType == JsonTokenType.StartArray)
                         {
-                            profilePhoto.data = Array.Empty<byte>();
-                            reader.Skip();
+                            var arrayData = new List<byte>();
+                            while (reader.Read())
+                            {
+                                if (reader.TokenType == JsonTokenType.EndArray)
+                                {
+                                    profilePhoto.data = arrayData.ToArray();
+                                    break;
+                                }
+                                else if (reader.TokenType == JsonTokenType.Number)
+                                {
+                                    arrayData.Add(reader.GetByte());
+                                }
+                            }
+                            //profilePhoto.data = Array.Empty<byte>();
+                            //reader.Skip();
                         }
                         else if (reader.TokenType == JsonTokenType.String)
                         {

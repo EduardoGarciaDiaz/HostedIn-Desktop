@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:syncfusion="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
+                 xmlns:calendar="clr-namespace:Syncfusion.Maui.Calendar;assembly=Syncfusion.Maui.Calendar"
+             x:Class="HostedInDesktop.Views.AccommodationBooking">
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+
+    
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="1.2*" />
+            </Grid.ColumnDefinitions>
+
+    <!--details of the accommodation-->
+            
+        <ScrollView>
+
+            <StackLayout Padding="30,5,30,5">
+
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <ImageButton Grid.Column="0"
+                         HorizontalOptions="Start"
+                         VerticalOptions="Start"
+                         Source="ic_go_back.png"
+                         Command="{Binding GoBackCommand}"
+                         Margin="0,0,20,0" />
+
+                    <Label Text="¡Preparemos tu reservación!"
+                    Grid.Column="1"
+                   FontSize="25"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="Start" />
+                </Grid>
+               
+
+            <Frame Padding="8"
+                   Margin="0,15,0,0"
+                   BackgroundColor="White"
+                   CornerRadius="10"
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="Tu reservación"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           Margin="20,5,0,0" />
+
+                    <StackLayout Orientation="Horizontal">
+                        <StackLayout HorizontalOptions="Start"
+                                     Margin="20,15,0,0">
+                            <Label Text="Fecha de inicio"
+                                   FontAttributes="Bold"
+                                   MaxLines="1" />
+
+                                <calendar:SfCalendar x:Name="calendar"
+                                               MaximumDate="{Binding MaximumDate}"
+                                               ShowActionButtons="True"
+                                               EnablePastDates="false"  
+                                               SelectableDayPredicate="{Binding SelectableDayPredicate}"
+                                               View="Month"
+                                               SelectionMode="Range" />
+
+                            </StackLayout>
+
+                    <StackLayout HorizontalOptions="StartAndExpand"
+                                     Margin="20,15,0,0">
+                            <Label Text="Fecha de fin"
+                                   FontAttributes="Bold"
+                                   MaxLines="1" />
+                                <DatePicker x:Name="dpk_ending_date"
+                                        Date="{Binding EndingDate}"
+                                        Format="d"
+                                        MinimumDate="{Binding MinimumDate}"
+                                        MaximumDate="{Binding MaximumDate}"
+                                        WidthRequest="150"
+                                        HeightRequest="40" />
+                            </StackLayout>
+                    </StackLayout>
+
+                    <Label Text="Huéspedes"
+                           FontAttributes="Bold"
+                           Margin="20,6,0,0" />
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Huéspedes"
+                               VerticalOptions="Center"
+                               Margin="20,2,50,0" />
+                        <StackLayout Orientation="Horizontal"
+                                     HorizontalOptions="Start">
+                                <Button x:Name="btn_decrement_guests"
+                                    Text="-"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    Command="{Binding DecrementGuestsCommand}"
+                                    FontSize="Large"
+                                    Padding="0,0,0,0" />
+                                <Entry x:Name="etx_guests_number"
+                                   Text="{Binding GuestsNumber}"
+                                   WidthRequest="50"
+                                   HorizontalTextAlignment="Center"
+                                   IsReadOnly="True" />
+                            <Button x:Name="btn_increment_guests"
+                                    Text="+"
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    Command="{Binding IncrementGuestsCommand}"
+                                    FontSize="Large"
+                                    Padding="0,0,0,0" />
+                        </StackLayout>
+                            <Label x:Name="txv_guests_number_limit"
+                                Text="{Binding GuestsNumberLimit}"
+                               Margin="10,2,0,0"
+                               FontSize="12"
+                                   VerticalOptions="Center"
+                               HorizontalOptions="Center" />
+                        </StackLayout>
+
+                    
+                </StackLayout>
+            </Frame>
+
+            <Frame Padding="8"
+                   Margin="0,15,0,0"
+                   BackgroundColor="White"
+                   CornerRadius="10"
+                   HasShadow="True">
+                <StackLayout>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Detalles del precio"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               HorizontalOptions="StartAndExpand"
+                               Margin="20,5,0,0" />
+                        <Label Text="*El pago es presencial con el anfitrión"
+                               FontSize="11"
+                               HorizontalOptions="EndAndExpand"
+                               Margin="0,5,15,0"
+                               HorizontalTextAlignment="End" />
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label x:Name="txv_price_per_nights"
+                               Text="{Binding PricePerNights}"
+                               Margin="20,5,0,0"
+                               HorizontalOptions="StartAndExpand" />
+                        <Label x:Name="txv_subtotal"
+                               Text="{Binding Subtotal}"
+                               Margin="0,5,15,0"
+                               HorizontalOptions="EndAndExpand"
+                               HorizontalTextAlignment="End" />
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="Impuestos"
+                               Margin="20,0,0,0"
+                               HorizontalOptions="StartAndExpand" />
+                        <Label x:Name="txv_iva"
+                               Text="{Binding PriceIVA}"
+                               Margin="0,0,15,0"
+                               HorizontalOptions="EndAndExpand"
+                               HorizontalTextAlignment="End" />
+                    </StackLayout>
+
+                    <StackLayout Orientation="Horizontal"
+                                 Margin="0,10,0,0">
+                        <Label Text="TOTAL"
+                               FontAttributes="Bold"
+                               Margin="20,0,0,0"
+                               HorizontalOptions="StartAndExpand" />
+                        <Label x:Name="txv_total"
+                               Text="{Binding TotalPrice}"
+                               FontAttributes="Bold"
+                               Margin="0,0,15,0"
+                               HorizontalOptions="EndAndExpand"
+                               HorizontalTextAlignment="End" />
+                    </StackLayout>
+                </StackLayout>
+            </Frame>
+
+            <Frame Padding="8"
+                   Margin="0,15,0,0"
+                   BackgroundColor="White"
+                   CornerRadius="10"
+                   HasShadow="True">
+                <StackLayout>
+                    <Label Text="Políticas de cancelación"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           Margin="20,5,0,0" />
+                    <Label x:Name="txv_cancellation_policy"
+                           Text="La cancelación de la reservación puede hacerse hasta máximo un día antes de la fecha de inicio."
+                           Margin="20,5,20,0" />
+                </StackLayout>
+            </Frame>
+
+            
+
+            <ActivityIndicator x:Name="pgb_create_booking"
+                               IsRunning="False"
+                               IsVisible="False"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+        </StackLayout>
+    </ScrollView>
+
+
+
+        <ScrollView Grid.Column="1" >
+
+            <StackLayout >
+
+                <Label Text="{Binding AccommodationData.title}"
+        TextColor="#113E96"
+        FontSize="36"
+        MaxLines="2"
+        FontAttributes="Bold"
+        HorizontalOptions="Center"
+        VerticalOptions="Start"
+        />
+
+                <Image Source="{Binding MainImage}"
+            WidthRequest="470"
+            HeightRequest="300"
+            Margin="0,10,0,30"
+            Aspect="AspectFill"
+            VerticalOptions="Center" />
+
+                <Frame Padding="8"
+           Margin="0,0,20,0"
+           BackgroundColor="White"
+           CornerRadius="10"
+           HasShadow="True">
+                    <StackLayout Orientation="Horizontal">
+                        <StackLayout Margin="20,0,0,0">
+
+
+                            <Label Text="{Binding AccommodationType}"
+               TextColor="#333333"
+                                   FontSize="18"
+               FontAttributes="Bold"
+               Margin="0,15,0,0"
+               MaxLines="1" />
+
+                            <Label Text="{Binding AccommodationData.location.address}"
+               TextColor="#333333"
+               MaxLines="2" />
+
+                            <Label Text="{Binding NightPrice}"
+                   TextColor="#333333"
+                     FontSize="18"
+                   FontAttributes="Bold"
+                   MaxLines="2" />
+
+                        </StackLayout>
+                    </StackLayout>
+                </Frame>
+
+                <Label Text="Tu anfitrión"
+            TextColor="#333333"
+                FontAttributes="Bold"
+                 Margin="0,15,0,0"
+            MaxLines="1" />
+
+                <Grid RowSpacing="0" ColumnSpacing="0" Padding="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Frame BackgroundColor="White"
+                    Margin="0,0,10,0"
+                   Padding="0"
+                   HasShadow="True"
+                   VerticalOptions="Start"
+                   WidthRequest="500">
+                        <StackLayout Orientation="Vertical">
+                            <Grid RowSpacing="0" ColumnSpacing="0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Profile Picture -->
+                                <Grid Grid.Row="0" Grid.Column="0" Padding="10">
+                                    <Frame WidthRequest="60" HeightRequest="60" CornerRadius="70" HorizontalOptions="Center" VerticalOptions="Start" Background="#707070">
+                                        <Image Source="{Binding ProfilePhotoHost}"/>
+                                    </Frame>
+                                </Grid>
+
+                                <!-- Guest Name and Rating -->
+                                <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Vertical" Padding="10,5,0,0">
+                                    <Label Text="{Binding AccommodationData.user.fullName}"
+                            FontAttributes="Bold"
+                            LineBreakMode="TailTruncation"/>
+                                    <Label Text="{Binding AccommodationData.user.phoneNumber}"
+                                FontAttributes="Bold"
+                            LineBreakMode="TailTruncation"/>
+                                </StackLayout>
+                            </Grid>
+                        </StackLayout>
+                    </Frame>
+                </Grid>
+
+                <Button x:Name="btn_save_booking"
+    Text="Confirmar reservación"
+    Margin="20,20,20,20"
+    VerticalOptions="End" />
+
+
+            </StackLayout>
+        </ScrollView>
+
+    </Grid>
+</ContentPage>
