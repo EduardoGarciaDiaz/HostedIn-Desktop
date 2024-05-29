@@ -85,7 +85,7 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
     [RelayCommand]
     private void EditAccommodation(Accommodation accommodation)
     {
-        CurrentView = new EditAccommodation(new EditAccommodationViewModel(accommodation));
+        CurrentView = new EditAccommodation(accommodation);
         EditVisitble = true;
         ButtonVisitble = !EditVisitble;
     }

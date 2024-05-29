@@ -5,9 +5,12 @@ namespace HostedInDesktop.Views;
 
 public partial class EditAccommodation : ContentView
 {
-	public EditAccommodation(EditAccommodationViewModel viewModel)
+	public EditAccommodation(Accommodation accommodation)
 	{
 		InitializeComponent();
-		BindingContext = viewModel;
+		if(BindingContext is EditAccommodationViewModel editAccommodationViewModel){			
+			editAccommodationViewModel.Accommodation = accommodation;
+		}
+		
 	}
 }
