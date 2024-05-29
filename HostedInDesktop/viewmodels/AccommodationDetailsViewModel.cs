@@ -69,6 +69,16 @@ namespace HostedInDesktop.viewmodels
             await Shell.Current.GoToAsync(nameof(GuestView));
         }
 
+        [RelayCommand]
+        public async void GoToBooking()
+        {
+            if (AccommodationData != null)
+            {
+                _sharedService.Add<Accommodation>(AccommodationDetailsViewModel.ACCOMMODATION_KEY, AccommodationData);
+                await Shell.Current.GoToAsync(nameof(AccommodationBooking));
+            }
+        }
+
         private void LoadAccommodationData()
         {
             try

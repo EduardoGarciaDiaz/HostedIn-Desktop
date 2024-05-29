@@ -31,6 +31,7 @@ namespace HostedInDesktop
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+
             builder.Services.AddSingleton<IMapService, MapService>();
 
             builder.Services.AddSingleton<LoginViewModel>();
@@ -73,6 +74,9 @@ namespace HostedInDesktop
 
             builder.Services.AddTransient<GuestViewViewModel>();
             builder.Services.AddTransient<HostViewViewModel>();
+            
+            builder.Services.AddSingleton<AccommodationBookingViewModel>();
+            builder.Services.AddSingleton<AccommodationBooking>();
 
             builder.Services.AddSingleton<ISharedService, SharedService>();
                 /*            builder.Services.AddScoped(services =>
