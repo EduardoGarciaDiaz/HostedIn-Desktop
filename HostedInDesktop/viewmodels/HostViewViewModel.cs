@@ -16,7 +16,7 @@ namespace HostedInDesktop.viewmodels
 
         public HostViewViewModel()
         {
-            CurrentView = new HostBookedAccommodations(new AcoommodationsBookedHostViewModel());
+            CurrentView = App.ContentViewHost;
         }
 
         [RelayCommand]

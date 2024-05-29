@@ -87,7 +87,7 @@ namespace HostedInDesktop.viewmodels
         {
             if (App.hostMode)
             {
-
+                await Shell.Current.GoToAsync(nameof(BookingDetailsView));
             }
             else
             {

@@ -19,6 +19,7 @@ public partial class CancelationReasonsView : ContentPage
         SetReasons();
         BindingContext = ServiceHelper.GetService<CancelationReasonsViewModel>();
 		viewModel = (CancelationReasonsViewModel)BindingContext;
+		rbtnReasonOne.IsChecked = true;
 	}
 
     private void RadioButton_CheckedChanged(object sender, CheckedChangedEventArgs e)

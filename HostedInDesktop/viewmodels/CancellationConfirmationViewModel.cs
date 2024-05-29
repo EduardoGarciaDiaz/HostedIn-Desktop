@@ -94,8 +94,17 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public async Task GoBookings()
         {
-            App.contentToShow = new BookingsView();
-            await Shell.Current.GoToAsync(nameof(GuestView));
+            if (!App.hostMode)
+            {
+                App.contentToShow = new BookingsView();
+                await Shell.Current.GoToAsync(nameof(GuestView));
+            }
+            else
+            {
+                App.ContentViewHost = new HostBookedAccommodations(new AcoommodationsBookedHostViewModel());
+
+                await Shell.Current.GoToAsync(nameof(HostView));
+            }
         }
 
         public async Task GetImage(string id)

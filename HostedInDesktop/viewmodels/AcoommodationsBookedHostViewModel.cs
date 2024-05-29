@@ -1,8 +1,13 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
+using HostedInDesktop.Helper;
+using HostedInDesktop.Messages;
 using HostedInDesktop.Utils;
+using HostedInDesktop.Views;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -36,7 +41,7 @@ namespace HostedInDesktop.viewmodels
                 Accommodations.Clear();
                 foreach (var accommodation in accommodations)
                 {
-                    var accommodationViewModel = new AccommodationBookingsViewModel(accommodation);
+                    var accommodationViewModel = new AccommodationBookingsViewModel(accommodation, ServiceHelper.GetService<ISharedService>());
                     await accommodationViewModel.LoadBookingsAsync(_bookingService);
                     await LoadAccommodationImageAsync(accommodationViewModel);
                     Accommodations.Add(accommodationViewModel); 
@@ -84,8 +89,10 @@ namespace HostedInDesktop.viewmodels
         public ObservableCollection<Booking> Bookings { get; }
 
 
-        public AccommodationBookingsViewModel(Accommodation accommodation)
+        ISharedService _sharedService;
+        public AccommodationBookingsViewModel(Accommodation accommodation, ISharedService sharedService)
         {
+            _sharedService = sharedService;
             _accommodation = accommodation;
             Bookings = new ObservableCollection<Booking>();
         }
@@ -115,9 +122,25 @@ namespace HostedInDesktop.viewmodels
         }
 
         [RelayCommand]
-        private void WatchBookingDetails(Booking booking)
+        private async Task WatchBookingDetails(Booking booking)
         {
-            Shell.Current.DisplayAlert("Ir a detalles", $"Ver detalles reservacion: {booking.guestUser.fullName}", "Ok");
+            try
+            {
+                if (booking is null)
+                {
+                    return;
+                }
+                MultimediaServiceImpl multimediaServiceImpl = new MultimediaServiceImpl();
+                booking.accommodation.mainImage = await multimediaServiceImpl.LoadMainImageAccommodation(booking.accommodation._id, 0); 
+                _sharedService.Add<Booking>("BookingDetail", booking);
+                WeakReferenceMessenger.Default.Send(new BookingSelectedMessage(booking));
+                await Shell.Current.GoToAsync(nameof(BookingDetailsView));
+            }
+            catch
+            (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         

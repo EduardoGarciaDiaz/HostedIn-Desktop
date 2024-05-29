@@ -144,6 +144,8 @@ namespace HostedInDesktop.viewmodels
             } 
             else if (_currentViewIndex == 0)
             {
+                App.hostMode = true;
+                App.ContentViewHost = new HostAccommodationsView(new AccommodationsOwnedViewModel());
                 await Shell.Current.GoToAsync(nameof(HostView));
             }
         }
@@ -278,6 +280,7 @@ namespace HostedInDesktop.viewmodels
                         {
                             await Shell.Current.DisplayAlert("Alojamiento creado", "Tu alojamiento se ha creado con éxito", "Ok");
                             ResetForm();
+                            App.ContentViewHost = new HostAccommodationsView(new AccommodationsOwnedViewModel());
                             await Shell.Current.GoToAsync(nameof(HostView));
                         }
                     } 
