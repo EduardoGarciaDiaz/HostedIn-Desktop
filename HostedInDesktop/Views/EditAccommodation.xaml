@@ -24,8 +24,8 @@
             <toolkit:MediaElement Source="{Binding VideoFilePath}" ShouldAutoPlay="True"/>
         </Frame>
         
-       <HorizontalStackLayout HorizontalOptions="Center" Margin="5">
-            <Button x:Name="btn_go_back" Text="&#x25C0;" Command="{Binding GoBackCommand}"  />
+       <HorizontalStackLayout HorizontalOptions="Center" Margin="5" >
+            <Button x:Name="btn_go_back" Text="&#x25C0;" Command="{Binding GoBackCommand}" />
             <Button x:Name="btn_go_ahead" Text="&#x25B6;" Command="{Binding GoAheadCommand}" />
         </HorizontalStackLayout>
         

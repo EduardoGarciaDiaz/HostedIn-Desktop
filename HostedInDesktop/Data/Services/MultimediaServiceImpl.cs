@@ -1,4 +1,5 @@
-﻿using Grpc;
+﻿using Google.Protobuf;
+using Grpc;
 using Grpc.Core;
 using Grpc.Net.Client;
 using System;
@@ -17,6 +18,7 @@ namespace HostedInDesktop.Data.Services
         { 
         }
 
+        
         public async Task<byte[]> LoadMainImageAccommodation(string _id, int index)
         {
 
@@ -50,5 +52,36 @@ namespace HostedInDesktop.Data.Services
             }
         }
 
+
+        public async Task<string> SaveImagesAccommodation(string _id, ByteString[] imageBytes)
+        {
+
+            try
+            {
+                using var channel = GrpcChannel.ForAddress("http://127.0.0.1:3002");
+                global::MultimediaService.MultimediaServiceClient stub = new(channel);
+
+                using var call = stub.uploadAccommodationMultimedia();
+
+                foreach (var item in imageBytes)
+                {
+                    await call.RequestStream.WriteAsync(new UploadMultimediaRequest
+                    {
+                        ModelId = _id,
+                        Data = item
+                    });
+                }                
+                await call.RequestStream.CompleteAsync();
+                var response = await call.ResponseAsync;
+
+                return response.Description;
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
     }
 }

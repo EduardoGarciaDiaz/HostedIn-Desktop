@@ -42,7 +42,7 @@ public partial class AccommodationFormLocation : ContentView
         _viewModel.SelectedLocation = location;
     }
 
-    public AccommodationFormLocation(EditAccommodationFormViewModel viewModel)
+    public AccommodationFormLocation(EditAccommodationFormViewModel viewModel, Accommodation accommodation)
     {
         InitializeComponent();
         _editViewModel = viewModel;
@@ -50,14 +50,18 @@ public partial class AccommodationFormLocation : ContentView
 
         var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 
+
         var configuration = builder.Build();
         _mapServiceToken = configuration["MapService:Token"];
 
+        lblLatitude.Text = accommodation.location.latitude.ToString();
+        lblLongitude.Text = accommodation.location.longitude.ToString();
+
         Location location = new Location
         {
-            latitude = Double.Parse(lblLongitude.Text.ToString()),
+            latitude = Double.Parse(lblLatitude.Text.ToString()),
             longitude = Double.Parse(lblLongitude.Text.ToString()),
-            address = lblAddress.Text.ToString()
+            address = accommodation.location.address.ToString()
         };
 
         _editViewModel.SelectedLocation = location;

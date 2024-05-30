@@ -207,12 +207,10 @@ public class AccommodationsService : IAccommodationsService
         {
             var httpClient = APIClient.GetHttpClient();
             httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.token);
-
             var settings = new JsonSerializerSettings
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
-
             var json = JsonConvert.SerializeObject(accommodation, settings);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             string url = $"accommodations/{accommodation._id}/";
@@ -241,5 +239,37 @@ public class AccommodationsService : IAccommodationsService
             throw;
         }
     }
+
+    public async Task<string> DeleteAccommodation(string accommodationId)
+    {
+        try
+        {
+
+            var httpClient = APIClient.GetHttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.token);
+            string url = $"accommodations/{accommodationId}/";
+            HttpResponseMessage response = await httpClient.DeleteAsync(url);
+            if (response.IsSuccessStatusCode)
+            {
+
+                DeleteAccommodationResponse accommodationResponse = await response.Content.ReadFromJsonAsync<DeleteAccommodationResponse>();
+                return await Task.FromResult(accommodationResponse.Message);
+            }
+            else
+            {
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                JObject jsonObject = JObject.Parse(jsonResponse);
+                string errorMessage = (string)jsonObject["message"];
+                throw new ApiException(errorMessage);
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
+    }
+
+
 }
 

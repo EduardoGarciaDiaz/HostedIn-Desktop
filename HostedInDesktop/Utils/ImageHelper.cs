@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Google.Protobuf;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -46,4 +47,33 @@ public static class ImageHelper
 
         return filePath;
     }
+
+    public static async Task<ByteString> ConvertImageSourceToByteString(ImageSource imageSource)
+    {
+        if (imageSource is StreamImageSource streamImageSource)
+        {
+            using var stream = await streamImageSource.Stream(CancellationToken.None);
+            using var memoryStream = new MemoryStream();
+            await stream.CopyToAsync(memoryStream);
+            byte[] imageBytes = memoryStream.ToArray();
+            return ByteString.CopyFrom(imageBytes);
+        }
+        else if (imageSource is FileImageSource fileImageSource)
+        {
+            string filePath = fileImageSource.File;
+            byte[] imageBytes = await File.ReadAllBytesAsync(filePath);
+            return ByteString.CopyFrom(imageBytes);
+        }
+        else if (imageSource is UriImageSource uriImageSource)
+        {
+            using var httpClient = new HttpClient();
+            byte[] imageBytes = await httpClient.GetByteArrayAsync(uriImageSource.Uri);
+            return ByteString.CopyFrom(imageBytes);
+        }
+        else
+        {
+            throw new NotSupportedException("Unsupported ImageSource type");
+        }
+    }
+
 }

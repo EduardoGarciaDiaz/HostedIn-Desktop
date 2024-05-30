@@ -36,12 +36,13 @@
 
             <!--{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccommodationFormViewModel}}, Path=SelectImageCommand}-->
 
-            <StackLayout Orientation="Horizontal" >
+            <StackLayout Orientation="Horizontal" 
+                       HorizontalOptions="Center">
                 <Frame x:Name="rtlySecondImage"
-       HeightRequest="150"
-       BackgroundColor="#DDDDDD"
-       CornerRadius="5"
-       Margin="5">
+                   HeightRequest="150"
+                   BackgroundColor="#DDDDDD"
+                   CornerRadius="5"
+                   Margin="5">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectImageCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
                 CommandParameter="SecondImage" />
