@@ -5,6 +5,7 @@ using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Messages;
+using HostedInDesktop.Utils;
 using HostedInDesktop.Views;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,10 @@ namespace HostedInDesktop.viewmodels
 
         [ObservableProperty]
         private ImageSource _imageSource;
+
+        [ObservableProperty]
+        private String _bookingStatus;
+
 
         readonly ISharedService _SharedService;
 
@@ -87,6 +92,7 @@ namespace HostedInDesktop.viewmodels
             Title = selectedBooking.accommodation.title;
             PersonsNumber = selectedBooking.numberOfGuests;
             TotalCost = $"${selectedBooking.totalCost:F2} MXN";
+            BookingStatus = TranslatorToSpanish.TranslateBookingStatusValue(selectedBooking.bookingStatus);
             _ = GetImage(selectedBooking.accommodation._id);
             if (!App.hostMode)
             {
