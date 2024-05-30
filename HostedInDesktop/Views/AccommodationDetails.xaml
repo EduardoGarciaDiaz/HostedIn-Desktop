@@ -322,6 +322,7 @@
         <Button x:Name="btn_booking"
                 Text="Reservar"
                 VerticalOptions="End"
+                Command="{Binding GoToBookingCommand}"
                 Margin="10,0,10,2" />
 
         <!-- ProgressBar -->

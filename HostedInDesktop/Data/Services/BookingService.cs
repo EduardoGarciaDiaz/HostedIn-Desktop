@@ -1,4 +1,5 @@
-﻿using HostedInDesktop.Data.Models;
+﻿using HostedInDesktop.Data.JsonConverters;
+using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services.Responses;
 using HostedInDesktop.Utils;
 using Newtonsoft.Json;
@@ -6,7 +7,9 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Json;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 
@@ -69,6 +72,48 @@ public class BookingService : IBookingService
                 {
                     throw new ApiException("Servicio no disponible en este momento");
                 }
+            }
+            else
+            {
+                string jsonResponse = await response.Content.ReadAsStringAsync();
+                JObject jsonObject = JObject.Parse(jsonResponse);
+                string errorMessage = (string)jsonObject["message"];
+                throw new ApiException(errorMessage);
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
+    public async Task<Booking> CreateBooking(Booking booking)
+    {
+        try
+        {
+            var httpClient = APIClient.GetHttpClient();
+            httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.token);
+
+            var settings = new JsonSerializerSettings
+            {
+                NullValueHandling = NullValueHandling.Ignore
+            };
+
+            var json = JsonConvert.SerializeObject(booking, settings);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await httpClient.PostAsync("bookings/", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var options = new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                    Converters = { new ProfilePhotoConverter() }
+                };
+
+                BookingResponse bookingResponse = await response.Content.ReadFromJsonAsync<BookingResponse>(options);
+
+                return await Task.FromResult(bookingResponse.booking);
             }
             else
             {
