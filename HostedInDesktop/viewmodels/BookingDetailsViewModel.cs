@@ -48,7 +48,10 @@ namespace HostedInDesktop.viewmodels
         private ImageSource _imageSource;
 
         [ObservableProperty]
-        private String _bookingStatus;
+        private String _selectetedBookingStatus;
+
+        [ObservableProperty]
+        private bool isRatingButtonVisible;
 
 
         readonly ISharedService _SharedService;
@@ -92,7 +95,15 @@ namespace HostedInDesktop.viewmodels
             Title = selectedBooking.accommodation.title;
             PersonsNumber = selectedBooking.numberOfGuests;
             TotalCost = $"${selectedBooking.totalCost:F2} MXN";
-            BookingStatus = TranslatorToSpanish.TranslateBookingStatusValue(selectedBooking.bookingStatus);
+            SelectetedBookingStatus = TranslatorToSpanish.TranslateBookingStatusValue(selectedBooking.bookingStatus);
+            if(selectedBooking.bookingStatus.Equals(BookingStatus.CURRENT.GetDescription()))
+            {
+                IsRatingButtonVisible = false;
+            }
+            else
+            {
+                IsRatingButtonVisible = true;
+            }
             _ = GetImage(selectedBooking.accommodation._id);
             if (!App.hostMode)
             {
@@ -114,6 +125,16 @@ namespace HostedInDesktop.viewmodels
             _SharedService.Add<Booking>("BookingToCancel", SelectedBooking);
             WeakReferenceMessenger.Default.Send(new BookingToCancelMessage(SelectedBooking));
             await Shell.Current.GoToAsync(nameof(CancelationReasonsView));
+        }
+
+        [RelayCommand]
+        public async Task OnRateBookingClicked()
+        {
+            var navegationParameters = new ShellNavigationQueryParameters
+            {
+                {"Booking", SelectedBooking}
+            };
+            await Shell.Current.GoToAsync(nameof(AccommodationBookingReview), navegationParameters);
         }
 
         [RelayCommand]

@@ -136,6 +136,9 @@
 	  <MauiXaml Update="Views\AccommodationBooking.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Views\AccommodationBookingReview.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Views\AccommodationDetails.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

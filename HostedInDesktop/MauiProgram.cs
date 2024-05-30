@@ -78,6 +78,10 @@ namespace HostedInDesktop
             builder.Services.AddSingleton<AccommodationBookingViewModel>();
             builder.Services.AddSingleton<AccommodationBooking>();
 
+            builder.Services.AddTransient<AccommodationBookingsViewModel>();
+            builder.Services.AddTransient<AccommodationBookingReview>();
+
+
             builder.Services.AddSingleton<ISharedService, SharedService>();
                 /*            builder.Services.AddScoped(services =>
             {

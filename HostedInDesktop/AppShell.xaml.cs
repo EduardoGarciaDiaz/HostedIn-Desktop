@@ -22,6 +22,7 @@ namespace HostedInDesktop
             Routing.RegisterRoute(nameof(CancelationReasonsView), typeof(CancelationReasonsView));
             Routing.RegisterRoute(nameof(CancellationConfirmationView), typeof(CancellationConfirmationView));
             Routing.RegisterRoute(nameof(AccommodationBooking), typeof(AccommodationBooking));
+            Routing.RegisterRoute(nameof(AccommodationBookingReview), typeof(AccommodationBookingReview));
         }
     }
 }
