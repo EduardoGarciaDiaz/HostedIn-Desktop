@@ -40,8 +40,8 @@
 
             <ActivityIndicator
                 x:Name="pgb_create_accommodation"
-                IsRunning="False"
-                IsVisible="False"
+                IsRunning="{Binding IsLoading}"
+                IsVisible="{Binding IsLoading}"
                 Margin="0,20,0,0" />
         </StackLayout>
     </Grid>

@@ -24,6 +24,9 @@ namespace HostedInDesktop.viewmodels
         }
 
         [ObservableProperty]
+        private bool isLoading;
+
+        [ObservableProperty]
         private string fullname;
 
         [ObservableProperty]
@@ -74,6 +77,8 @@ namespace HostedInDesktop.viewmodels
             {
                 try
                 {
+                    IsLoading = true;
+
                     if (!string.IsNullOrWhiteSpace(_userId))
                     {
                         User user = await _userService.GetUserById(_userId);
@@ -104,6 +109,10 @@ namespace HostedInDesktop.viewmodels
                 {
                     await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
                     return;
+                }
+                finally
+                {
+                    IsLoading = false;
                 }
             }
         }

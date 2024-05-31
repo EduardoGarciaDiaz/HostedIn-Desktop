@@ -129,10 +129,11 @@
         <!-- Progress Bar -->
         <ActivityIndicator
                 x:Name="pgb_profile"
-                IsRunning="False"
+                IsRunning="{Binding IsLoading}"
+                IsVisible="{Binding IsLoading}"
                 HorizontalOptions="Center"
                 VerticalOptions="Center"
-                IsVisible="False" />
+                />
 
     </Grid>
     

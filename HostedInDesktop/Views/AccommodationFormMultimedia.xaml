@@ -6,94 +6,101 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit">
 
     <ScrollView VerticalOptions="FillAndExpand">
-        <StackLayout Padding="10">
-            <Label x:Name="multimediaInstructionLabel"
-                   Text="Muéstrales a tus huéspedes el alojamiento"
-                   TextColor="#5280DB"
-                   FontSize="18"
-                   FontAttributes="Bold"
-                   Margin="0,10,0,10"/>
 
-            <Frame x:Name="rtlyMainImage"
-                   HeightRequest="200"
-                   WidthRequest="800"
-                   BackgroundColor="#DDDDDD"
-                   CornerRadius="5"
-                   Margin="0,0,0,10">
-                <Frame.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectImageCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                                CommandParameter="MainImage" />
-                </Frame.GestureRecognizers>
-                <Image x:Name="imvMainImage"
-                       HeightRequest="200"
-                       WidthRequest="500"
-                       Source="{Binding MainImage}"
-                       HorizontalOptions="Center"
-                       VerticalOptions="Center"
-                      >
-                </Image>
-            </Frame>
+        <StackLayout Orientation="Horizontal">
+            
+            <StackLayout Padding="10" Margin="10,0,10,0">
 
-            <!--{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccommodationFormViewModel}}, Path=SelectImageCommand}-->
+                <StackLayout>
+                    <Label x:Name="multimediaInstructionLabel"
+                    Text="Muéstrales a tus huéspedes el alojamiento"
+                    TextColor="#5280DB"
+                    FontSize="18"
+                    FontAttributes="Bold"/>
+                    <Label
+                        Text="Haz clic en los recuadros para seleccionar las imagenes y video"
+                        TextColor="#5280DB"
+                        Margin="0,0,0,10"/>
+                        </StackLayout>
+                
 
-            <StackLayout Orientation="Horizontal" 
-                       HorizontalOptions="Center">
-                <Frame x:Name="rtlySecondImage"
-                   HeightRequest="150"
-                   BackgroundColor="#DDDDDD"
-                   CornerRadius="5"
-                   Margin="5">
+                <Frame x:Name="rtlyMainImage"
+                    HeightRequest="300"
+                    WidthRequest="600"
+                    BackgroundColor="#DDDDDD"
+                    CornerRadius="5"
+                    Margin="0,0,0,10">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectImageCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                CommandParameter="SecondImage" />
+                         CommandParameter="MainImage" />
                     </Frame.GestureRecognizers>
-
-                    <Image x:Name="imvSecondImage"
-           Source="{Binding SecondImage}"
-           HorizontalOptions="Center"
-           VerticalOptions="Center"
-                           HeightRequest="150"
-WidthRequest="200"
-           />
+                    <Image x:Name="imvMainImage"
+                         Aspect="AspectFit"
+                        Source="{Binding MainImage}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center">
+                    </Image>
                 </Frame>
 
-                <Frame x:Name="rtlyThirdImage"
-       HeightRequest="150"
-       BackgroundColor="#DDDDDD"
-       CornerRadius="5"
-       Margin="5">
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectImageCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                CommandParameter="ThirdImage" />
-                    </Frame.GestureRecognizers>
-                    <Image x:Name="imvThirdImage"
-           Source="{Binding ThirdImage}"
-           HorizontalOptions="Center"
-           VerticalOptions="Center"
-           HeightRequest="150"
-           WidthRequest="200"
-           />
-                </Frame>
+                <StackLayout Orientation="Horizontal" 
+                    HorizontalOptions="Center">
+                    
+                    <Frame x:Name="rtlySecondImage"
+                        HeightRequest="200"
+                           WidthRequest="300"
+                        BackgroundColor="#DDDDDD"
+                        CornerRadius="5"
+                        Margin="5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectImageCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                CommandParameter="SecondImage" />
+                        </Frame.GestureRecognizers>
+
+                        <Image x:Name="imvSecondImage"
+                        Source="{Binding SecondImage}"
+                        HorizontalOptions="Center"
+                        VerticalOptions="Center"
+                        Aspect="AspectFit"
+                    />
+                    </Frame>
+
+                    <Frame x:Name="rtlyThirdImage"
+                        HeightRequest="200"
+                           WidthRequest="300"
+                        BackgroundColor="#DDDDDD"
+                        CornerRadius="5"
+                        Margin="5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectImageCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
+                                CommandParameter="ThirdImage" />
+                        </Frame.GestureRecognizers>
+                        <Image x:Name="imvThirdImage"
+                            Source="{Binding ThirdImage}"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            Aspect="AspectFit"
+                               />
+                    </Frame>
+                </StackLayout>
             </StackLayout>
 
             <Frame x:Name="rtlyFourthVideo"
-                HeightRequest="250"
-                BackgroundColor="#DDDDDD"
-                CornerRadius="5"
-                Margin="0,0,0,10">
+            HeightRequest="420"
+            BackgroundColor="#DDDDDD"
+            CornerRadius="5">
                 <Frame.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding Path=BindingContext.SelectMediaCommand, Source={RelativeSource AncestorType={x:Type ContentPage}}}"
-                                CommandParameter="Video" />
+                    CommandParameter="Video" />
                 </Frame.GestureRecognizers>
                 <!-- You can add MediaElement here -->
                 <toolkit:MediaElement 
-             HeightRequest="250"
-              x:Name="imvFourthVideo"
-            Source="{Binding VideoPath}"  
-             ShouldAutoPlay="True"
-             Aspect="AspectFit" />
+                    HeightRequest="400"
+                    WidthRequest="600"
+                    x:Name="imvFourthVideo"
+                    Source="{Binding VideoPath}"  
+                     ShouldAutoPlay="True"
+                     Aspect="AspectFit" />
             </Frame>
-            <!--{Binding Source={RelativeSource AncestorType={x:Type viewmodel:AccommodationFormViewModel}}, Path=SelectMediaCommand}-->
         </StackLayout>
     </ScrollView>
 </ContentView>

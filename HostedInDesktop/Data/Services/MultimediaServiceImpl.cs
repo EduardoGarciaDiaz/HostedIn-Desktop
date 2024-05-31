@@ -8,7 +8,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace HostedInDesktop.Data.Services
 {
     public class MultimediaServiceImpl
@@ -18,13 +17,12 @@ namespace HostedInDesktop.Data.Services
         { 
         }
 
-        
         public async Task<byte[]> LoadMainImageAccommodation(string _id, int index)
         {
 
             try
             {
-                using var channel = GrpcChannel.ForAddress("http://127.0.0.1:3002");
+                using var channel = GrpcChannel.ForAddress(Utils.GrcpServerData.BASE_ADDRESS);
                 global::MultimediaService.MultimediaServiceClient stub = new(channel);
                 DownloadMultimediaRequest downloadMultimediaRequest = new()
                 {
@@ -52,13 +50,11 @@ namespace HostedInDesktop.Data.Services
             }
         }
 
-
         public async Task<string> SaveImagesAccommodation(string _id, ByteString[] imageBytes)
         {
-
             try
             {
-                using var channel = GrpcChannel.ForAddress("http://127.0.0.1:3002");
+                using var channel = GrpcChannel.ForAddress(Utils.GrcpServerData.BASE_ADDRESS);
                 global::MultimediaService.MultimediaServiceClient stub = new(channel);
 
                 using var call = stub.uploadAccommodationMultimedia();
@@ -71,6 +67,36 @@ namespace HostedInDesktop.Data.Services
                         Data = item
                     });
                 }                
+                await call.RequestStream.CompleteAsync();
+                var response = await call.ResponseAsync;
+
+                return response.Description;
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        public async Task<string> UploadProfilePhoto(string userId, ByteString[] imageBytes)
+        {
+            try
+            {
+                using var channel = GrpcChannel.ForAddress(Utils.GrcpServerData.BASE_ADDRESS);
+                global::MultimediaService.MultimediaServiceClient stub = new(channel);
+
+                using var call = stub.uploadProfilePhoto();
+
+                foreach (var item in imageBytes)
+                {
+                    await call.RequestStream.WriteAsync(new UploadMultimediaRequest
+                    {
+                        ModelId = userId,
+                        Data = item
+                    });
+                }
                 await call.RequestStream.CompleteAsync();
                 var response = await call.ResponseAsync;
 
