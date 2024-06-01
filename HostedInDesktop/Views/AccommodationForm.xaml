@@ -3,12 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="HostedInDesktop.Views.AccommodationForm"
              xmlns:viewmodel="clr-namespace:HostedInDesktop.viewmodels"
-             Title="AccommodationForm">
+             >
 
     <ContentPage.BindingContext>
         <viewmodel:AccommodationFormViewModel/>
     </ContentPage.BindingContext>
-
 
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
@@ -40,7 +39,7 @@
                 Command="{Binding NextCommand}"
                 x:Name="btn_next"
                 Text="Siguiente"
-                Margin="10,2,10,0"
+                Margin="10,0,10,20"
                 VerticalOptions="Center"/>
 
             <ActivityIndicator

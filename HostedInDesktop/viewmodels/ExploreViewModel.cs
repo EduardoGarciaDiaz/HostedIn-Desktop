@@ -1,8 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
+using HostedInDesktop.Messages;
 using HostedInDesktop.Utils;
 using HostedInDesktop.Views;
 using System;
@@ -79,6 +81,7 @@ namespace HostedInDesktop.viewmodels
             if (selectedAccommodation != null)
             {
                 _sharedService.Add<Accommodation>(AccommodationDetailsViewModel.ACCOMMODATION_KEY, selectedAccommodation);
+                WeakReferenceMessenger.Default.Send(new AccommodationSelectedMessage(selectedAccommodation));
                 await Shell.Current.GoToAsync(nameof(AccommodationDetails));
             }
         }

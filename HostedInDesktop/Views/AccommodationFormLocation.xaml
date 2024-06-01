@@ -4,9 +4,11 @@
              xmlns:mapsui="clr-namespace:Mapsui.UI.Maui;assembly=Mapsui.UI.Maui"
              xmlns:maps="clr-namespace:GoogleApi;assembly=GoogleApi"
              x:Class="HostedInDesktop.Views.AccommodationFormLocation">
-    <StackLayout Margin="25">
 
-        <Label
+    <ScrollView HeightRequest="620">
+        <StackLayout Margin="25">
+
+            <Label
             x:Name="txv_location_instruction"
             Text="¿Dónde se encuentra tu alojamiento?"
             TextColor="#5280DB"
@@ -14,61 +16,65 @@
             FontAttributes="Bold"
             Margin="0,5,0,0"/>
 
-        <Label
-            Text="Detalla la dirección de tu alojamiento"
+            <Label
+            Text="Selecciona la ubicación de tu alojamiento haciendo clic en el mapa"
             Margin="0,18,0,0"/>
 
-        <StackLayout
+            <StackLayout
             x:Name="lnly_search_bar"
             Orientation="Horizontal"
             Margin="0,15,0,0">
 
-            <Entry
+                <Entry
                 x:Name="etx_location_search"
                 Placeholder="Ubicación"
                 InputTransparent="False"
-                Text="" />
+                Text="" 
+                    
+                IsVisible="False"/>
 
-            <Button x:Name="btn_search_location" Text="Buscar" HeightRequest="50" Clicked="OnSearchLocationClicked"/>
+                <Button x:Name="btn_search_location" Text="Buscar" HeightRequest="50" Clicked="OnSearchLocationClicked"
+                        IsVisible="False"/>
 
-        </StackLayout>
+            </StackLayout>
 
 
-        <!--<Label
-            Text="Puedes ajustar tu ubicación manteniendo el marcador rojo y arrastrándolo al lugar en dónde se encuentra tu alojamiento"
+            <!--<Label
+        Text="Puedes ajustar tu ubicación manteniendo el marcador rojo y arrastrándolo al lugar en dónde se encuentra tu alojamiento"
+        TextColor="#5280DB"
+        FontSize="13"
+        Margin="0,15,0,0"/>-->
+
+            <mapsui:MapView x:Name="mapView" HeightRequest="250"/>
+
+
+            <Label
+            Text="LATITUD: "
             TextColor="#5280DB"
             FontSize="13"
-            Margin="0,15,0,0"/>-->
+            Margin="0,15,0,0"/>
 
-        <mapsui:MapView x:Name="mapView" HeightRequest="100"/>
-        
-
-        <Label
-    Text="LATITUD: "
-    TextColor="#5280DB"
-    FontSize="13"
-    Margin="0,15,0,0"/>
-
-        <Entry x:Name="lblLatitude" Text="19.541182" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0"/>
+            <Entry x:Name="lblLatitude" Text="19.541182" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0" IsEnabled="False"/>
 
 
-        <Label
-    Text="LONGTITUD:"
-    TextColor="#5280DB"
-    FontSize="13"
-    Margin="0,15,0,0"/>
+            <Label
+            Text="LONGTITUD:"
+            TextColor="#5280DB"
+            FontSize="13"
+            Margin="0,15,0,0"/>
 
-        <Entry x:Name="lblLongitude" Text="-96.9297779" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0"/>
+            <Entry x:Name="lblLongitude" Text="-96.9297779" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0" IsEnabled="False"/>
+
+            <Label
+            Text="DIRECCION: "
+            TextColor="#5280DB"
+            FontSize="13"
+            Margin="0,15,0,0"/>
+
+            <Entry x:Name="lblAddress" Text="FEI" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0"/>
 
 
-        <Label
-    Text="DIRECCION: "
-    TextColor="#5280DB"
-    FontSize="13"
-    Margin="0,15,0,0"/>
-
-        <Entry x:Name="lblAddress" Text="FEI" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0"/>
-
-
-    </StackLayout>
+        </StackLayout>
+    </ScrollView>
+    
 </ContentView>

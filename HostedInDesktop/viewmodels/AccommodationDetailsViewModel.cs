@@ -1,12 +1,19 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Enums;
+using HostedInDesktop.Messages;
 using HostedInDesktop.Utils;
 using HostedInDesktop.viewmodels.ModelObservable;
 using HostedInDesktop.Views;
+using Mapsui;
+using Mapsui.Extensions;
+using Mapsui.Projections;
+using Mapsui.Tiling;
+using Mapsui.UI.Maui;
 using Newtonsoft.Json;
 using Syncfusion.Maui.Core.Carousel;
 using System;
@@ -28,11 +35,19 @@ namespace HostedInDesktop.viewmodels
         [ObservableProperty]
         private Accommodation accommodationData;
 
+        partial void OnAccommodationDataChanged(Accommodation value)
+        {
+            
+        }
+
         [ObservableProperty]
         private bool isLoading;
 
         [ObservableProperty]
         private ObservableCollection<UserReview> userReview;
+
+        [ObservableProperty]
+        private string accommodationPrice;
 
         [ObservableProperty]
         private string accommodationType;
@@ -74,17 +89,32 @@ namespace HostedInDesktop.viewmodels
 
         [ObservableProperty]
         private ImageSource imageSource;
-             
+
+        [ObservableProperty]
+        private bool isCarouselButtonEnabled;
+
         public AccommodationDetailsViewModel(ISharedService sharedService)
         {
             _sharedService = sharedService;
+            WeakReferenceMessenger.Default.Register<AccommodationSelectedMessage>(this, (r, m) =>
+            {
+                AccommodationData = m.Value;
+                LoadAccommodationData();
+                UserReview = new ObservableCollection<UserReview>();
+                GetReviews();
+                isImage = true;
+                isVideo = false;
+                index = 0;
+
+                OnPropertyChanged(nameof(AccommodationData));
+            });
+
             LoadAccommodationData();
             UserReview = new ObservableCollection<UserReview>();
             GetReviews();
             isImage = true;
             isVideo = false;
             index = 0;
-
         }
 
         [RelayCommand]
@@ -100,6 +130,7 @@ namespace HostedInDesktop.viewmodels
             if (AccommodationData != null)
             {
                 _sharedService.Add<Accommodation>(AccommodationDetailsViewModel.ACCOMMODATION_KEY, AccommodationData);
+                WeakReferenceMessenger.Default.Send(new AccommodationBookingMessage(AccommodationData));
                 await Shell.Current.GoToAsync(nameof(AccommodationBooking));
             }
         }
@@ -111,12 +142,15 @@ namespace HostedInDesktop.viewmodels
                 IsLoading = true;
 
                 AccommodationData = _sharedService.GetValue<Accommodation>(ACCOMMODATION_KEY);
+                LoadAccommodationPrice();
                 LoadAccommodationType();
                 LoadAccommodationBasics();
                 LoadAccommodationServices();
                 LoadLocation();
                 LoadHostData();
-                await LoadAccommodationMultimedia();
+                IsCarouselButtonEnabled = false;
+                await LoadAccommodationMultimedias();
+                IsCarouselButtonEnabled = true;
             }
             catch (Exception ex)
             {
@@ -205,6 +239,13 @@ namespace HostedInDesktop.viewmodels
             }
         }
 
+        private void LoadAccommodationPrice()
+        {
+            double nightPrice = AccommodationData.nightPrice;
+            string price = $"${nightPrice} MXN por noche";
+            AccommodationPrice = price;
+        }
+
         private void LoadAccommodationType()
         {
             string type = AccommodationData.accommodationType;
@@ -282,37 +323,45 @@ namespace HostedInDesktop.viewmodels
             }
         }
 
-        private async Task LoadAccommodationMultimedia()
+        private async Task LoadAccommodationMultimedias()
         {
+            ImageSource imageSource;
+            MultimediaItems.Clear();
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (i == 3)
+                {
+                    await LoadAccommodationMultimedia(i, true);
+                }
+                else
+                {
+                    await LoadAccommodationMultimedia(i, false);
+                }
+            }
+
+            ImageSource = MultimediaItems[0];
+        }
+
+        private async Task LoadAccommodationMultimedia(int multimediaIndex, bool isVideo)
+        {
+            ImageSource imageSource1;
+            imageSource1 = ImageSource.FromFile("img_provisional.png");
+
             try
             {
                 IsLoading = true;
 
-                var imageBytes1 = await _multimediaService.LoadMainImageAccommodation(AccommodationData._id, 0);
-                var imageBytes2 = await _multimediaService.LoadMainImageAccommodation(AccommodationData._id, 1);
-                var imageBytes3 = await _multimediaService.LoadMainImageAccommodation(AccommodationData._id, 2);
-                var videoBytes4 = await _multimediaService.LoadMainImageAccommodation(AccommodationData._id, 3);
-                ImageSource imageSource1;
-                ImageSource imageSource2;
-                ImageSource imageSource3;
-                if (imageBytes1 == null)
-                {
-                    imageSource1 = ImageSource.FromFile("img_provisional.png");
-                    imageSource2 = ImageSource.FromFile("img_provisional.png");
-                    imageSource3 = ImageSource.FromFile("img_provisional.png");
-                }
-                else
+                var imageBytes1 = await _multimediaService.LoadMainImageAccommodation(AccommodationData._id, multimediaIndex);
+
+                if (imageBytes1 != null)
                 {
                     imageSource1 = ImageSource.FromStream(() => new MemoryStream(imageBytes1));
-                    imageSource2 = ImageSource.FromStream(() => new MemoryStream(imageBytes2));
-                    imageSource3 = ImageSource.FromStream(() => new MemoryStream(imageBytes3));
                 }
-                MultimediaItems.Clear();
                 MultimediaItems.Add(imageSource1);
-                MultimediaItems.Add(imageSource2);
-                MultimediaItems.Add(imageSource3);
-                VideoFilePath = await ImageHelper.SaveVideoToFileAsync(videoBytes4);
-                ImageSource = MultimediaItems[0];
+
+                if (isVideo)
+                    VideoFilePath = await ImageHelper.SaveVideoToFileAsync(imageBytes1);
             }
             catch (Exception e)
             {

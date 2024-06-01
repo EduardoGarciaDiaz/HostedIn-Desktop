@@ -1,9 +1,12 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using Google.Protobuf;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
+using HostedInDesktop.Messages;
 using HostedInDesktop.Utils;
+using HostedInDesktop.Views;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -36,6 +39,12 @@ namespace HostedInDesktop.viewmodels
 
         public EditProfileViewModel()
         {
+            WeakReferenceMessenger.Default.Register<EditProfileMessage>(this, (r, m) =>
+            {
+                UserData = m.Value;
+                LoadUserData();
+            });
+
             UserData = _user;
             LoadUserData();
         }
@@ -76,6 +85,8 @@ namespace HostedInDesktop.viewmodels
                         Fullname = user.fullName;
                         await UploadProfilePhoto();
                         await Shell.Current.DisplayAlert("Éxito", "Se ha actualizado tu información", "Ok");
+
+                        WeakReferenceMessenger.Default.Send(new ProfileMesssage(user));
                     }
                 }
                 catch (ApiException aex)
