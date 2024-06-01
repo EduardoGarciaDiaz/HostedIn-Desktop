@@ -37,8 +37,6 @@ namespace HostedInDesktop.Data.Services
                     if (response.Headers.TryGetValues("Authorization", out IEnumerable<string> values))
                     {
                         string authorizationHeaderValue = values.FirstOrDefault();
-                        // Hacer algo con el valor del encabezado de autorización
-                        Console.WriteLine($"Authorization Header: {authorizationHeaderValue}");
                         App.token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
                     }
                     return await Task.FromResult(signinResponse.user);
@@ -70,7 +68,6 @@ namespace HostedInDesktop.Data.Services
                     if (response.Headers.TryGetValues("Authorization", out IEnumerable<string> values))
                     {
                         string authorizationHeaderValue = values.FirstOrDefault();
-                        // Hacer algo con el valor del encabezado de autorización
                         App.token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
                     }
                     return await Task.FromResult(signinResponse.user);

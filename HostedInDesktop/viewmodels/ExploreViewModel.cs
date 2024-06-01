@@ -57,7 +57,12 @@ namespace HostedInDesktop.viewmodels
                     LoadAccommodationImageAsync(accommodation);
                 }
             }
-            catch(ApiException aex)
+            catch (UnauthorizedAccessException)
+            {
+                await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+                await Shell.Current.GoToAsync("///Login");
+            }
+            catch (ApiException aex)
                 {
                 await Shell.Current.DisplayAlert("Error", aex.Message, "Ok");
                 return;
@@ -135,6 +140,11 @@ namespace HostedInDesktop.viewmodels
                     Accommodations.Add(accommodation);
                     _ = LoadAccommodationImageAsync(accommodation);
                 }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+                await Shell.Current.GoToAsync("///Login");
             }
             catch (ApiException aex)
             {

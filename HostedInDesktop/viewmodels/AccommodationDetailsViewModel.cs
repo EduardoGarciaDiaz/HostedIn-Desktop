@@ -167,6 +167,11 @@ namespace HostedInDesktop.viewmodels
                         CalculateScore(reviews);
                     }
                 }
+                catch (UnauthorizedAccessException)
+                {
+                    await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+                    await Shell.Current.GoToAsync("///Login");
+                }
                 catch (ApiException aex)
                 {
                     Console.WriteLine(aex.StackTrace);

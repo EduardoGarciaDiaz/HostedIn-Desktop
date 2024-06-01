@@ -53,6 +53,11 @@ public partial class AccommodationsOwnedViewModel : ObservableObject
                 LoadAccommodationImageAsync(accommodation);
             }
         }
+        catch (UnauthorizedAccessException)
+        {
+            await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+            await Shell.Current.GoToAsync("///Login");
+        }
         catch (ApiException ex)
         {
             await Shell.Current.DisplayAlert("Error", ex.Message, "Ok");

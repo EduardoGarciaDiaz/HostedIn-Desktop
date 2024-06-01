@@ -179,16 +179,6 @@ namespace HostedInDesktop.viewmodels
             }
         }
 
-
-        public string ConvertToReadableDate(string mongoDate)
-        {
-            if (DateTime.TryParse(mongoDate, out DateTime date))
-            {
-                return date.ToString("dd 'de' MMMM 'de' yyyy", new CultureInfo("es-ES"));
-            }
-            return string.Empty;
-        }
-
         private bool MoreThanTwentyFourHours(string dateString)
         {
             if (DateTime.TryParse(dateString, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime date))

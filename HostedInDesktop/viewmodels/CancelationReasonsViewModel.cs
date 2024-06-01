@@ -5,6 +5,7 @@ using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Messages;
+using HostedInDesktop.Utils;
 using HostedInDesktop.Views;
 using System;
 using System.Collections.Generic;
@@ -63,6 +64,16 @@ namespace HostedInDesktop.viewmodels
                 {
                     await Shell.Current.DisplayAlert("Motivo requerido", "Por favor, selecciona un motivo para continuar", "Ok");
                 }
+            }
+            catch (UnauthorizedAccessException)
+            {
+                await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+                await Shell.Current.GoToAsync("///Login");
+            }
+            catch (ApiException ex)
+            {
+                await Shell.Current.DisplayAlert("Error", ex.Message, "Ok");
+                return;
             }
             catch (Exception ex)
             {
