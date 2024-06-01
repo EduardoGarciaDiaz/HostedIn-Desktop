@@ -23,6 +23,9 @@ namespace HostedInDesktop.viewmodels
         private Accommodation accommodationData;
 
         [ObservableProperty]
+        private bool isLoading;
+
+        [ObservableProperty]
         private int guestsNumber;
 
         [ObservableProperty]
@@ -328,7 +331,8 @@ namespace HostedInDesktop.viewmodels
             {
                 try
                 {
-                    
+                    IsLoading = true;
+
                     Booking newBooking = await _bookingService.CreateBooking(bookingCreation);
 
                     if (newBooking != null)
@@ -347,6 +351,10 @@ namespace HostedInDesktop.viewmodels
                 {
                     await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
                     return;
+                }
+                finally
+                {
+                    IsLoading = false;
                 }
             }
         }

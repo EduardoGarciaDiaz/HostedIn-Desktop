@@ -17,7 +17,7 @@ namespace HostedInDesktop
     {
         public static MauiApp CreateMauiApp()
         {
-            string BaseAddres = "http://localhost:3002";
+            string BaseAddres = Utils.GrcpServerData.BASE_ADDRESS;
             var builder = MauiApp.CreateBuilder();
             builder
                 .UseMauiApp<App>()

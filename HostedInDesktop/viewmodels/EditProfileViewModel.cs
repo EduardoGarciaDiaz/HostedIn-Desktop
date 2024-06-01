@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Google.Protobuf;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Utils;
@@ -16,12 +17,16 @@ namespace HostedInDesktop.viewmodels
     public partial class EditProfileViewModel : ObservableObject
     {
         private readonly IUserService _userService = new UserService();
+        private readonly MultimediaServiceImpl _multimediaService = new MultimediaServiceImpl();
         private const int MAX_MB_SIZE = 1;
         private string _uriSelectedImage = null;
         private User _user = App.user;
 
         [ObservableProperty]
         private User userData;
+
+        [ObservableProperty]
+        private bool isLoading;
 
         [ObservableProperty]
         private string fullname;
@@ -53,16 +58,23 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public async void EditProfile()
         {
+            if (IsLoading)
+            {
+                return;
+            }
+
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
                 try
                 {
+                    IsLoading = true;
+
                     if (IsUserDataValid())
                     {
                         User user = await _userService.EditAccount(_user._id, CreateUser());
                         string userDetails = JsonConvert.SerializeObject(user);
                         Fullname = user.fullName;
-                        
+                        await UploadProfilePhoto();
                         await Shell.Current.DisplayAlert("Éxito", "Se ha actualizado tu información", "Ok");
                     }
                 }
@@ -75,6 +87,10 @@ namespace HostedInDesktop.viewmodels
                 {
                     await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
                     return;
+                }
+                finally
+                {
+                    IsLoading = false;
                 }
             }
         }
@@ -170,8 +186,6 @@ namespace HostedInDesktop.viewmodels
 
             return isValid;
         }
-
-
 
         private bool IsPhotoSizeValid(string filePath)
         {
@@ -288,6 +302,33 @@ namespace HostedInDesktop.viewmodels
 
             return isResidenceValid;
         }
+
+        private async Task UploadProfilePhoto()
+        {
+            if (_uriSelectedImage != null)
+            {
+                ByteString[] bytesMultimedia = ImageHelper.ConvertPathToByteString(_uriSelectedImage);
+
+                if (bytesMultimedia != null)
+                {
+                    try
+                    {
+                        var response = await _multimediaService.UploadProfilePhoto(App.user._id, bytesMultimedia);
+                        if (!response.Contains("Upload successful"))
+                        {
+                            await Shell.Current.DisplayAlert("Ups...", "No se pudo cargar un archivo multimedia, pero puedes modificarlo después", "Ok");
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+            }
+        }
+
+
+
 
     }
 

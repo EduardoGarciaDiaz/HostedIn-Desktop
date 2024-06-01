@@ -34,6 +34,12 @@
                    FontAttributes="Bold"
                    Margin="0,5,0,0" />
 
+            <ActivityIndicator 
+            IsRunning="{Binding IsLoading}"
+            IsVisible="{Binding IsLoading}"
+            HorizontalOptions="Center"
+            VerticalOptions="Center" />
+
             <Frame  CornerRadius="10" Padding="10" HasShadow="True">
                 <StackLayout>
                     <Label Text="Modificar perfil"
@@ -51,7 +57,6 @@
                             />
 
                     <Label Text="Datos personales"
-                           TextColor="Black"
                            FontAttributes="Bold"
                            FontSize="12"
                            Margin="20,5,0,0" />
@@ -100,10 +105,7 @@
                 </StackLayout>
             </Frame>
 
-            <ActivityIndicator IsRunning="{Binding IsBusy}"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center"
-                               IsVisible="{Binding IsBusy}" />
+            
         </StackLayout>
     </ScrollView>
 

@@ -193,30 +193,22 @@
                 </StackLayout>
             </Frame>
 
-            <Frame Padding="8"
+                <Frame Padding="8"
                    Margin="0,15,0,0"
                    BackgroundColor="White"
                    CornerRadius="10"
                    HasShadow="True">
-                <StackLayout>
-                    <Label Text="Políticas de cancelación"
+                    <StackLayout>
+                        <Label Text="Políticas de cancelación"
                            FontSize="20"
                            FontAttributes="Bold"
                            Margin="20,5,0,0" />
-                    <Label x:Name="txv_cancellation_policy"
+                        <Label x:Name="txv_cancellation_policy"
                            Text="La cancelación de la reservación puede hacerse hasta máximo un día antes de la fecha de inicio."
                            Margin="20,5,20,0" />
-                </StackLayout>
-            </Frame>
-
-            
-
-            <ActivityIndicator x:Name="pgb_create_booking"
-                               IsRunning="False"
-                               IsVisible="False"
-                               HorizontalOptions="Center"
-                               VerticalOptions="Center" />
-        </StackLayout>
+                    </StackLayout>
+                </Frame>
+            </StackLayout>
     </ScrollView>
 
 
@@ -238,7 +230,7 @@
             WidthRequest="470"
             HeightRequest="300"
             Margin="0,10,0,30"
-            Aspect="AspectFill"
+            Aspect="AspectFit"
             VerticalOptions="Center" />
 
                 <Frame Padding="8"
@@ -334,7 +326,15 @@
 
 
             </StackLayout>
+            
         </ScrollView>
 
+        <ActivityIndicator x:Name="pgb_create_booking"
+                               IsRunning="{Binding IsLoading}"
+                               IsVisible="{Binding IsLoading}"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center" />
+
     </Grid>
+
 </ContentPage>

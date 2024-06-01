@@ -17,7 +17,7 @@ namespace HostedInDesktop.Data.Services
         {
             try
             {
-                using var channel = GrpcChannel.ForAddress("http://192.168.50.7:3002");
+                using var channel = GrpcChannel.ForAddress(Utils.GrcpServerData.BASE_ADDRESS);
                 global::StaticticsService.StaticticsServiceClient stub = new(channel);
 
                 GuestRequest request = new GuestRequest()
@@ -49,7 +49,7 @@ namespace HostedInDesktop.Data.Services
         {
             try
             {
-                using var channel = GrpcChannel.ForAddress("http://192.168.50.7:3002");
+                using var channel = GrpcChannel.ForAddress(Utils.GrcpServerData.BASE_ADDRESS);
                 global::StaticticsService.StaticticsServiceClient stub = new(channel);
 
                 GuestRequest guestRequest = new GuestRequest()
@@ -81,7 +81,7 @@ namespace HostedInDesktop.Data.Services
         {
             try
             {
-                using var channel = GrpcChannel.ForAddress("http://192.168.50.7:3002");
+                using var channel = GrpcChannel.ForAddress(Utils.GrcpServerData.BASE_ADDRESS);
                 global::StaticticsService.StaticticsServiceClient stub = new(channel);
 
                 HostRequest hostRequest = new HostRequest()
@@ -114,7 +114,7 @@ namespace HostedInDesktop.Data.Services
         {
             try
             {
-                using var channel = GrpcChannel.ForAddress("http://192.168.50.7:3002");
+                using var channel = GrpcChannel.ForAddress(Utils.GrcpServerData.BASE_ADDRESS);
                 global::StaticticsService.StaticticsServiceClient stub = new(channel);
 
                 HostRequest hostRequest = new HostRequest()

@@ -14,12 +14,14 @@ using HostedInDesktop.viewmodels.ModelObservable;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Utils;
 using HostedInDesktop.Data.Services;
+using Google.Protobuf;
 
 namespace HostedInDesktop.viewmodels
 {
     public partial class AccommodationFormViewModel : ObservableObject
     {
         private readonly IAccommodationsService _accommodationService = new AccommodationsService();
+        private readonly MultimediaServiceImpl _multimediaService = new MultimediaServiceImpl();
 
         [ObservableProperty]
         private View _currentContentView;
@@ -29,6 +31,9 @@ namespace HostedInDesktop.viewmodels
 
         [ObservableProperty]
         private List<AccommodationType> accommodationTypes;
+
+        [ObservableProperty]
+        private bool isLoading;
 
         [ObservableProperty]
         private AccommodationType selectedAccommodationType;
@@ -168,7 +173,6 @@ namespace HostedInDesktop.viewmodels
             else
             {
                 Shell.Current.DisplayAlert("Ups", "Debes seleccionar el tipo de alojamiento", "OK");
-                // Si no se encuentra un tipo de alojamiento seleccionado, puedes manejarlo aquí
             }
         }
 
@@ -268,16 +272,24 @@ namespace HostedInDesktop.viewmodels
 
         public async void PublishAccommodation(Accommodation accommodationCreation)
         {
+            if (IsLoading)
+            {
+                return;
+            }
+
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
                 try
                 {
+                    IsLoading = true;
+
                     if (IsAccommodationValid())
                     {
                         Accommodation newAccommodation = await _accommodationService.CreateAccommodationAsync(accommodationCreation);
 
                         if (newAccommodation != null)
                         {
+                            await UploadMultimedias(newAccommodation._id);
                             await Shell.Current.DisplayAlert("Alojamiento creado", "Tu alojamiento se ha creado con éxito", "Ok");
                             ResetForm();
                             App.ContentViewHost = new HostAccommodationsView(new AccommodationsOwnedViewModel());
@@ -299,11 +311,16 @@ namespace HostedInDesktop.viewmodels
                     await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
                     return;
                 }
+                finally
+                {
+                    IsLoading = false;
+                }
             }
         }
 
         public bool IsAccommodationValid()
         {
+            // TODO:
             return true;
         }
 
@@ -312,7 +329,6 @@ namespace HostedInDesktop.viewmodels
             _currentViewIndex = 0;
             CurrentContentView = ContentViews[_currentViewIndex];
             SelectedAccommodationType = null;
-            SelectedLocation = null;
 
             AccommodationTypes.ForEach(a => a.IsSelected = false);
 
@@ -340,6 +356,50 @@ namespace HostedInDesktop.viewmodels
             AccommodationNightPrice = 0;
         }
 
+        private async Task UploadMultimedias(string accommodationId)
+        {
+
+            if (MainImage != null)
+            {
+                await UploadMultimedia(accommodationId, MainImage);
+            }
+
+            if (SecondImage != null)
+            {
+                await UploadMultimedia(accommodationId, SecondImage);
+            }
+
+            if (ThirdImage != null)
+            {
+                await UploadMultimedia(accommodationId, ThirdImage);
+            }
+
+            if (VideoPath != null)
+            {
+                await UploadMultimedia(accommodationId, VideoPath);
+            }
+        }
+
+        private async Task UploadMultimedia(string accommodationId, string path)
+        {
+            ByteString[] bytesMultimedia = ImageHelper.ConvertPathToByteString(path);
+
+            if (bytesMultimedia != null)
+            {
+                try
+                {
+                    var response = await _multimediaService.SaveImagesAccommodation(accommodationId, bytesMultimedia);
+                    if (!response.Contains("Upload successful"))
+                    {
+                        await Shell.Current.DisplayAlert("Ups...", "No se pudo cargar un archivo multimedia, pero puedes modificarlo después", "Ok");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }
+        }
     }
 
 

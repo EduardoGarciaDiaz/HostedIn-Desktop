@@ -76,4 +76,18 @@ public static class ImageHelper
         }
     }
 
+    public static ByteString[] ConvertPathToByteString(string path)
+    {
+        ByteString[] byteStringArray = null;
+
+        if (path != null)
+        {
+            byte[] bytes = System.IO.File.ReadAllBytes(path);
+            ByteString byteString = ByteString.CopyFrom(bytes);
+            byteStringArray = new ByteString[] { byteString };
+        }
+
+        return byteStringArray;
+    }
+
 }
