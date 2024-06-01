@@ -29,7 +29,7 @@
                        TextChanged="OnSearchBarTextChanged"
                        SearchCommand="{Binding SearchPressedCommand}"
                        Text="{Binding Query}"/>
-            <Image Source="icono_eliminar.png" HeightRequest="30"/>
+            <ImageButton Source="reload.png" HeightRequest="30" Command="{Binding ReloadPressedCommand}"/>
         </StackLayout>
 
         <ListView
@@ -56,8 +56,8 @@
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
                                      Span="3" 
-                                     VerticalItemSpacing="10" 
-                                     HorizontalItemSpacing="10"/>
+                                     VerticalItemSpacing="20" 
+                                     HorizontalItemSpacing="20"/>
                 </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>

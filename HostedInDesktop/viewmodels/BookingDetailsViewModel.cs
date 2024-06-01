@@ -53,6 +53,9 @@ namespace HostedInDesktop.viewmodels
         [ObservableProperty]
         private bool isRatingButtonVisible;
 
+        [ObservableProperty]
+        private bool _isCancelButtonVisible = true;
+
 
         readonly ISharedService _SharedService;
 
@@ -87,7 +90,7 @@ namespace HostedInDesktop.viewmodels
             }
         }
 
-        private void SetValues(Booking selectedBooking)
+        private async Task SetValues(Booking selectedBooking)
         {
             Image = selectedBooking.accommodation.mainImage;
             StartDate = ConvertToReadableDate(selectedBooking.beginningDate);
@@ -96,13 +99,24 @@ namespace HostedInDesktop.viewmodels
             PersonsNumber = selectedBooking.numberOfGuests;
             TotalCost = $"${selectedBooking.totalCost:F2} MXN";
             SelectetedBookingStatus = TranslatorToSpanish.TranslateBookingStatusValue(selectedBooking.bookingStatus);
-            if(selectedBooking.bookingStatus.Equals(BookingStatus.CURRENT.GetDescription()))
+            if (App.hostMode
+                || selectedBooking.bookingStatus.Equals(BookingStatus.CURRENT.GetDescription())
+                || selectedBooking.bookingStatus == BookingStatus.CANCELLED.GetDescription())
             {
                 IsRatingButtonVisible = false;
             }
             else
             {
                 IsRatingButtonVisible = true;
+            }
+            if (selectedBooking.bookingStatus == BookingStatus.CANCELLED.GetDescription()
+                || !MoreThanTwentyFourHours(selectedBooking.beginningDate))
+            {
+                IsCancelButtonVisible = false;
+            }
+            else
+            {
+                IsCancelButtonVisible = true;
             }
             _ = GetImage(selectedBooking.accommodation._id);
             if (!App.hostMode)
@@ -173,6 +187,17 @@ namespace HostedInDesktop.viewmodels
                 return date.ToString("dd 'de' MMMM 'de' yyyy", new CultureInfo("es-ES"));
             }
             return string.Empty;
+        }
+
+        private bool MoreThanTwentyFourHours(string dateString)
+        {
+            if (DateTime.TryParse(dateString, null, System.Globalization.DateTimeStyles.RoundtripKind, out DateTime date))
+            {
+                DateTime now = DateTime.Now;
+                TimeSpan difference = date - now;
+                return difference.TotalHours > 24;
+            }
+            return false;
         }
     }
 }

@@ -113,6 +113,12 @@ namespace HostedInDesktop.viewmodels
             }
         }
 
+        [RelayCommand]
+        public async Task OnReloadPressed()
+        {
+            LoadAccommodationsAsync();
+        }
+
         public async Task OnPlaceSelected(Place selectedPlace)
         {
             IsShowingPlaces = false;

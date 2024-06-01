@@ -22,7 +22,8 @@ namespace HostedInDesktop.Data.Models
     public enum BookingStatus
     {
         CURRENT,
-        OVERDUE
+        OVERDUE,
+        CANCELLED
     }
 
     public static class BookingStatusExtensions
@@ -30,7 +31,8 @@ namespace HostedInDesktop.Data.Models
         private static readonly Dictionary<BookingStatus, string> StatusDescriptions = new Dictionary<BookingStatus, string>
         {
             { BookingStatus.CURRENT, "Current"},
-            {BookingStatus.OVERDUE, "Overdue" }   
+            {BookingStatus.OVERDUE, "Overdue" },
+            {BookingStatus.CANCELLED, "Cancelled" }
         };
 
         public static string GetDescription(this BookingStatus status)

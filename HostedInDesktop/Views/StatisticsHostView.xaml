@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="HostedInDesktop.Views.StatisticsHostView"
+            xmlns:charts="clr-namespace:Syncfusion.Maui.Charts;assembly=Syncfusion.Maui.Charts"
+            xmlns:local="clr-namespace:HostedInDesktop"
+              xmlns:vm="clr-namespace:HostedInDesktop.viewmodels">
+
+    <ContentView.BindingContext>
+        <vm:HostStatsViewModel/>
+    </ContentView.BindingContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label 
+            Margin="30, 0, 0, 0"
+            Grid.Row="0"
+            Text="Estadísticas"
+            HorizontalOptions="Start"
+            TextColor="{StaticResource Tertiary}"
+            FontSize="30"
+            FontAttributes="Bold"/>
+
+        <Grid Grid.Row="1" Padding="0, 30, 0, 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Label Text="Alojamientos mas reservados"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   VerticalOptions="Center"
+                   Margin="30, 0, 0, 0"/>
+
+            <charts:SfCartesianChart
+                    Grid.Row="1"
+                    Grid.Column="0"
+                    Margin="30, 40, 30,20">
+                <charts:SfCartesianChart.BindingContext>
+                    <vm:HostStatsViewModel/>
+                </charts:SfCartesianChart.BindingContext>
+
+                <charts:ColumnSeries ItemsSource="{Binding MostBookedAccommodations}"
+                                     ShowDataLabels="True"
+                                     XBindingPath="Title"
+                                     YBindingPath="BookingsNumber"/>
+
+                <charts:SfCartesianChart.XAxes>
+                    <charts:CategoryAxis>
+                        <charts:CategoryAxis.Title>
+                            <charts:ChartAxisTitle Text="Alojamientos"></charts:ChartAxisTitle>
+                        </charts:CategoryAxis.Title>
+                    </charts:CategoryAxis>
+                </charts:SfCartesianChart.XAxes>
+                <charts:SfCartesianChart.YAxes>
+                    <charts:NumericalAxis>
+                        <charts:NumericalAxis.Title>
+                            <charts:ChartAxisTitle Text="Numero de reservaciones"></charts:ChartAxisTitle>
+                        </charts:NumericalAxis.Title>
+                    </charts:NumericalAxis>
+                </charts:SfCartesianChart.YAxes>
+            </charts:SfCartesianChart>
+
+            <Label Text="Ganancias mensuales"
+                   Grid.Row="0"
+                   Grid.Column="1"
+                   VerticalOptions="Center"
+                   Margin="30, 0, 0, 0"/>
+
+            <charts:SfCartesianChart
+                    Grid.Row="1"
+                    Grid.Column="1"
+                Margin="30, 40, 30, 20">
+                <charts:SfCartesianChart.BindingContext>
+                    <vm:HostStatsViewModel/>
+                </charts:SfCartesianChart.BindingContext>
+
+                <charts:ColumnSeries ItemsSource="{Binding MonthEarnings}"
+                      XBindingPath="Month"
+                      YBindingPath="Earnings"/>
+                <charts:SfCartesianChart.XAxes>
+                    <charts:CategoryAxis>
+                        <charts:CategoryAxis.Title>
+                            <charts:ChartAxisTitle Text="Meses"></charts:ChartAxisTitle>
+                        </charts:CategoryAxis.Title>
+                    </charts:CategoryAxis>
+                </charts:SfCartesianChart.XAxes>
+                <charts:SfCartesianChart.YAxes>
+                    <charts:NumericalAxis>
+                        <charts:NumericalAxis.Title>
+                            <charts:ChartAxisTitle Text="Ganancias"></charts:ChartAxisTitle>
+                        </charts:NumericalAxis.Title>
+                    </charts:NumericalAxis>
+                </charts:SfCartesianChart.YAxes>
+            </charts:SfCartesianChart>
+        </Grid>
+    </Grid>
+</ContentView>

@@ -34,7 +34,7 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public void OnStaticticsClicked()
         {
-            CurrentView = new StaticticsView();
+            CurrentView = new StatisticsHostView();
         }
 
         [RelayCommand]
