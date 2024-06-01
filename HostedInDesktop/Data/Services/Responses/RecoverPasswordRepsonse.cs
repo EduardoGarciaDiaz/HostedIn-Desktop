@@ -8,18 +8,18 @@ namespace HostedInDesktop.Data.Services.Responses
 {
     public class RecoverPasswordRepsonse
     {
-        public string Message { get; set; }
+        public string message { get; set; }
     }
 
     public class GenericStringClass
     {
-        public string Content { get; set; }
+        public string content { get; set; }
 
     }
 
     public class RecoverPassswordRequest 
     { 
-        public string NewPassword {  get; set; }
-        public string Email { get; set; }
+        public string newPassword {  get; set; }
+        public string email { get; set; }
     }
 }

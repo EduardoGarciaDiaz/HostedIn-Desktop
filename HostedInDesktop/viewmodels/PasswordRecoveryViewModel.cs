@@ -24,11 +24,14 @@ namespace HostedInDesktop.viewmodels
         private string password;
 
         [ObservableProperty]
-        private bool isCodeEnable;
+        private bool isCodeEnable = false;
         [ObservableProperty]
-        private bool isPasswordEnable;
+        private bool isPasswordEnable = false;
 
-        private String token;
+        private string token;
+
+
+
 
 
         [RelayCommand]
@@ -40,11 +43,11 @@ namespace HostedInDesktop.viewmodels
                 {
                     GenericStringClass genericString = new GenericStringClass
                     {
-                        Content = Email
+                        content = Email
 
                     };
                    String message = await  _userService.SendEmailCode(genericString);
-                    await Shell.Current.DisplayAlert("Info","$ {message}, Ahora ingresa el codigo de verificación", "Ok");
+                   await Shell.Current.DisplayAlert("Info",$"{message}, Ahora ingresa el codigo de verificación", "Ok");
                    IsCodeEnable = true;
                 }
             }
@@ -70,7 +73,7 @@ namespace HostedInDesktop.viewmodels
                 {
                     GenericStringClass genericString = new GenericStringClass
                     {
-                        Content = Code
+                        content = Code
 
                     };
                     token = await _userService.VerifyCode(genericString);
@@ -95,12 +98,12 @@ namespace HostedInDesktop.viewmodels
         {
             try
             {
-                if (String.IsNullOrEmpty(Password))
+                if (!String.IsNullOrEmpty(Password))
                 {
                     RecoverPassswordRequest recoverPassswordRequest = new RecoverPassswordRequest
                     {
-                        Email = this.Email,
-                        NewPassword = Password
+                        email = this.Email,
+                        newPassword = Password
                     };
                     String messsage = await _userService.updatePassword(recoverPassswordRequest, token);
                     await Shell.Current.DisplayAlert("Info", messsage, "Ok");
@@ -117,6 +120,12 @@ namespace HostedInDesktop.viewmodels
                 await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
                 return;
             }
+        }
+
+        [RelayCommand]
+        public async Task GoBack()
+        {
+            await Shell.Current.GoToAsync("../");
         }
 
     }

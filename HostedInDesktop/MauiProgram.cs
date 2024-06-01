@@ -81,8 +81,8 @@ namespace HostedInDesktop
             builder.Services.AddTransient<AccommodationBookingsViewModel>();
             builder.Services.AddTransient<AccommodationBookingReview>();
 
-            builder.Services.AddSingleton<PasswordRecovery>();
-            builder.Services.AddSingleton<PasswordRecoveryViewModel>();
+            builder.Services.AddTransient<PasswordRecovery>();
+            builder.Services.AddTransient<PasswordRecoveryViewModel>();
 
             builder.Services.AddSingleton<ISharedService, SharedService>();
                 /*            builder.Services.AddScoped(services =>

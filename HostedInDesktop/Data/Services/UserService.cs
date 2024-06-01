@@ -172,7 +172,7 @@ namespace HostedInDesktop.Data.Services
                 if (response.IsSuccessStatusCode)
                 {
                     RecoverPasswordRepsonse result = await response.Content.ReadFromJsonAsync<RecoverPasswordRepsonse>();
-                    return await Task.FromResult(result.Message);
+                    return await Task.FromResult(result.message);
                 }
                 else
                 {
@@ -209,7 +209,15 @@ namespace HostedInDesktop.Data.Services
 
                 if (response.IsSuccessStatusCode)
                 {
-                    return response.Headers.GetValues("Authorization").ToString();
+                    if (response.Headers.TryGetValues("Authorization", out IEnumerable<string> values))
+                    {
+                        string authorizationHeaderValue = values.FirstOrDefault();
+                        return authorizationHeaderValue.Substring("Bearer ".Length).Trim();
+                    }
+                    else
+                    {
+                        return "";
+                    }
                 }
                 else
                 {
@@ -231,8 +239,8 @@ namespace HostedInDesktop.Data.Services
             try
             {
                 var httpClient = APIClient.GetHttpClient();
-                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
-                var path = "users/passwords/code";
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue(token);
+                var path = "users";
 
                 var settings = new JsonSerializerSettings
                 {
@@ -247,7 +255,7 @@ namespace HostedInDesktop.Data.Services
                 if (response.IsSuccessStatusCode)
                 {
                     RecoverPasswordRepsonse result = await response.Content.ReadFromJsonAsync<RecoverPasswordRepsonse>();
-                    return await Task.FromResult(result.Message);
+                    return await Task.FromResult(result.message);
                 }
                 else
                 {
