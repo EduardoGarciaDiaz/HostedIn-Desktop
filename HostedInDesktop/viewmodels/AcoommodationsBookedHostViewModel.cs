@@ -43,7 +43,7 @@ namespace HostedInDesktop.viewmodels
                 {
                     var accommodationViewModel = new AccommodationBookingsViewModel(accommodation, ServiceHelper.GetService<ISharedService>());
                     await accommodationViewModel.LoadBookingsAsync(_bookingService);
-                    _ = LoadAccommodationImageAsync(accommodationViewModel);
+                    await LoadAccommodationImageAsync(accommodationViewModel).ConfigureAwait(false);
                     Accommodations.Add(accommodationViewModel); 
                 }
             }
