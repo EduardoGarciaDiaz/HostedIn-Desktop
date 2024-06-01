@@ -1,4 +1,5 @@
 using HostedInDesktop.Data.Models;
+using HostedInDesktop.Utils;
 
 namespace HostedInDesktop.Reusable;
 
@@ -38,7 +39,7 @@ public partial class GuestBookingViewReusable : ContentView
             view.lblTitle.Text = booking.accommodation.title;
             view.lblDescription.Text = booking.accommodation.description;
             view.lblTotalCost.Text = "$" + booking.totalCost.ToString();
-            view.lblDates.Text = $"{booking.beginningDate} - {booking.endingDate}";
+            view.lblDates.Text = $"{DateFormatterUtils.ConvertToReadableDate(booking.beginningDate)} - {DateFormatterUtils.ConvertToReadableDate(booking.endingDate)}";
         }
     }
 

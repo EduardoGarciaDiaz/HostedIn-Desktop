@@ -5,19 +5,27 @@
              xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
              xmlns:reusable="clr-namespace:HostedInDesktop.Reusable">
 
-    <StackLayout>
-        <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <ActivityIndicator Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
 
-        <Label Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos"   Style="{StaticResource SubHeadline}"/>
+        <Label  Grid.Row="0" Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos"   Style="{StaticResource SubHeadline}"/>
 
-        <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+        <StackLayout Grid.Row="2" Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
             <Button x:Name="bttCurrent" Text="Vigentes" FontSize=" 24" 
                     Command="{Binding LoadCurrentBookingsCommand}" BackgroundColor="{Binding Button1Color}" Margin="10"/>
 
             <Button x:Name="bttOlds" Text="Antiguos" FontSize=" 24" BackgroundColor="{Binding Button2Color}" 
                     Command="{Binding LoadOverduedBookingsCommand}" Margin="10"/>
         </StackLayout>
-        <ScrollView Margin="20, 30, 0, 0" Orientation="Vertical">
+
+        <ScrollView Grid.Row="3" Margin="20, 10, 20, 0" >
             <CollectionView ItemsSource="{Binding Bookings}" >
                 <CollectionView.ItemsLayout>
                     <GridItemsLayout Orientation="Vertical"
@@ -33,6 +41,6 @@
             </CollectionView>
         </ScrollView>
 
-    </StackLayout>
+    </Grid>
 
 </ContentView>

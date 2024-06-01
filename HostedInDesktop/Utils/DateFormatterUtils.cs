@@ -134,5 +134,16 @@ namespace HostedInDesktop.Utils
             DateTime date = new DateTime(year, month, day, 0, 0, 0, DateTimeKind.Utc);
             return date.Ticks / TimeSpan.TicksPerMillisecond;
         }
+
+        public static string ConvertToReadableDate(string mongoDate)
+        {
+            if (DateTime.TryParse(mongoDate, out DateTime date))
+            {
+                return date.ToString("dd 'de' MMMM 'de' yyyy", new CultureInfo("es-ES"));
+            }
+            return string.Empty;
+        }
+
     }
+
 }

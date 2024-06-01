@@ -90,13 +90,13 @@ namespace HostedInDesktop.viewmodels
         private void SetValues(Booking selectedBooking)
         {
             Image = selectedBooking.accommodation.mainImage;
-            StartDate = ConvertToReadableDate(selectedBooking.beginningDate);
-            EndDate = ConvertToReadableDate(selectedBooking.endingDate);
+            StartDate = DateFormatterUtils.ConvertToReadableDate(selectedBooking.beginningDate);
+            EndDate = DateFormatterUtils.ConvertToReadableDate(selectedBooking.endingDate);
             Title = selectedBooking.accommodation.title;
             PersonsNumber = selectedBooking.numberOfGuests;
             TotalCost = $"${selectedBooking.totalCost:F2} MXN";
             SelectetedBookingStatus = TranslatorToSpanish.TranslateBookingStatusValue(selectedBooking.bookingStatus);
-            if(selectedBooking.bookingStatus.Equals(BookingStatus.CURRENT.GetDescription()))
+            if(selectedBooking.bookingStatus.Equals(BookingStatus.CURRENT.GetDescription()) || App.hostMode)
             {
                 IsRatingButtonVisible = false;
             }
@@ -166,13 +166,6 @@ namespace HostedInDesktop.viewmodels
         }
 
 
-        public string ConvertToReadableDate(string mongoDate)
-        {
-            if (DateTime.TryParse(mongoDate, out DateTime date))
-            {
-                return date.ToString("dd 'de' MMMM 'de' yyyy", new CultureInfo("es-ES"));
-            }
-            return string.Empty;
-        }
+        
     }
 }

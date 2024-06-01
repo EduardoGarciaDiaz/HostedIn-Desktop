@@ -14,8 +14,9 @@
         </Grid.ColumnDefinitions>
 
         <StackLayout Grid.Column="0" Orientation="Vertical">
-            <Label x:Name="lblguestName" Text="x" FontAttributes="Bold" FontSize="14" />
-            <Label x:Name="lblDates" Text="x" TextColor="Gray" />
+            <Label x:Name="lblguestName" FontAttributes="Bold" FontSize="14" />
+            <Label x:Name="lblDates"  TextColor="Gray" />
+            <Label x:Name="lblStatus" FontAttributes="Bold" TextColor="Gray" />
         </StackLayout>
 
         <Button Grid.Column="2" Text="Ver Detalles"  HorizontalOptions="End" VerticalOptions="Center" BackgroundColor="MediumPurple"

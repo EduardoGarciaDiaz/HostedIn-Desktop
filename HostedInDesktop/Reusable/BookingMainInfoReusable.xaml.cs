@@ -1,4 +1,5 @@
 using HostedInDesktop.Data.Models;
+using HostedInDesktop.Utils;
 
 namespace HostedInDesktop.Reusable;
 
@@ -24,7 +25,8 @@ public partial class BookingMainInfoReusable : ContentView
         if (newValue is Booking booking)
         {
             view.lblguestName.Text = booking.guestUser.fullName;
-            view.lblDates.Text = booking.beginningDate.ToString() + " - " + booking.endingDate.ToString();
+            view.lblDates.Text = DateFormatterUtils.ConvertToReadableDate(booking.beginningDate.ToString()) + " - " + DateFormatterUtils.ConvertToReadableDate(booking.endingDate.ToString());
+            view.lblStatus.Text = TranslatorToSpanish.TranslateBookingStatusValue(booking.bookingStatus);
         }
     }
 }
