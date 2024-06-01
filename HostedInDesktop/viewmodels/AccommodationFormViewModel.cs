@@ -134,8 +134,20 @@ namespace HostedInDesktop.viewmodels
             }
             else if (_currentViewIndex == ContentViews.Count - 1)
             {
+                MakePublication();
+            }
+        }
+
+        private async Task MakePublication()
+        {
+            if (IsAccommodationValid())
+            {
                 Accommodation newAccommodation = CreateAccommodation();
                 PublishAccommodation(newAccommodation);
+            }
+            else
+            {
+                await Shell.Current.DisplayAlert("Faltan datos", "Debes llenar el formulario completo", "Ok");
             }
         }
 
@@ -283,23 +295,18 @@ namespace HostedInDesktop.viewmodels
                 {
                     IsLoading = true;
 
-                    if (IsAccommodationValid())
-                    {
-                        Accommodation newAccommodation = await _accommodationService.CreateAccommodationAsync(accommodationCreation);
 
-                        if (newAccommodation != null)
-                        {
-                            await UploadMultimedias(newAccommodation._id);
-                            await Shell.Current.DisplayAlert("Alojamiento creado", "Tu alojamiento se ha creado con éxito", "Ok");
-                            ResetForm();
-                            App.ContentViewHost = new HostAccommodationsView(new AccommodationsOwnedViewModel());
-                            await Shell.Current.GoToAsync(nameof(HostView));
-                        }
-                    } 
-                    else
+                    Accommodation newAccommodation = await _accommodationService.CreateAccommodationAsync(accommodationCreation);
+
+                    if (newAccommodation != null)
                     {
-                        await Shell.Current.DisplayAlert("Faltan datos", "Debes llenar el formulario completo", "Ok");
+                        await UploadMultimedias(newAccommodation._id);
+                        await Shell.Current.DisplayAlert("Alojamiento creado", "Tu alojamiento se ha creado con éxito", "Ok");
+                        ResetForm();
+                        App.ContentViewHost = new HostAccommodationsView(new AccommodationsOwnedViewModel());
+                        await Shell.Current.GoToAsync(nameof(HostView));
                     }
+                    
                 }
                 catch (UnauthorizedAccessException)
                 {
@@ -326,7 +333,47 @@ namespace HostedInDesktop.viewmodels
         public bool IsAccommodationValid()
         {
             // TODO:
-            return true;
+            bool isAccommodationValid = true;
+
+            if (!IsTypeValid())
+            {
+                isAccommodationValid = false;
+            }
+            else if (!IsLocationValid())
+            {
+                isAccommodationValid = false;
+            }
+
+            return isAccommodationValid;
+        }
+
+        private bool IsTypeValid()
+        {
+            bool isTypeValid = true;
+
+            if (selectedAccommodationType == null)
+            {
+                isTypeValid = false;
+                Shell.Current.DisplayAlert("Selecciona un tipo de alojamiento", "Debes seleccionar un tipo de alojamiento", "Ok");
+            }
+
+            return isTypeValid;
+        }
+
+        private bool IsLocationValid()
+        {
+            bool isLocationValid = true;
+
+            if (SelectedLocation == null 
+                || SelectedLocation.address == null 
+                || SelectedLocation.latitude == 0 
+                || SelectedLocation.longitude == 0)
+            {
+                isLocationValid = false;
+                Shell.Current.DisplayAlert("Selecciona una dirección", "Debes seleccionar una dirección válida", "Ok");
+            }
+
+            return isLocationValid;
         }
 
         public void ResetForm()

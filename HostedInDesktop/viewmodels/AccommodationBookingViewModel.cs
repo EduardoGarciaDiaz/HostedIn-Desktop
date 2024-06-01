@@ -1,9 +1,11 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 using HostedInDesktop.Abstract;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Enums;
+using HostedInDesktop.Messages;
 using HostedInDesktop.Utils;
 using HostedInDesktop.Views;
 using Syncfusion.Maui.Calendar;
@@ -14,6 +16,7 @@ namespace HostedInDesktop.viewmodels
 {
     public partial class AccommodationBookingViewModel : ObservableObject
     {
+        private const string DEFAULT_PRICE_VALUE = "$ MXN";
         public event PropertyChangedEventHandler PropertyChanged;
 
         private readonly IBookingService _bookingService = new BookingService();
@@ -74,6 +77,14 @@ namespace HostedInDesktop.viewmodels
             //get booked dates
 
             _sharedService = sharedService;
+            WeakReferenceMessenger.Default.Register<AccommodationBookingMessage>(this, (r, m) =>
+            {
+                AccommodationData = m.Value;
+                ResetPricesValues();
+                LoadAccommodationData();
+                CalendarBookingVisibility = false;
+            });
+
             LoadAccommodationData();
             CalendarBookingVisibility = false;
         }
@@ -81,7 +92,7 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public async void GoBack()
         {
-            await Shell.Current.GoToAsync(nameof(GuestView));
+            await Shell.Current.GoToAsync(nameof(AccommodationDetails));
         }
 
         [RelayCommand]
@@ -140,7 +151,9 @@ namespace HostedInDesktop.viewmodels
                 StartDateSelected = startDate.Value.ToShortDateString();
                 EndDateSelected = endDate.Value.ToShortDateString();
 
-                LoadPricePerNights(daysBetween + 1);
+                daysBetween++;
+
+                LoadPricePerNights(daysBetween);
                 double subtotal = LoadSubtotal(daysBetween);
                 double priceIVA = LoadIVA(subtotal);
                 LoadTotal(subtotal, priceIVA);
@@ -262,9 +275,10 @@ namespace HostedInDesktop.viewmodels
         {
             bool isBookingValid = true;
 
-            if (SelectedBookingDates.StartDate == null && SelectedBookingDates.EndDate == null) {
-                isBookingValid = false;
+            if (SelectedBookingDates == null || SelectedBookingDates.StartDate == null || SelectedBookingDates.EndDate == null)
+            {
                 Shell.Current.DisplayAlert("Fechas no válidas", "Debes seleccionar la fecha de inicio y la de fin", "Ok");
+                isBookingValid = false;
             }
 
             return isBookingValid;
@@ -327,6 +341,11 @@ namespace HostedInDesktop.viewmodels
 
         private async void CreateBooking(Booking bookingCreation)
         {
+            if (IsLoading)
+            {
+                return;
+            }
+
             if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
             {
                 try
@@ -338,7 +357,12 @@ namespace HostedInDesktop.viewmodels
                     if (newBooking != null)
                     {
                         await Shell.Current.DisplayAlert("Reservación exitosa", "Reservación registrada con éxito", "Ok");
-                        await Shell.Current.GoToAsync(nameof(GuestView));
+
+                        if (!App.hostMode)
+                        {
+                            App.contentToShow = new BookingsView();
+                            await Shell.Current.GoToAsync(nameof(GuestView));
+                        }
                     }
 
                 }
@@ -362,6 +386,17 @@ namespace HostedInDesktop.viewmodels
                     IsLoading = false;
                 }
             }
+        }
+
+        private void ResetPricesValues()
+        {
+            StartDateSelected = "";
+            EndDateSelected = "";
+
+            PricePerNights = DEFAULT_PRICE_VALUE;
+            Subtotal = DEFAULT_PRICE_VALUE;
+            PriceIVA = DEFAULT_PRICE_VALUE;
+            TotalPrice = DEFAULT_PRICE_VALUE;
         }
     }
 }

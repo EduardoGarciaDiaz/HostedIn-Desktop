@@ -5,6 +5,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:rating="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
              xmlns:reusable="clr-namespace:HostedInDesktop.Reusable"
+             xmlns:mapsui="clr-namespace:Mapsui.UI.Maui;assembly=Mapsui.UI.Maui"
              x:Class="HostedInDesktop.Views.AccommodationDetails">
 
     <Shell.BackButtonBehavior>
@@ -57,6 +58,7 @@
                     </Grid.RowDefinitions>
 
                     <Button x:Name="btn_go_back"
+                            IsEnabled="{Binding IsCarouselButtonEnabled}"
                         Grid.Column="0"
                         VerticalOptions="Center"
                         Text="&#x25C0;"
@@ -78,10 +80,11 @@
                            IsVisible="{Binding IsVideo}" 
                            HeightRequest="300" 
                            WidthRequest="600">
-                        <toolkit:MediaElement Source="{Binding VideoFilePath}" ShouldAutoPlay="True" Aspect="AspectFit"/>
+                        <toolkit:MediaElement Source="{Binding VideoFilePath}" Aspect="AspectFit"/>
                     </Frame>
 
                     <Button x:Name="btn_go_ahead"
+                    IsEnabled="{Binding IsCarouselButtonEnabled}"
                     Grid.Column="2"
                     VerticalOptions="Center"
                     Text="&#x25B6;" 
@@ -92,26 +95,30 @@
                 <!-- Location -->
                 <Label x:Name="txv_location"
                        Text="{Binding AccommodationData.location.address}"
-                       TextColor="#333333"
+                       FontSize="22"
                        Margin="0,6,0,0" />
+                
+                <!--price-->
+                <Label x:Name="txv_accommodation_price"
+                   Text="{Binding AccommodationPrice}"
+                       FontSize="22"
+                       FontAttributes="Bold" />
 
                 <!-- Description -->
                 <Label
                Text="Descripción"
-               TextColor="#333333"
                 FontAttributes="Bold"
                Margin="0,15,0,0" />
 
                 <Label x:Name="txv_description"
                        Text="{Binding AccommodationData.description}"
-                       TextColor="#333333"
-                       Margin="0,6,0,0" />
+                        />
 
                 <!-- Accommodation Services -->
                 <Label x:Name="txv_accommodation_type"
                        Text="{Binding AccommodationType}"
-                       TextColor="#333333"
-                       FontAttributes="Bold" />
+                       FontAttributes="Bold"
+                       Margin="0,6,0,0"/>
 
                 <Label x:Name="txv_basics"
                        Text="{Binding AccommodationBasics}"
@@ -119,7 +126,6 @@
 
                 <HorizontalStackLayout Margin="0,8,0,0">
                     <Label Text="Servicios"
-                           TextColor="#333333"
                            FontAttributes="Bold"
                            HorizontalOptions="FillAndExpand" />
                 </HorizontalStackLayout>
@@ -131,7 +137,6 @@
                 <!-- Accommodation Rules -->
                 <HorizontalStackLayout Margin="0,6,0,0">
                     <Label Text="Reglas"
-                           TextColor="#333333"
                            FontAttributes="Bold"
                            HorizontalOptions="FillAndExpand" />
                 </HorizontalStackLayout>
@@ -147,7 +152,6 @@
 
                 <!-- Rating -->
                 <Label Text="Calificación"
-                       TextColor="#333333"
                        FontAttributes="Bold"
                        HorizontalOptions="Center" />
 
@@ -159,7 +163,6 @@
                        HorizontalOptions="Center" />
 
                 <Label Text="Reseñas"
-                       TextColor="#333333"
                        FontAttributes="Bold" />
 
                 <Label x:Name="txv_without_reviews"
@@ -180,17 +183,16 @@
 
                 <!-- Location Map -->
                 <Label Text="Dónde vas a estar"
-                       TextColor="#333333"
                        FontAttributes="Bold"
                        Margin="0,6,0,0" />
+
+                <mapsui:MapView x:Name="mapView" HeightRequest="250"/>
 
                 <HorizontalStackLayout>
                     <StackLayout Margin="10,0,10,0">
                         <Label Text="Dirección"
-                           TextColor="#333333"
                            Margin="0,6,0,0" />
                         <Label Text="{Binding AccommodationData.location.address}"
-                            TextColor="#333333"
                             Margin="0,6,0,0" />
                     </StackLayout>
                     <StackLayout Margin="10,0,10,0">
@@ -198,15 +200,12 @@
                             TextColor="#333333"
                             Margin="0,6,0,0" />
                         <Label Text="{Binding Latitude}"
-                            TextColor="#333333"
                             Margin="0,6,0,0" />
                     </StackLayout>
                     <StackLayout Margin="10,0,10,0">
                         <Label Text="Longitud"
-                        TextColor="#333333"
                         Margin="0,6,0,0" />
                         <Label Text="{Binding Longitude}"
-                        TextColor="#333333"
                         Margin="0,6,0,0" />
                     </StackLayout>
 
@@ -217,7 +216,6 @@
 
                 <!-- Host details -->
                 <Label Text="Anfitrión"
-                       TextColor="#333333"
                        FontAttributes="Bold"
                        Margin="0,6,0,0" />
 

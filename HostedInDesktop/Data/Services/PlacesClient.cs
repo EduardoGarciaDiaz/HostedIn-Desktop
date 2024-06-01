@@ -66,5 +66,38 @@ namespace HostedInDesktop.Data.Services
                 throw;
             }
         }
+
+        public async Task<string> GetAddressFromCoordinates(double lat, double lon)
+        {
+            try
+            {
+                var latitude = lat; 
+                var longitude = lon; 
+
+                var geocodingUrl = $"https://maps.googleapis.com/maps/api/geocode/json?latlng={latitude},{longitude}&key={App.Google_API_Keys}";
+
+                using (HttpClient httpClient = new HttpClient())
+                {
+                    HttpResponseMessage response = await httpClient.GetAsync(geocodingUrl);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string jsonResponse = await response.Content.ReadAsStringAsync();
+                        dynamic geocodingResult = JsonConvert.DeserializeObject(jsonResponse);
+
+                        string address = geocodingResult.results[0].formatted_address;
+
+                        return address;
+                    }
+                    else
+                    {
+                        throw new Exception("Error al obtener la dirección desde las coordenadas.");
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
