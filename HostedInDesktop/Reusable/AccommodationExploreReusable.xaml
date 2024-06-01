@@ -4,7 +4,7 @@
              x:Class="HostedInDesktop.Reusable.AccommodationExploreReusable">
     <StackLayout Orientation="Vertical">
         <Frame CornerRadius="20" Padding="0" HasShadow="False">
-            <Image x:Name="imgAccommodation" HeightRequest="300" Source="img_provisional.png" Aspect="AspectFill"/>
+            <Image x:Name="imgAccommodation" HeightRequest="300" Source="img_provisional.png" Aspect="AspectFit"/>
         </Frame>
         <Grid Margin="0, 10, 0, 0">
             <Grid.RowDefinitions>

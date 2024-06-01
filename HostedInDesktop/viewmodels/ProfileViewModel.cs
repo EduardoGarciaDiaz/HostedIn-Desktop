@@ -1,7 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using GoogleApi.Entities.Maps.AddressValidation.Response;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
+using HostedInDesktop.Messages;
 using HostedInDesktop.Utils;
 using HostedInDesktop.Views;
 using Newtonsoft.Json;
@@ -20,6 +23,12 @@ namespace HostedInDesktop.viewmodels
 
         public ProfileViewModel()
         {
+            WeakReferenceMessenger.Default.Register<ProfileMesssage>(this, (r, m) =>
+            {
+                AdditionalContent = null;
+                GetUserById();
+            });
+
             GetUserById();
         }
 
@@ -42,6 +51,7 @@ namespace HostedInDesktop.viewmodels
         public async void MyAccountCliked()
         {
             AdditionalContent = new EditProfile();
+            WeakReferenceMessenger.Default.Send(new EditProfileMessage(App.user));
         }
 
         [RelayCommand]

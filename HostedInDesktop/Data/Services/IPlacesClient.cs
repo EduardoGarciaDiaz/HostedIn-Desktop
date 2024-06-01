@@ -10,5 +10,7 @@ namespace HostedInDesktop.Data.Services
     public interface IPlacesClient
     {
         Task<List<Place>> GetPlaces(string query);
+
+        Task<string> GetAddressFromCoordinates(double lat, double lon);
     }
 }
