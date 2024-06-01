@@ -23,6 +23,7 @@ namespace HostedInDesktop
             Routing.RegisterRoute(nameof(CancellationConfirmationView), typeof(CancellationConfirmationView));
             Routing.RegisterRoute(nameof(AccommodationBooking), typeof(AccommodationBooking));
             Routing.RegisterRoute(nameof(AccommodationBookingReview), typeof(AccommodationBookingReview));
+            Routing.RegisterRoute(nameof(PasswordRecovery), typeof(PasswordRecovery));
         }
     }
 }

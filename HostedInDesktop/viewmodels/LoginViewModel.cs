@@ -31,10 +31,10 @@ namespace HostedInDesktop.viewmodels
             {
                 try
                 {
-                    if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password)) 
-                    { 
+                    if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password))
+                    {
                         User user = await _authService.SignIn(Email, Password);
-                        if (Preferences.ContainsKey(nameof (App.user)))
+                        if (Preferences.ContainsKey(nameof(App.user)))
                         {
                             Preferences.Remove(nameof(App.user));
                         }
@@ -44,7 +44,7 @@ namespace HostedInDesktop.viewmodels
                             App.hostMode = false;
                             App.contentToShow = new ExploreView();
                             await Shell.Current.GoToAsync(nameof(GuestView));
-                        } 
+                        }
                         else
                         {
                             App.hostMode = true;
@@ -75,6 +75,12 @@ namespace HostedInDesktop.viewmodels
         public void OnSignupClicked()
         {
             Shell.Current.GoToAsync(nameof(SignupView));
+        }
+
+        [RelayCommand]
+        public void OnRecoverPassClicked()
+        {
+            Shell.Current.GoToAsync(nameof(PasswordRecovery));
         }
     }
 }

@@ -120,5 +120,118 @@ namespace HostedInDesktop.Data.Services
                 throw;
             }
         }
+
+        public async Task<string> SendEmailCode(GenericStringClass email)
+        {
+            try
+            {
+                var httpClient = APIClient.GetHttpClient();
+
+                var path = "users/passwords";
+
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+
+                var json = JsonConvert.SerializeObject(email, settings);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await httpClient.PostAsync(path, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    RecoverPasswordRepsonse result = await response.Content.ReadFromJsonAsync<RecoverPasswordRepsonse>();
+                    return await Task.FromResult(result.Message);
+                }
+                else
+                {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    JObject jsonObject = JObject.Parse(jsonResponse);
+                    string errorMessage = (string)jsonObject["message"];
+                    throw new ApiException(errorMessage);
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> VerifyCode(GenericStringClass code)
+        {
+            try
+            {
+                var httpClient = APIClient.GetHttpClient();
+
+                var path = "users/passwords/code";
+
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+
+                var json = JsonConvert.SerializeObject(code, settings);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await httpClient.PostAsync(path, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return response.Headers.GetValues("Authorization").ToString();
+                }
+                else
+                {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    JObject jsonObject = JObject.Parse(jsonResponse);
+                    string errorMessage = (string)jsonObject["message"];
+                    throw new ApiException(errorMessage);
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public async Task<string> updatePassword(RecoverPassswordRequest recoverPasssword, string token)
+        {
+            try
+            {
+                var httpClient = APIClient.GetHttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                var path = "users/passwords/code";
+
+                var settings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+
+                var json = JsonConvert.SerializeObject(recoverPasssword, settings);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+                HttpResponseMessage response = await httpClient.PatchAsync(path, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    RecoverPasswordRepsonse result = await response.Content.ReadFromJsonAsync<RecoverPasswordRepsonse>();
+                    return await Task.FromResult(result.Message);
+                }
+                else
+                {
+                    string jsonResponse = await response.Content.ReadAsStringAsync();
+                    JObject jsonObject = JObject.Parse(jsonResponse);
+                    string errorMessage = (string)jsonObject["message"];
+                    throw new ApiException(errorMessage);
+                }
+
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
     }
 }
