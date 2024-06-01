@@ -49,10 +49,12 @@ public partial class AccommodationFormLocation : ContentView
         _editViewModel = viewModel;
         BindingContext = _editViewModel;
 
-        InitializeMap();
 
-        lblLatitude.Text = accommodation.location.latitude.ToString();
-        lblLongitude.Text = accommodation.location.longitude.ToString();
+        lblLatitude.Text = accommodation.location.coordinates[1].ToString();
+        lblLongitude.Text = accommodation.location.coordinates[0].ToString();
+        lblAddress.Text = accommodation.location.address.ToString();
+
+        InitializeMap();
 
         Location location = new Location
         {

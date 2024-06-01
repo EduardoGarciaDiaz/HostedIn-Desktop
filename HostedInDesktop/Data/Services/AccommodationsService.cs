@@ -259,6 +259,8 @@ public class AccommodationsService : IAccommodationsService
             {
                 NullValueHandling = NullValueHandling.Ignore
             };
+            accommodation.location.latitude = accommodation.location.coordinates[1];
+            accommodation.location.longitude = accommodation.location.coordinates[0];
             var json = JsonConvert.SerializeObject(accommodation, settings);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             string url = $"accommodations/{accommodation._id}/";

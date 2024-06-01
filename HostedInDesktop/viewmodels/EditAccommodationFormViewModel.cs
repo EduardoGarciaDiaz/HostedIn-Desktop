@@ -249,38 +249,31 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
 
     [RelayCommand]
     public async Task SaveChanges()
-    {
-        await UpdateAccommodationObject();
-        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet)
+    {        
+        if (Connectivity.Current.NetworkAccess == NetworkAccess.Internet && await UpdateAccommodationObject())
         {
             try
             {
-                if (IsAccommodationValid())
+                if (_currentViewIndex == 5)
                 {
-                    if (_currentViewIndex == 5)
+                    String result = "";
+                    for (global::System.Int32 i = 0; i < ImagesAndVideoBytes.Count; i++)
                     {
-                        String result = "";
-                        for (global::System.Int32 i = 0; i < ImagesAndVideoBytes.Count; i++)
-                        {
-                            result = await _multimediaService.UpdateMultimediaAccommodation(AccommodationToEdit._id, i, ImagesAndVideoBytes[i]);
-                        }
-                        await Shell.Current.DisplayAlert("INFO", $"{result}", "ok");
+                        result = await _multimediaService.UpdateMultimediaAccommodation(AccommodationToEdit._id, i, ImagesAndVideoBytes[i]);
                     }
-                    else
-                    {
-                        Accommodation newAccommodation = await _accommodationService.UpdateAccommodation(accommodationToEdit);
-                        if (newAccommodation != null)
-                        {
-                            await Shell.Current.DisplayAlert("Alojamiento actualizado", "Se han guardado los cambios de tu alojamiento con éxito, recarga la pagina", "Ok");
-                        }
-                    }
-                    App.ContentViewHost = new HostAccommodationsView(new AccommodationsOwnedViewModel());
-                    await Shell.Current.GoToAsync(nameof(HostView));
+                    await Shell.Current.DisplayAlert("INFO", $"{result}", "ok");
                 }
                 else
                 {
-                    await Shell.Current.DisplayAlert("Faltan datos", "Debes llenar el formulario completo", "Ok");
+                    Accommodation newAccommodation = await _accommodationService.UpdateAccommodation(AccommodationToEdit);
+                    if (newAccommodation != null)
+                    {
+                        await Shell.Current.DisplayAlert("Alojamiento actualizado", "Se han guardado los cambios de tu alojamiento con éxito, recarga la pagina", "Ok");
+                    }
                 }
+                App.ContentViewHost = new HostAccommodationsView(new AccommodationsOwnedViewModel());
+                await Shell.Current.GoToAsync(nameof(HostView));
+            
             }
             catch (UnauthorizedAccessException)
             {
@@ -389,22 +382,31 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
 
 
 
-    private async Task UpdateAccommodationObject()
+    private async Task<bool> UpdateAccommodationObject()
     {
         switch (_currentViewIndex)
         {
             case 1:
-                accommodationToEdit.accommodationType = SelectedAccommodationType.BasicEnum.ToString();
+                if (IsTypeValid())
+                {
+                    accommodationToEdit.accommodationType = SelectedAccommodationType.BasicEnum.ToString();
+                    return true;
+                }
                 break;
             case 2:
-                accommodationToEdit.location = new Location
+                if (IsLocationValid())
                 {
-                    address = SelectedLocation.address,
-                    coordinates = new double[] { SelectedLocation.latitude, SelectedLocation.longitude },
-                    latitude = SelectedLocation.latitude,
-                    longitude = SelectedLocation.longitude,
-                    type = "Point"
-                };
+                    accommodationToEdit.location = new Location
+                    {
+                        address = SelectedLocation.address,
+                        coordinates = new double[] { SelectedLocation.longitude, SelectedLocation.latitude },
+                        latitude = SelectedLocation.latitude,
+                        longitude = SelectedLocation.longitude,
+                        type = "Point"
+                    };
+                    return true;
+                }
+                return false;
                 break;
             case 3:
                 accommodationToEdit.guestsNumber = AccommodationBasics[0].Value;
@@ -425,12 +427,37 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
                 accommodationToEdit.nightPrice = (double)AccommodationNightPrice;
                 break;
         }
+        return true;
 
     }
 
-    public bool IsAccommodationValid()
+    private bool IsTypeValid()
     {
-        return true;
+        bool isTypeValid = true;
+
+        if (selectedAccommodationType == null)
+        {
+            isTypeValid = false;
+            Shell.Current.DisplayAlert("Selecciona un tipo de alojamiento", "Debes seleccionar un tipo de alojamiento", "Ok");
+        }
+
+        return isTypeValid;
+    }
+
+    private bool IsLocationValid()
+    {
+        bool isLocationValid = true;
+
+        if (SelectedLocation == null
+            || SelectedLocation.address == null
+            || SelectedLocation.latitude == 0
+            || SelectedLocation.longitude == 0)
+        {
+            isLocationValid = false;
+            Shell.Current.DisplayAlert("Selecciona una dirección", "Debes seleccionar una dirección válida", "Ok");
+        }
+
+        return isLocationValid;
     }
 
     private async Task GetMultimediaAsync()
