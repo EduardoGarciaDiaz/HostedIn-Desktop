@@ -6,6 +6,10 @@
              xmlns:vm="clr-namespace:HostedInDesktop.viewmodels"
              x:DataType="vm:EditAccommodationFormViewModel">
 
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+
     <ContentPage.BindingContext>
         <vm:EditAccommodationFormViewModel />
     </ContentPage.BindingContext>
@@ -14,17 +18,16 @@
         <Grid RowDefinitions="Auto,*">
             <StackLayout Grid.Row="0">
 
-                <StackLayout Orientation="Horizontal">
-                    <ImageButton
-                    HorizontalOptions="Start"
-                    Source="ic_go_back.png"
-                    />
-                    <Label
-                        x:Name="txv_accommodation_publishing_message"
-                        Text="¡Que deseas editar?"
-                        FontSize="25"
-                        Margin="40,5,0,0" />
-                </StackLayout>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="20*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <ImageButton Grid.Column="0" Source="ic_go_back.png" VerticalOptions="Start" HorizontalOptions="Start" Command="{Binding GoBackCommand}"/>
+
+                    <Label Grid.Column="1" Text="¡Que deseas editar?" FontSize="Large"  HorizontalOptions="Start"   VerticalOptions="Center"/>
+                </Grid>
 
                 <ContentView x:Name="additionalContentView" Content="{Binding CurrentContentView}" Margin="20, 0, 20, 0" IsVisible="true" >
                     </ContentView>

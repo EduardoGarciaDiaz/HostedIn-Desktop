@@ -23,14 +23,14 @@
                HeightRequest="250" WidthRequest="500">
             <toolkit:MediaElement Source="{Binding VideoFilePath}" ShouldAutoPlay="True"/>
         </Frame>
-        
-       <HorizontalStackLayout HorizontalOptions="Center" Margin="5" >
+
+        <HorizontalStackLayout HorizontalOptions="CenterAndExpand" Spacing="10" Margin="5" IsVisible="{Binding AreImagesLoaded}" >
             <Button x:Name="btn_go_back" Text="&#x25C0;" Command="{Binding GoBackCommand}" />
             <Button x:Name="btn_go_ahead" Text="&#x25B6;" Command="{Binding GoAheadCommand}" />
         </HorizontalStackLayout>
         
 
-        <StackLayout Orientation="Vertical">
+        <StackLayout Orientation="Vertical" >
             <Label Text="{Binding Accommodation.title}" FontAttributes="Bold" />
             <Label Text="{Binding Accommodation.nightPrice, StringFormat='${0} por noche'}" />
             <Label Text="{Binding Accommodation.description}" />

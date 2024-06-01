@@ -83,5 +83,35 @@ namespace HostedInDesktop.Data.Services
                 throw;
             }
         }
+
+        public async Task<string> UpdateMultimediaAccommodation(string _id, int multimediaIndex, ByteString multimediaBytes)
+        {
+
+            try
+            {
+                using var channel = GrpcChannel.ForAddress("http://127.0.0.1:3002");
+                global::MultimediaService.MultimediaServiceClient stub = new(channel);
+
+                using var call = stub.updateAccommodationMultimedia();
+                
+                await call.RequestStream.WriteAsync(new UpdatedMultimediaRequest
+                {
+                    ModelId = _id,
+                    MultimediaId = multimediaIndex,
+                    Data = multimediaBytes
+                });
+
+                await call.RequestStream.CompleteAsync();
+                var response = await call.ResponseAsync;
+
+                return response.Description;
+            }
+            catch (Exception ex)
+            {
+
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
     }
 }

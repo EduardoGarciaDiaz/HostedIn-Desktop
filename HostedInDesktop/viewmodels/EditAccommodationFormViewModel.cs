@@ -30,16 +30,16 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
     {
         AccommodationToEdit = query["Accommodation"] as Accommodation;
         String index = HttpUtility.UrlDecode(query["index"].ToString());
-        mainImageEdit = query["MainImage"] as ImageSource;
-        secondImageEdit = query["SecondImage"] as ImageSource;
-        thirdImageEdit = query["ThirdImage"] as ImageSource;
-        videoPathEdit = HttpUtility.UrlDecode( query["video"].ToString());
+        MainImage = query["MainImage"] as ImageSource;
+        SecondImage = query["SecondImage"] as ImageSource;
+        ThirdImage = query["ThirdImage"] as ImageSource;
+        VideoPath = HttpUtility.UrlDecode(query["video"].ToString());
         OnPropertyChanged(nameof(AccommodationToEdit));
         _currentViewIndex = int.Parse(index);
         ChooseView();
     }
 
-  
+
     [ObservableProperty]
     private Accommodation accommodationToEdit;
 
@@ -74,25 +74,16 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
     private List<AccommodationService> accommodationServices;
 
     [ObservableProperty]
-    private string mainImage;
+    private ImageSource mainImage;
 
     [ObservableProperty]
-    public string secondImage;
+    public ImageSource secondImage;
 
     [ObservableProperty]
-    public string thirdImage;
+    public ImageSource thirdImage;
 
     [ObservableProperty]
     public string videoPath;
-
-    private ImageSource mainImageEdit;
-
-    public ImageSource secondImageEdit;
-
-    public ImageSource thirdImageEdit;
-
-    public string videoPathEdit;
-
 
     [ObservableProperty]
     private string accommodationTitle;
@@ -164,8 +155,7 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
                 }
                 break;
             case 5:
-                CurrentContentView = new AccommodationFormMultimedia(mainImageEdit, secondImageEdit, thirdImageEdit, videoPathEdit);
-
+                CurrentContentView = new AccommodationFormMultimedia();
                 break;
             case 6:
                 CurrentContentView = new AccommodationFormInformation();
@@ -176,7 +166,7 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
                 break;
         }
     }
-   
+
 
     private string TranslateType(string type)
     {
@@ -184,7 +174,7 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
         if (type.Equals("house"))
         {
             spanish = "Casa";
-        }else if (type.Equals("apartment"))
+        } else if (type.Equals("apartment"))
         {
             spanish = "Departamento";
         }
@@ -264,17 +254,21 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
             {
                 if (IsAccommodationValid())
                 {
-                    if(_currentViewIndex == 5)
+                    if (_currentViewIndex == 5)
                     {
-                        String result = await _multimediaService.SaveImagesAccommodation(AccommodationToEdit._id, ImagesAndVideoBytes.ToArray());
-                        await Shell.Current.DisplayAlert("Exito", $"{result}, recargar la pagina", "ok");
+                        String result = "";
+                        for (global::System.Int32 i = 0; i < ImagesAndVideoBytes.Count; i++)
+                        {
+                            result = await _multimediaService.UpdateMultimediaAccommodation(AccommodationToEdit._id, i, ImagesAndVideoBytes[i]);
+                        }
+                        await Shell.Current.DisplayAlert("INFO", $"{result}", "ok");
                     }
                     else
                     {
                         Accommodation newAccommodation = await _accommodationService.UpdateAccommodation(accommodationToEdit);
                         if (newAccommodation != null)
                         {
-                            await Shell.Current.DisplayAlert("Alojamiento actualizado", "Sehan guardado los cambios de tu alojamiento con éxito, recarga la pagina", "Ok");
+                            await Shell.Current.DisplayAlert("Alojamiento actualizado", "Se han guardado los cambios de tu alojamiento con éxito, recarga la pagina", "Ok");
                         }
                     }
                     App.ContentViewHost = new HostAccommodationsView(new AccommodationsOwnedViewModel());
@@ -310,7 +304,7 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
         var selectetTypeEn = AccommodationTypes.ToString().FirstOrDefault(a => a.Equals(type));
         if (selectedType != null)
         {
-            
+
             selectedType.IsSelected = true;
             SelectedAccommodationType = selectedType;
         }
@@ -352,7 +346,7 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
             switch (imageKey)
             {
                 case "MainImage":
-                    MainImage = imagePath;             
+                    MainImage = imagePath;
                     break;
                 case "SecondImage":
                     SecondImage = imagePath;
@@ -414,16 +408,16 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
                 accommodationToEdit.accommodationServices = AccommodationServices.Where(a => a.IsSelected).Select(a => a.ServiceEnum.ToString().Replace("_", " ")).ToArray();
                 break;
             case 5:
-               await GetMultimediaAsync();
-               break;
+                await GetMultimediaAsync();
+                break;
             case 6:
                 accommodationToEdit.title = AccommodationTitle;
                 accommodationToEdit.description = AccommodationDescription;
                 accommodationToEdit.rules = AccommodationRules;
                 accommodationToEdit.nightPrice = (double)AccommodationNightPrice;
                 break;
-        } 
-        
+        }
+
     }
 
     public bool IsAccommodationValid()
@@ -435,52 +429,23 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
     {
         ImagesAndVideoBytes = new List<ByteString>();
         ByteString img1 = ByteString.Empty;
-        ByteString img2 = ByteString.Empty; 
+        ByteString img2 = ByteString.Empty;
         ByteString img3 = ByteString.Empty;
         ByteString vid1 = ByteString.Empty;
-        if (MainImage == null)
-        {
-            img1 = await ImageHelper.ConvertImageSourceToByteString(mainImageEdit);
-        }
-        else
-        {
-            byte[] imageBytes = File.ReadAllBytes(MainImage);
-            img1 = ByteString.CopyFrom(imageBytes);
-        }
-        if (SecondImage == null)
-        {
-            img2 = await ImageHelper.ConvertImageSourceToByteString(secondImageEdit);
-        }
-        else
-        {
-            byte[] imageBytes = File.ReadAllBytes(SecondImage);
-            img2 = ByteString.CopyFrom(imageBytes);
-        }
-        if (ThirdImage == null)
-        {
-            img3 = await ImageHelper.ConvertImageSourceToByteString(thirdImageEdit);
-        }
-        else
-        {
-            byte[] imageBytes = File.ReadAllBytes(ThirdImage);
-            img3 = ByteString.CopyFrom(imageBytes);
-        }
-        if (videoPath == null)
-        {
-            byte[] imageBytes = File.ReadAllBytes(videoPathEdit);
-            vid1 = ByteString.CopyFrom(imageBytes);
-        }
-        else
-        {
-            byte[] imageBytes = File.ReadAllBytes(videoPath);
-            vid1 = ByteString.CopyFrom(imageBytes);
-        }
+        img1 = await ImageHelper.ConvertImageSourceToByteString(MainImage);
+        img2 = await ImageHelper.ConvertImageSourceToByteString(SecondImage);
+        img3 = await ImageHelper.ConvertImageSourceToByteString(ThirdImage);
+        vid1 = await ImageHelper.ConvertImageSourceToByteString(VideoPath);               
         ImagesAndVideoBytes.Add(img1);
         ImagesAndVideoBytes.Add(img2);
         ImagesAndVideoBytes.Add(img3);
         ImagesAndVideoBytes.Add(vid1);
-        
     }
 
-
+    [RelayCommand]
+    public async Task GoBack()
+    {
+        App.ContentViewHost = new HostAccommodationsView(new AccommodationsOwnedViewModel());
+        await Shell.Current.GoToAsync(nameof(HostView));
+    }
 }

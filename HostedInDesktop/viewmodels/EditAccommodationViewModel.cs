@@ -40,9 +40,13 @@ public partial class EditAccommodationViewModel : ObservableObject
     private bool isVideo;
     [ObservableProperty]
     private int index;
+    [ObservableProperty]
+    private bool areImagesLoaded = false;
 
 
-
+    private ImageSource imageSource1;
+    private ImageSource imageSource2;
+    private ImageSource imageSource3;
 
 
     public EditAccommodationViewModel()
@@ -63,32 +67,38 @@ public partial class EditAccommodationViewModel : ObservableObject
             var imageBytes1 = await _multimediaService.LoadMainImageAccommodation(Accommodation._id, 0);
             var imageBytes2 = await _multimediaService.LoadMainImageAccommodation(Accommodation._id, 1);
             var imageBytes3 = await _multimediaService.LoadMainImageAccommodation(Accommodation._id, 2);
-            var videoBytes4 = await _multimediaService.LoadMainImageAccommodation(Accommodation._id, 3);
-            ImageSource imageSource1;
-            ImageSource imageSource2;
-            ImageSource imageSource3;
+            var videoBytes4 = await _multimediaService.LoadMainImageAccommodation(Accommodation._id, 3);            
             if (imageBytes1 == null)
             {
                 imageSource1 = ImageSource.FromFile("img_provisional.png");
                 imageSource2 = ImageSource.FromFile("img_provisional.png");
                 imageSource3 = ImageSource.FromFile("img_provisional.png");
+                VideoFilePath = "";
             }
             else
             {
                 imageSource1 = ImageSource.FromStream(() => new MemoryStream(imageBytes1));
                 imageSource2 = ImageSource.FromStream(() => new MemoryStream(imageBytes2));
                 imageSource3 = ImageSource.FromStream(() => new MemoryStream(imageBytes3));
-            }
+                VideoFilePath = await ImageHelper.SaveVideoToFileAsync(videoBytes4);
+            }                    
+        }
+        catch (Exception e)
+        {
+            imageSource1 = ImageSource.FromFile("img_provisional.png");
+            imageSource2 = ImageSource.FromFile("img_provisional.png");
+            imageSource3 = ImageSource.FromFile("img_provisional.png");
+            VideoFilePath = "";
+            Console.WriteLine(e.Message);
+        }
+        finally
+        {
             MultimediaItems.Clear();
             MultimediaItems.Add(imageSource1);
             MultimediaItems.Add(imageSource2);
             MultimediaItems.Add(imageSource3);
-            VideoFilePath = await ImageHelper.SaveVideoToFileAsync(videoBytes4);
             ImageSource = MultimediaItems[0];
-        }
-        catch (Exception e)
-        {
-            Console.WriteLine(e.Message);
+            AreImagesLoaded = true;
         }
     }
 
