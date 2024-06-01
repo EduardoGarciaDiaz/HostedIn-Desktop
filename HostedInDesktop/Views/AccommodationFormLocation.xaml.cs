@@ -46,7 +46,7 @@ public partial class AccommodationFormLocation : ContentView
     {
         InitializeComponent();
         _editViewModel = viewModel;
-        BindingContext = _viewModel;
+        BindingContext = _editViewModel;
 
         var builder = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
 

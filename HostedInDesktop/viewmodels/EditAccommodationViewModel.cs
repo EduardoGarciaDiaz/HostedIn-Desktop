@@ -81,6 +81,7 @@ public partial class EditAccommodationViewModel : ObservableObject
                 imageSource2 = ImageSource.FromStream(() => new MemoryStream(imageBytes2));
                 imageSource3 = ImageSource.FromStream(() => new MemoryStream(imageBytes3));
                 VideoFilePath = await ImageHelper.SaveVideoToFileAsync(videoBytes4);
+                AreImagesLoaded = true;
             }                    
         }
         catch (Exception e)
@@ -98,7 +99,6 @@ public partial class EditAccommodationViewModel : ObservableObject
             MultimediaItems.Add(imageSource2);
             MultimediaItems.Add(imageSource3);
             ImageSource = MultimediaItems[0];
-            AreImagesLoaded = true;
         }
     }
 
