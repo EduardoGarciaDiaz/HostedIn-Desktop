@@ -9,7 +9,7 @@ public partial class AccommodationDetails : ContentPage
 	{
 		InitializeComponent();
 		BindingContext = ServiceHelper.GetService<AccommodationDetailsViewModel>();
-	}
+    }
 
 
 }

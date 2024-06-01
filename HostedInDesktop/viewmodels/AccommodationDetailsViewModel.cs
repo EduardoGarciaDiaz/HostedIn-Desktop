@@ -8,6 +8,7 @@ using HostedInDesktop.Utils;
 using HostedInDesktop.viewmodels.ModelObservable;
 using HostedInDesktop.Views;
 using Newtonsoft.Json;
+using Syncfusion.Maui.Core.Carousel;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -21,10 +22,14 @@ namespace HostedInDesktop.viewmodels
     {
         public const string ACCOMMODATION_KEY = "AccommodationData";
         private readonly IReviewsService _reviewsService = new ReviewsService();
+        private readonly MultimediaServiceImpl _multimediaService = new MultimediaServiceImpl();
         ISharedService _sharedService = new SharedService();
 
         [ObservableProperty]
         private Accommodation accommodationData;
+
+        [ObservableProperty]
+        private bool isLoading;
 
         [ObservableProperty]
         private ObservableCollection<UserReview> userReview;
@@ -53,12 +58,32 @@ namespace HostedInDesktop.viewmodels
         [ObservableProperty]
         private string longitude;
 
+        [ObservableProperty]
+        private bool isImage;
+
+        [ObservableProperty]
+        private bool isVideo;
+
+        [ObservableProperty]
+        private int index;
+
+        public ObservableCollection<ImageSource> MultimediaItems { get; } = new ObservableCollection<ImageSource>();
+
+        [ObservableProperty]
+        private string videoFilePath;
+
+        [ObservableProperty]
+        private ImageSource imageSource;
+             
         public AccommodationDetailsViewModel(ISharedService sharedService)
         {
             _sharedService = sharedService;
             LoadAccommodationData();
             UserReview = new ObservableCollection<UserReview>();
             GetReviews();
+            isImage = true;
+            isVideo = false;
+            index = 0;
 
         }
 
@@ -79,20 +104,27 @@ namespace HostedInDesktop.viewmodels
             }
         }
 
-        private void LoadAccommodationData()
+        private async void LoadAccommodationData()
         {
             try
             {
+                IsLoading = true;
+
                 AccommodationData = _sharedService.GetValue<Accommodation>(ACCOMMODATION_KEY);
                 LoadAccommodationType();
                 LoadAccommodationBasics();
                 LoadAccommodationServices();
                 LoadLocation();
                 LoadHostData();
+                await LoadAccommodationMultimedia();
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
+            }
+            finally
+            {
+                IsLoading = false;
             }
         }
 
@@ -102,6 +134,8 @@ namespace HostedInDesktop.viewmodels
             {
                 try
                 {
+                    IsLoading = true;
+
                     if (!string.IsNullOrWhiteSpace(AccommodationData._id))
                     {
                         List<Review> reviews = await _reviewsService.GetReviewsOfAccommodation(AccommodationData._id);  
@@ -131,7 +165,6 @@ namespace HostedInDesktop.viewmodels
                         }
 
                         CalculateScore(reviews);
-
                     }
                 }
                 catch (ApiException aex)
@@ -144,6 +177,10 @@ namespace HostedInDesktop.viewmodels
                 {
                     await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
                     return;
+                }
+                finally
+                {
+                    IsLoading = false;
                 }
             }
         }
@@ -242,6 +279,92 @@ namespace HostedInDesktop.viewmodels
             {
                 byte[] imageData = AccommodationData.user.profilePhoto.data;
                 ProfilePhotoHost = ImageSource.FromStream(() => new MemoryStream(imageData));
+            }
+        }
+
+        private async Task LoadAccommodationMultimedia()
+        {
+            try
+            {
+                IsLoading = true;
+
+                var imageBytes1 = await _multimediaService.LoadMainImageAccommodation(AccommodationData._id, 0);
+                var imageBytes2 = await _multimediaService.LoadMainImageAccommodation(AccommodationData._id, 1);
+                var imageBytes3 = await _multimediaService.LoadMainImageAccommodation(AccommodationData._id, 2);
+                var videoBytes4 = await _multimediaService.LoadMainImageAccommodation(AccommodationData._id, 3);
+                ImageSource imageSource1;
+                ImageSource imageSource2;
+                ImageSource imageSource3;
+                if (imageBytes1 == null)
+                {
+                    imageSource1 = ImageSource.FromFile("img_provisional.png");
+                    imageSource2 = ImageSource.FromFile("img_provisional.png");
+                    imageSource3 = ImageSource.FromFile("img_provisional.png");
+                }
+                else
+                {
+                    imageSource1 = ImageSource.FromStream(() => new MemoryStream(imageBytes1));
+                    imageSource2 = ImageSource.FromStream(() => new MemoryStream(imageBytes2));
+                    imageSource3 = ImageSource.FromStream(() => new MemoryStream(imageBytes3));
+                }
+                MultimediaItems.Clear();
+                MultimediaItems.Add(imageSource1);
+                MultimediaItems.Add(imageSource2);
+                MultimediaItems.Add(imageSource3);
+                VideoFilePath = await ImageHelper.SaveVideoToFileAsync(videoBytes4);
+                ImageSource = MultimediaItems[0];
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+        }
+
+        [RelayCommand]
+        private void GoBackCarousel()
+        {
+            Index--;
+            if (Index == -1)
+            {
+                IsVideo = true;
+                IsImage = false;
+                Index = 3;
+
+                return;
+            }
+            else if (Index == 2)
+            {
+                IsVideo = false;
+                IsImage = true;
+            }
+
+            if (MultimediaItems.Count > 0)
+            {
+                ImageSource = MultimediaItems[Index];
+            }
+        }
+
+        [RelayCommand]
+        private void GoAheadCarousel()
+        {
+            Index++;
+            if (Index == 3)
+            {
+                IsVideo = true;
+                IsImage = false;
+                return;
+            }
+            else if (Index == 4)
+            {
+                IsVideo = false;
+                IsImage = true;
+                Index = 0;
+
+            }
+
+            if (MultimediaItems.Count > 0)
+            {
+                ImageSource = MultimediaItems[Index];
             }
         }
 

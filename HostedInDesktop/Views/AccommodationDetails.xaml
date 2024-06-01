@@ -5,7 +5,7 @@
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              xmlns:rating="clr-namespace:Syncfusion.Maui.Inputs;assembly=Syncfusion.Maui.Inputs"
              xmlns:reusable="clr-namespace:HostedInDesktop.Reusable"
-    x:Class="HostedInDesktop.Views.AccommodationDetails">
+             x:Class="HostedInDesktop.Views.AccommodationDetails">
 
     <Shell.BackButtonBehavior>
         <BackButtonBehavior IsVisible="False" IsEnabled="False" />
@@ -41,38 +41,53 @@
 
         <!-- ScrollView for details -->
         <ScrollView Grid.Row="1" Grid.RowSpan="2" Grid.ColumnSpan="3" Margin="20,50,20,70">
+            
             <VerticalStackLayout>
-                <!-- ViewFlipper converted to CarouselView -->
-                <CarouselView x:Name="vflp_accommodation_multimedia"
-                              HeightRequest="250">
-                    <CarouselView.ItemsSource>
-                        <x:Array Type="{x:Type View}">
-                            <Image x:Name="imv_first_image" Source="img_provisional.png"/>
-                            <Image x:Name="imv_second_image" Source="img_provisional.png"/>
-                            <Image x:Name="imv_third_image" Source="img_provisional.png"/>
-                            <toolkit:MediaElement 
-                            Source="" 
-                            ShouldAutoPlay="True"
-                            Aspect="AspectFit" />
 
-                        </x:Array>
-                    </CarouselView.ItemsSource>
-                </CarouselView>
-
-                <!-- Navigation Buttons -->
+                <!--carousel-->
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
                     <Button x:Name="btn_go_back"
-                            Grid.Column="0"
-                            Text="&#x25C0;" />
+                        Grid.Column="0"
+                        VerticalOptions="Center"
+                        Text="&#x25C0;"
+                        Command="{Binding GoBackCarouselCommand}" />
+
+                    <Frame Grid.Column="1"
+                       CornerRadius="20" 
+                       HasShadow="False" 
+                       HorizontalOptions="Center" 
+                       IsVisible="{Binding IsImage}"
+                       HeightRequest="300">
+                        <Image Source="{Binding ImageSource}" Aspect="AspectFit"/>
+                    </Frame>
+
+                    <Frame Grid.Column="1"
+                           CornerRadius="20" 
+                           HasShadow="False" 
+                           HorizontalOptions="Center" 
+                           IsVisible="{Binding IsVideo}" 
+                           HeightRequest="300" 
+                           WidthRequest="600">
+                        <toolkit:MediaElement Source="{Binding VideoFilePath}" ShouldAutoPlay="True" Aspect="AspectFit"/>
+                    </Frame>
+
                     <Button x:Name="btn_go_ahead"
-                            Grid.Column="2"
-                            Text="&#x25B6;" />
-                </Grid>
+                    Grid.Column="2"
+                    VerticalOptions="Center"
+                    Text="&#x25B6;" 
+                    Command="{Binding GoAheadCarouselCommand}" />
+            </Grid>
+
 
                 <!-- Location -->
                 <Label x:Name="txv_location"
@@ -86,19 +101,11 @@
                TextColor="#333333"
                 FontAttributes="Bold"
                Margin="0,15,0,0" />
-                
+
                 <Label x:Name="txv_description"
                        Text="{Binding AccommodationData.description}"
                        TextColor="#333333"
                        Margin="0,6,0,0" />
-
-                <!--<Button x:Name="btn_show_more_description"
-                        Text="Mostrar más >"
-                        TextColor="#333333"
-                        FontAttributes="Bold"
-                        HorizontalOptions="End"
-                        HeightRequest="15" 
-                        />-->
 
                 <!-- Accommodation Services -->
                 <Label x:Name="txv_accommodation_type"
@@ -115,12 +122,6 @@
                            TextColor="#333333"
                            FontAttributes="Bold"
                            HorizontalOptions="FillAndExpand" />
-                    <!--<Button x:Name="btn_show_more_services"
-                            Text="Mostrar más >"
-                            TextColor="#333333"
-                            FontAttributes="Bold"
-                            HeightRequest="15" 
-                            HorizontalOptions="End"/>-->
                 </HorizontalStackLayout>
 
                 <Label x:Name="txv_accommodations_services"
@@ -133,13 +134,6 @@
                            TextColor="#333333"
                            FontAttributes="Bold"
                            HorizontalOptions="FillAndExpand" />
-                    <!--<Button x:Name="btn_show_more_rules"
-                            Text="Mostrar más >"
-                            TextColor="#333333"
-                            FontAttributes="Bold"
-                            HeightRequest="15" 
-                            HorizontalOptions="End"
-                            />-->
                 </HorizontalStackLayout>
 
                 <Label x:Name="txv_accommodation_rules"
@@ -203,7 +197,7 @@
                         <Label Text="Latitud"
                             TextColor="#333333"
                             Margin="0,6,0,0" />
-                                                <Label Text="{Binding Latitude}"
+                        <Label Text="{Binding Latitude}"
                             TextColor="#333333"
                             Margin="0,6,0,0" />
                     </StackLayout>
@@ -211,11 +205,11 @@
                         <Label Text="Longitud"
                         TextColor="#333333"
                         Margin="0,6,0,0" />
-                    <Label Text="{Binding Longitude}"
+                        <Label Text="{Binding Longitude}"
                         TextColor="#333333"
                         Margin="0,6,0,0" />
                     </StackLayout>
-                    
+
                 </HorizontalStackLayout>
 
                 <!--<Map x:Name="mpv_accommodation_location"
@@ -273,7 +267,7 @@
                                     LineBreakMode="TailTruncation"/>
                                 </StackLayout>
                             </Grid>
-                            
+
                             <Label 
                                 Grid.Row="1"
                                 Grid.ColumnSpan="0"
@@ -294,29 +288,6 @@
                 </Grid>
             </VerticalStackLayout>
         </ScrollView>
-
-        <!-- Bottom Sheet for more details -->
-        <!--<Grid IsVisible="{Binding IsBottomSheetVisible}"
-              VerticalOptions="End"
-              BackgroundColor="#BFBFBF">
-            <Label Text="Detalles"
-                   FontSize="17"
-                   FontAttributes="Bold"
-                   Margin="15,13,0,0" />
-
-            <Button x:Name="btn_close_details"
-                    Text="Cerrar"
-                    FontSize="17"
-                    Margin="0,0,5,0"
-                    HorizontalOptions="End" />
-
-            <ScrollView Grid.Row="1">
-                <Label x:Name="txv_more_details_description"
-                       Text="detalles..."
-                       FontSize="18"
-                       Margin="15" />
-            </ScrollView>
-        </Grid>-->
 
         <!-- Booking Button -->
         <Button x:Name="btn_booking"

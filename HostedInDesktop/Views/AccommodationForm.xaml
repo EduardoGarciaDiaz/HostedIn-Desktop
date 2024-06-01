@@ -9,6 +9,11 @@
         <viewmodel:AccommodationFormViewModel/>
     </ContentPage.BindingContext>
 
+
+    <Shell.BackButtonBehavior>
+        <BackButtonBehavior IsVisible="False" IsEnabled="False" />
+    </Shell.BackButtonBehavior>
+
     <Grid RowDefinitions="Auto,*">
         <StackLayout Grid.Row="0">
 
