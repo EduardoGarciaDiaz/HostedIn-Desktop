@@ -23,6 +23,7 @@ namespace HostedInDesktop.Data.Models
         public Location location { get; set; }
         public User user { get; set; }
         private byte[] _mainImage;
+        public double rate {  get; set; }
 
         public byte[] mainImage
         {
