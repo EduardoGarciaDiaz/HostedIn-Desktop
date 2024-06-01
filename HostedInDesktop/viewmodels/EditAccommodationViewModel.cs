@@ -224,11 +224,7 @@ public partial class EditAccommodationViewModel : ObservableObject
         var navegationParameter = new ShellNavigationQueryParameters
         {
             {"Accommodation", Accommodation },
-            {"index", 6 },
-            {"MainImage", MultimediaItems[0] },
-            {"SecondImage", MultimediaItems[1] },
-            {"ThirdImage", MultimediaItems[2] },
-            {"video", VideoFilePath }
+            {"index", 6 }
         };
         await Shell.Current.GoToAsync($"{nameof(EditAccommodationForm)}", navegationParameter);
     }
@@ -255,6 +251,7 @@ public partial class EditAccommodationViewModel : ObservableObject
         }
 
     } 
+
 
 
 }

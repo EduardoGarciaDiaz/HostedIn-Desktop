@@ -29,13 +29,16 @@ public partial class EditAccommodationFormViewModel : ObservableObject, INotifyP
     public void ApplyQueryAttributes(IDictionary<string, object> query)
     {
         AccommodationToEdit = query["Accommodation"] as Accommodation;
-        String index = HttpUtility.UrlDecode(query["index"].ToString());
-        MainImage = query["MainImage"] as ImageSource;
-        SecondImage = query["SecondImage"] as ImageSource;
-        ThirdImage = query["ThirdImage"] as ImageSource;
-        VideoPath = HttpUtility.UrlDecode(query["video"].ToString());
+        String index = HttpUtility.UrlDecode(query["index"].ToString());                
         OnPropertyChanged(nameof(AccommodationToEdit));
         _currentViewIndex = int.Parse(index);
+        if (_currentViewIndex == 5)
+        {
+            MainImage = query["MainImage"] as ImageSource;
+            SecondImage = query["SecondImage"] as ImageSource;
+            ThirdImage = query["ThirdImage"] as ImageSource;
+            VideoPath = HttpUtility.UrlDecode(query["video"].ToString());
+        }
         ChooseView();
     }
 

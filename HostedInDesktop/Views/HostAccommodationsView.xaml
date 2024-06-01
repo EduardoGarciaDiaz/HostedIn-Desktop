@@ -16,10 +16,12 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Label Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos" TextColor="{StaticResource Primary}"   Style="{StaticResource SubHeadline}"/>
 
-        <ScrollView Margin="0, 30, 0, 0" HorizontalOptions="Start"  Orientation="Vertical"  >
+
+        <ScrollView Margin="0, 0, 0, 0" HorizontalOptions="Start"  Orientation="Vertical"  >
             <StackLayout Grid.Column="0">
+                <Label Text="Que bueno verte de regreso!!, En Hosted-in te ayudamos a gestionar tus alojamientos" TextColor="{StaticResource Primary}"   Style="{StaticResource SubHeadline}"/>
+                
                 <ActivityIndicator HorizontalOptions="Center" VerticalOptions="Center"  IsRunning="{Binding IsLoading}" IsVisible="{Binding IsLoading}"/>
 
 

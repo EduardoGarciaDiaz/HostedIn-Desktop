@@ -13,8 +13,8 @@ namespace HostedInDesktop.Data.Services
     public class MultimediaServiceImpl
     {
 
-        public MultimediaServiceImpl() 
-        { 
+        public MultimediaServiceImpl()
+        {
         }
 
         public async Task<byte[]> LoadMainImageAccommodation(string _id, int index)
@@ -66,7 +66,7 @@ namespace HostedInDesktop.Data.Services
                         ModelId = _id,
                         Data = item
                     });
-                }                
+                }
                 await call.RequestStream.CompleteAsync();
                 var response = await call.ResponseAsync;
 
@@ -85,18 +85,18 @@ namespace HostedInDesktop.Data.Services
 
             try
             {
-                using var channel = GrpcChannel.ForAddress("http://127.0.0.1:3002");
+                using var channel = GrpcChannel.ForAddress(Utils.GrcpServerData.BASE_ADDRESS);
                 global::MultimediaService.MultimediaServiceClient stub = new(channel);
 
                 using var call = stub.updateAccommodationMultimedia();
-                
+
                 await call.RequestStream.WriteAsync(new UpdatedMultimediaRequest
                 {
                     ModelId = _id,
                     MultimediaId = multimediaIndex,
                     Data = multimediaBytes
                 });
-}
+
                 await call.RequestStream.CompleteAsync();
                 var response = await call.ResponseAsync;
 
@@ -140,5 +140,7 @@ namespace HostedInDesktop.Data.Services
                 throw;
             }
         }
+    
+    
     }
 }
