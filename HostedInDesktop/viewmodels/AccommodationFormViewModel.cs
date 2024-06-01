@@ -15,11 +15,16 @@ using HostedInDesktop.Data.Models;
 using HostedInDesktop.Utils;
 using HostedInDesktop.Data.Services;
 using Google.Protobuf;
+using CommunityToolkit.Maui.Views;
+using NetTopologySuite.Operation.Valid;
+using GoogleApi.Entities.Maps.AddressValidation.Response;
 
 namespace HostedInDesktop.viewmodels
 {
     public partial class AccommodationFormViewModel : ObservableObject
     {
+        private const long MAX_SIZE_VIDEO_MB = 50 * 1024 * 1024; // 50 MB
+        private const int MAX_SECONDS_DURATION_VIDEO = 300; // 5 minuteS
         private readonly IAccommodationsService _accommodationService = new AccommodationsService();
         private readonly MultimediaServiceImpl _multimediaService = new MultimediaServiceImpl();
 
@@ -145,10 +150,6 @@ namespace HostedInDesktop.viewmodels
                 Accommodation newAccommodation = CreateAccommodation();
                 PublishAccommodation(newAccommodation);
             }
-            else
-            {
-                await Shell.Current.DisplayAlert("Faltan datos", "Debes llenar el formulario completo", "Ok");
-            }
         }
 
         [RelayCommand]
@@ -243,7 +244,10 @@ namespace HostedInDesktop.viewmodels
 
                 if (mediaType == "Video")
                 {
-                    VideoPath = mediaPath;
+                    if (IsVideoValid(mediaPath))
+                    {
+                        VideoPath = mediaPath;
+                    }
                 }
             }
         }
@@ -251,9 +255,9 @@ namespace HostedInDesktop.viewmodels
         private Accommodation CreateAccommodation()
         {
             Accommodation accommodation = new Accommodation();
-            accommodation.title = AccommodationTitle;
-            accommodation.description = AccommodationDescription;
-            accommodation.rules = AccommodationRules;
+            accommodation.title = AccommodationTitle.Trim();
+            accommodation.description = AccommodationDescription.Trim();
+            accommodation.rules = AccommodationRules.Trim();
 
             accommodation.accommodationType = SelectedAccommodationType.BasicEnum.ToString();
 
@@ -332,7 +336,6 @@ namespace HostedInDesktop.viewmodels
 
         public bool IsAccommodationValid()
         {
-            // TODO:
             bool isAccommodationValid = true;
 
             if (!IsTypeValid())
@@ -340,6 +343,22 @@ namespace HostedInDesktop.viewmodels
                 isAccommodationValid = false;
             }
             else if (!IsLocationValid())
+            {
+                isAccommodationValid = false;
+            }
+            else if (!IsBasicsValid())
+            {
+                isAccommodationValid = false;
+            } 
+            else if (!IsServicesValid())
+            {
+                isAccommodationValid = false;
+            } 
+            else if (!IsMultimediaValid())
+            {
+                isAccommodationValid = false;
+            }
+            else if (!IsInformationValid())
             {
                 isAccommodationValid = false;
             }
@@ -351,10 +370,10 @@ namespace HostedInDesktop.viewmodels
         {
             bool isTypeValid = true;
 
-            if (selectedAccommodationType == null)
+            if (SelectedAccommodationType == null)
             {
                 isTypeValid = false;
-                Shell.Current.DisplayAlert("Selecciona un tipo de alojamiento", "Debes seleccionar un tipo de alojamiento", "Ok");
+                Shell.Current.DisplayAlert("Tipo de alojamiento", "Debes seleccionar un tipo de alojamiento", "Ok");
             }
 
             return isTypeValid;
@@ -370,10 +389,191 @@ namespace HostedInDesktop.viewmodels
                 || SelectedLocation.longitude == 0)
             {
                 isLocationValid = false;
-                Shell.Current.DisplayAlert("Selecciona una dirección", "Debes seleccionar una dirección válida", "Ok");
+                Shell.Current.DisplayAlert("Dirección", "Debes seleccionar una dirección válida", "Ok");
             }
 
             return isLocationValid;
+        }
+
+        private bool IsBasicsValid()
+        {
+            bool isBasicsValid = true;
+
+            if (AccommodationBasics.Any(a => a.Value < 0))
+            {
+                isBasicsValid = false;
+                Shell.Current.DisplayAlert("Datos básicos", "Debes seleccionar los datos básicos", "Ok");
+            }
+
+            return isBasicsValid;
+        }
+
+        private bool IsServicesValid()
+        {
+            bool isServicesValid = true;
+
+            if (!AccommodationServices.Any(a => a.IsSelected))
+            {
+                isServicesValid = false;
+                Shell.Current.DisplayAlert("Servicios", "Debes seleccionar al menos un servicio", "Ok");
+            }
+
+            return isServicesValid;
+        }
+
+        private bool IsMultimediaValid()
+        {
+            bool isMultimediaValid = true;
+
+            if (string.IsNullOrEmpty(MainImage) || string.IsNullOrEmpty(SecondImage) || string.IsNullOrEmpty(ThirdImage) || string.IsNullOrEmpty(VideoPath))
+            {
+                isMultimediaValid = false;
+                Shell.Current.DisplayAlert("Multimedia de tu alojamiento", "Debes seleccionar las 3 imagenes y 1 video", "Ok");
+            }
+
+            if (!string.IsNullOrEmpty(VideoPath) && !IsVideoValid(VideoPath))
+            {
+                isMultimediaValid = false;
+            }
+
+            return isMultimediaValid;
+        }
+
+        private bool IsVideoValid(string videoPath)
+        {
+            bool isValid = true;
+
+            if (!IsVideoSizeValid(videoPath))
+            {
+                isValid = false;
+            } 
+
+            if (!IsVideoDurationValid(videoPath))
+            {
+                isValid = false;
+            }           
+
+            return isValid;
+        }
+
+        private bool IsVideoSizeValid(string videoPath)
+        {
+            bool isValid = true;
+
+            FileInfo fileInfo = new FileInfo(videoPath);
+            if (fileInfo.Length > MAX_SIZE_VIDEO_MB)
+            {
+                Shell.Current.DisplayAlert("Video demasiado grande", "El tamaño del video no debe exceder 50 MB.", "Ok");
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        private bool IsVideoDurationValid(string videoPath)
+        {
+            bool isValid = true;
+            var inputFile = new MediaElement { Source = videoPath };
+
+            var duration = inputFile.Duration;
+            if (duration.TotalSeconds > MAX_SECONDS_DURATION_VIDEO)
+            {
+                Shell.Current.DisplayAlert("Video demasiado largo", "La duración del video no debe exceder los 5 minutos.", "Ok");
+                isValid = false;
+            }
+
+            return isValid;
+        }
+
+        private bool IsInformationValid()
+        {
+            bool isInformationValid = true;
+
+            if (!IsTitleValid())
+            {
+                isInformationValid = false;
+            }
+            else if (!IsDescriptionValid())
+            {
+                isInformationValid = false;
+            } 
+            else if (!IsRulesValid())
+            {
+                isInformationValid = false;
+            }
+            else if (!IsPriceValid())
+            {
+                isInformationValid = false;
+            }
+
+            return isInformationValid;
+        }
+
+        private bool IsTitleValid()
+        {
+            bool isTitleValid = true;
+
+            if (string.IsNullOrEmpty(AccommodationTitle))
+            {
+                Shell.Current.DisplayAlert("Titulo obligatorio", "Ingresa un titulo para que tus futuros huespedes lo reconozcan", "Ok");
+                isTitleValid = false;
+            }
+            else if (!DataValidator.IsAccommodationInformationValid(AccommodationTitle.Trim()))
+            {
+                Shell.Current.DisplayAlert("Titulo no válido", "Por favor, ingresa un titulo válido (al menos 5 caracteres)", "Ok");
+                isTitleValid = false;
+            }
+
+                return isTitleValid;
+        } 
+
+        private bool IsDescriptionValid()
+        {
+            bool isDescriptionValid = true;
+
+            if (string.IsNullOrEmpty(AccommodationDescription))
+            {
+                Shell.Current.DisplayAlert("Descripción obligatoria", "Describele a tus futuros huéspedes tu alojamiento", "Ok");
+                isDescriptionValid = false;
+            }
+            else if (!DataValidator.IsAccommodationInformationValid(AccommodationDescription.Trim()))
+            {
+                Shell.Current.DisplayAlert("Descripción no válida", "Por favor, ingresa una descripción válido (de 5 a 500 caracteres)", "Ok");
+                isDescriptionValid = false;
+            }
+
+            return isDescriptionValid;
+        }
+
+        private bool IsRulesValid()
+        {
+            bool isRulesValid = true;
+
+            if (string.IsNullOrEmpty(AccommodationRules))
+            {
+                Shell.Current.DisplayAlert("Reglas obligatorias", "Especifica que está permitido y que no, para tener un orden en tu alojamiento", "Ok");
+                isRulesValid = false;
+            }
+            else if (!DataValidator.IsAccommodationInformationValid(AccommodationRules.Trim()))
+            {
+                Shell.Current.DisplayAlert("Reglas no válidas", "Por favor, ingresa reglas válidas (de 5 a 500 caracteres)", "Ok");
+                isRulesValid = false;
+            }
+
+            return isRulesValid;
+        }
+
+        private bool IsPriceValid()
+        {
+            bool isPriceValid = true;
+
+            if (AccommodationNightPrice <= 0)
+            {
+                Shell.Current.DisplayAlert("Precio no válido", "Por favor, ingresa un precio válido", "Ok");
+                isPriceValid = false;
+            }
+
+            return isPriceValid;
         }
 
         public void ResetForm()
