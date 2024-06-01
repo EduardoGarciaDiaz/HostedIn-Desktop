@@ -157,8 +157,10 @@ namespace HostedInDesktop.viewmodels
         {
             bool isBirthdateValid = true;
 
+            // Convert the Date property to string
             string birthdateStr = Date.ToString();
 
+            // Check if the birthdate string is empty or null
             if (string.IsNullOrEmpty(birthdateStr))
             {
                 Shell.Current.DisplayAlert("Fecha de nacimiento obligatoria", "Debes ingresar tu fecha de nacimiento", "Ok");
@@ -168,16 +170,26 @@ namespace HostedInDesktop.viewmodels
             {
                 try
                 {
-                    string[] dateParts = birthdateStr.Split(' ')[0].Split('/');
-                    string formattedDate = $"{dateParts[0]}/{dateParts[1]}/{dateParts[2]}";
+                    DateTime birthdate;
+                    bool isValidDate = DateTime.TryParse(birthdateStr, out birthdate);
 
-                    DateTime birthdate = DateTime.ParseExact(formattedDate, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    if (!isValidDate)
+                    {
+                        Shell.Current.DisplayAlert("Fecha no válida", "El formato de la fecha no es válido", "Ok");
+                        isBirthdateValid = false;
+                    }
+                    else
+                    {
+                        DateTime minAgeDate = DateTime.Today.AddYears(-18);
 
-                    DateTime minAgeDate = DateTime.Today.AddYears(-18);
-
-                    isBirthdateValid = birthdate <= minAgeDate;
+                        if (birthdate > minAgeDate)
+                        {
+                            Shell.Current.DisplayAlert("Edad no válida", "Debes ser mayor de 18 años", "Ok");
+                            isBirthdateValid = false;
+                        }
+                    }
                 }
-                catch (FormatException e)
+                catch (FormatException)
                 {
                     Shell.Current.DisplayAlert("Fecha no válida", "El formato de la fecha no es válido", "Ok");
                     isBirthdateValid = false;
@@ -186,6 +198,8 @@ namespace HostedInDesktop.viewmodels
 
             return isBirthdateValid;
         }
+
+
 
         private bool IsPhoneNumberValid()
         {
