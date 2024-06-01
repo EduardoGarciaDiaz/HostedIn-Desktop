@@ -227,7 +227,8 @@ namespace HostedInDesktop.viewmodels
 
             if (string.IsNullOrEmpty(fullName))
             {
-                Shell.Current.DisplayAlert("Nombre obligatorio", "Debes ingresar tu nombre completo", " s", "Ok"); isFullNameValid = false;
+                Shell.Current.DisplayAlert("Nombre obligatorio", "Debes ingresar tu nombre completo", "Ok"); 
+                isFullNameValid = false;
             }
             else if (!DataValidator.IsFullNameValid(fullName))
             {
@@ -312,7 +313,7 @@ namespace HostedInDesktop.viewmodels
 
             if (!string.IsNullOrEmpty(residence) && !DataValidator.IsResidenceValid(residence))
             {
-                Shell.Current.DisplayAlert("Estancia no válida", "Por favor, ingresa una estancia válida (de 4 a 50 caracteres)", "Ok");
+                Shell.Current.DisplayAlert("Estancia no válida", "Por favor, ingresa una estancia válida (de 4 a 80 caracteres)", "Ok");
                 isResidenceValid = false;
             }
 

@@ -54,7 +54,7 @@
             FontSize="13"
             Margin="0,15,0,0"/>
 
-            <Entry x:Name="lblLatitude" Text="19.541182" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0" IsEnabled="False"/>
+            <Entry x:Name="lblLatitude" Text="19.541652" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0" IsEnabled="False"/>
 
 
             <Label
@@ -63,7 +63,7 @@
             FontSize="13"
             Margin="0,15,0,0"/>
 
-            <Entry x:Name="lblLongitude" Text="-96.9297779" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0" IsEnabled="False"/>
+            <Entry x:Name="lblLongitude" Text="-96.927001" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0" IsEnabled="False"/>
 
             <Label
             Text="DIRECCION: "
@@ -71,7 +71,7 @@
             FontSize="13"
             Margin="0,15,0,0"/>
 
-            <Entry x:Name="lblAddress" Text="FEI" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0"/>
+            <Entry x:Name="lblAddress" Text="FEI" TextColor="#5280DB" FontSize="13" Margin="0,15,0,0"  IsEnabled="False"/>
 
 
         </StackLayout>

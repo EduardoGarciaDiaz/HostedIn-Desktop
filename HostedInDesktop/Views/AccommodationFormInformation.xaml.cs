@@ -18,7 +18,6 @@ public partial class AccommodationFormInformation : ContentView
         string newText = e.NewTextValue;
         if (!Regex.IsMatch(newText, "^[0-9]*$"))
         {
-            // If the new text contains non-numeric characters, revert to the old text
             entry.Text = e.OldTextValue;
         }
     }

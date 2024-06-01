@@ -28,7 +28,10 @@ namespace HostedInDesktop.viewmodels.ModelObservable
 
         private void Increase()
         {
-            Value++;
+            if (Value <= 50)
+            {
+                Value++;
+            }
         }
 
         private void Decrease()
