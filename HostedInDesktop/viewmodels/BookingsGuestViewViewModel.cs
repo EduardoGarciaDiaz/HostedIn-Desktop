@@ -77,6 +77,11 @@ public partial class BookingsGuestViewViewModel : ObservableObject
             Button1Color = Colors.MediumPurple;
             Button2Color = Colors.WhiteSmoke;
         }
+        catch (UnauthorizedAccessException)
+        {
+            await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+            await Shell.Current.GoToAsync("///Login");
+        }
         catch (ApiException ex)
         {
             await Shell.Current.DisplayAlert("Error", ex.Message, "Ok");
@@ -111,6 +116,11 @@ public partial class BookingsGuestViewViewModel : ObservableObject
             Button2Color = Colors.MediumPurple;
             Button1Color = Colors.WhiteSmoke;
         }
+        catch (UnauthorizedAccessException)
+        {
+            await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+            await Shell.Current.GoToAsync("///Login");
+        }
         catch (ApiException ex)
         {
             await Shell.Current.DisplayAlert("Error", ex.Message, "Ok");
@@ -140,21 +150,4 @@ public partial class BookingsGuestViewViewModel : ObservableObject
             Console.WriteLine(e.Message);
         }
     }
-
-    /* private void WatchBookingDetails(Booking booking)
-     {
-         try
-         {
-             if (booking is null)
-             {
-                 return;
-             }
-             _SharedService.Add<Booking>("BookingDetail", booking);
-             Shell.Current.GoToAsync(nameof(BookingDetailsView));
-         }
-         catch (Exception ex)
-         {
-             Console.WriteLine(ex.ToString());
-         }
-     }*/
 }

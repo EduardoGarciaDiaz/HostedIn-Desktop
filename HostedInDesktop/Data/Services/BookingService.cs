@@ -27,6 +27,11 @@ public class BookingService : IBookingService
             HttpResponseMessage response = await httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
+                if (response.Headers.TryGetValues("Set-Authorization", out IEnumerable<string> values))
+                {
+                    string authorizationHeaderValue = values.FirstOrDefault();
+                    App.token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
+                }
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 GetBookingResponse getBookingResponse = JsonConvert.DeserializeObject<GetBookingResponse>(jsonResponse);
                 if (getBookingResponse != null && getBookingResponse.Bookings != null)
@@ -40,6 +45,11 @@ public class BookingService : IBookingService
             }
             else
             {
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Acceso no autorizado. Por favor, vuelve a iniciar sesion");
+                }
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 JObject jsonObject = JObject.Parse(jsonResponse);
                 string errorMessage = (string)jsonObject["message"];
@@ -62,6 +72,11 @@ public class BookingService : IBookingService
             HttpResponseMessage response = await httpClient.GetAsync(url);
             if (response.IsSuccessStatusCode)
             {
+                if (response.Headers.TryGetValues("Set-Authorization", out IEnumerable<string> values))
+                {
+                    string authorizationHeaderValue = values.FirstOrDefault();
+                    App.token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
+                }
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 GetBookingResponse getBookingResponse = JsonConvert.DeserializeObject<GetBookingResponse>(jsonResponse);
                 if (getBookingResponse != null && getBookingResponse.Bookings != null)
@@ -75,6 +90,11 @@ public class BookingService : IBookingService
             }
             else
             {
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Acceso no autorizado. Por favor, vuelve a iniciar sesion");
+                }
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 JObject jsonObject = JObject.Parse(jsonResponse);
                 string errorMessage = (string)jsonObject["message"];
@@ -105,6 +125,11 @@ public class BookingService : IBookingService
 
             if (response.IsSuccessStatusCode)
             {
+                if (response.Headers.TryGetValues("Set-Authorization", out IEnumerable<string> values))
+                {
+                    string authorizationHeaderValue = values.FirstOrDefault();
+                    App.token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
+                }
                 var options = new JsonSerializerOptions
                 {
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -117,6 +142,11 @@ public class BookingService : IBookingService
             }
             else
             {
+
+                if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new UnauthorizedAccessException("Acceso no autorizado. Por favor, vuelve a iniciar sesion");
+                }
                 string jsonResponse = await response.Content.ReadAsStringAsync();
                 JObject jsonObject = JObject.Parse(jsonResponse);
                 string errorMessage = (string)jsonObject["message"];

@@ -237,6 +237,11 @@ public partial class EditAccommodationViewModel : ObservableObject
                 await Shell.Current.GoToAsync(nameof(HostView));
             }
         }
+        catch (UnauthorizedAccessException)
+        {
+            await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+            await Shell.Current.GoToAsync("///Login");
+        }
         catch (Exception ex)
         {
             _ = Shell.Current.DisplayAlert("Lo sentimos", ex.Message, "OK");

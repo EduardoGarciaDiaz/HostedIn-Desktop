@@ -82,6 +82,11 @@ public partial class AccommodationBookingReviewViewModel : ObservableObject, IQu
                 await SaveReviewAsync(review);
                 await Shell.Current.GoToAsync("..");
             }
+            catch (UnauthorizedAccessException)
+            {
+                await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+                await Shell.Current.GoToAsync("///Login");
+            }
             catch (ApiException aex)
             {
                 await Shell.Current.DisplayAlert("Error", aex.Message, "Ok");
@@ -104,11 +109,19 @@ public partial class AccommodationBookingReviewViewModel : ObservableObject, IQu
     }
 
     private async Task SaveReviewAsync(Review review)
-    {        
-        ReviewResponse result = await _reviewsService.CreateAccommodationBookingReview(review);
-        if (result != null)
+    {      
+        try
         {
-            await Shell.Current.DisplayAlert("Exito", result.Message, "Ok");
+            ReviewResponse result = await _reviewsService.CreateAccommodationBookingReview(review);
+            if (result != null)
+            {
+                await Shell.Current.DisplayAlert("Exito", result.Message, "Ok");
+            }
+        }
+        catch (UnauthorizedAccessException)
+        {
+            await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+            await Shell.Current.GoToAsync("///Login");
         }
     }
 

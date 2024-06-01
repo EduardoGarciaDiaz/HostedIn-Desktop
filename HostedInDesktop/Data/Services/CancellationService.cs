@@ -29,13 +29,17 @@ namespace HostedInDesktop.Data.Services
                     {
                         string authorizationHeaderValue = values.FirstOrDefault();
                         // Hacer algo con el valor del encabezado de autorización
-                        Console.WriteLine($"Authorization Header: {authorizationHeaderValue}");
                         App.token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
                     }
                     return await Task.FromResult(cancellationResponse.cancellation);
                 }
                 else
                 {
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        throw new UnauthorizedAccessException("Acceso no autorizado. Por favor, vuelve a iniciar sesion");
+                    }
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     JObject jsonObject = JObject.Parse(jsonResponse);
                     string errorMessage = (string)jsonObject["message"];

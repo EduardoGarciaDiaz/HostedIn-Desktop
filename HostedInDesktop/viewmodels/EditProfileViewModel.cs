@@ -4,6 +4,7 @@ using Google.Protobuf;
 using HostedInDesktop.Data.Models;
 using HostedInDesktop.Data.Services;
 using HostedInDesktop.Utils;
+using HostedInDesktop.Views;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -77,6 +78,11 @@ namespace HostedInDesktop.viewmodels
                         await UploadProfilePhoto();
                         await Shell.Current.DisplayAlert("Éxito", "Se ha actualizado tu información", "Ok");
                     }
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+                    await Shell.Current.GoToAsync("///Login");
                 }
                 catch (ApiException aex)
                 {

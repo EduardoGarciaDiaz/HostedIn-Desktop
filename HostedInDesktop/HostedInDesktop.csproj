@@ -79,7 +79,9 @@
 	  <None Remove="Resources\Images\ic_ship.png" />
 	  <None Remove="Resources\Images\img_provisional.png" />
 	  <None Remove="Resources\Images\promotion.png" />
+	  <None Remove="Resources\Images\reload.png" />
 	  <None Remove="Resources\Images\search.png" />
+	  <None Remove="Resources\Images\star.png" />
 	  <None Remove="Resources\Images\start_img.png" />
 	  <None Remove="Resources\Images\usuario_de_perfil.png" />
 	</ItemGroup>
@@ -218,6 +220,9 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\StaticticsView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\StatisticsHostView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	</ItemGroup>

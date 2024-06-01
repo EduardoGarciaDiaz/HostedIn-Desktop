@@ -4,10 +4,28 @@
              x:Class="HostedInDesktop.Reusable.AccommodationExploreReusable">
     <StackLayout Orientation="Vertical">
         <Frame CornerRadius="20" Padding="0" HasShadow="False">
-            <Image x:Name="imgAccommodation" HeightRequest="200" Source="img_provisional.png" Aspect="AspectFill"/>
+            <Image x:Name="imgAccommodation" HeightRequest="300" Source="img_provisional.png" Aspect="AspectFill"/>
         </Frame>
-        <Label x:Name="lblTitle" FontAttributes="Bold" FontSize="16" />
-        <Label x:Name="lblDescription" FontSize="14" />
+        <Grid Margin="0, 10, 0, 0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Row="0" Grid.Column="0" x:Name="lblTitle" FontAttributes="Bold" FontSize="16" />
+            <Label Grid.Row="1" Grid.Column="0" x:Name="lblDescription" FontSize="14" />
+            <Image Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" Source="star.png" WidthRequest="20" HorizontalOptions="End"/>
+            <Label Padding="10, 5, 0, 0" Grid.Row="0" 
+                   Grid.Column="2" 
+                   Grid.RowSpan="2" 
+                   x:Name="lblRate" 
+                   FontSize="20" 
+                   HorizontalOptions="End"/>
+        </Grid>
         <Label x:Name="lblPrice" FontSize="14" TextColor="{StaticResource Primary}" />
     </StackLayout>
 </ContentView>

@@ -27,7 +27,7 @@ public partial class AccommodationExploreReusable : ContentView
         InitializeComponent();
         var tapGestureRecognizer = new TapGestureRecognizer();
         tapGestureRecognizer.Tapped += OnTapped;
-        this.GestureRecognizers.Add(tapGestureRecognizer); // Añadir al ContentView
+        this.GestureRecognizers.Add(tapGestureRecognizer); 
 
     }
 
@@ -63,6 +63,7 @@ public partial class AccommodationExploreReusable : ContentView
             view.lblTitle.Text = accommodation.title;
 			view.lblDescription.Text = accommodation.description;
 			view.lblPrice.Text = $"${accommodation.nightPrice} por noche";
+            view.lblRate.Text = accommodation.rate.ToString("F2");
 		}
 	}
 

@@ -27,6 +27,11 @@ namespace HostedInDesktop.Data.Services
 
                 if (response.IsSuccessStatusCode)
                 {
+                    if (response.Headers.TryGetValues("Set-Authorization", out IEnumerable<string> values))
+                    {
+                        string authorizationHeaderValue = values.FirstOrDefault();
+                        App.token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
+                    }
                     var options = new JsonSerializerOptions
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -39,6 +44,11 @@ namespace HostedInDesktop.Data.Services
                 }
                 else
                 {
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        throw new UnauthorizedAccessException("Acceso no autorizado. Por favor, vuelve a iniciar sesion");
+                    }
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     JObject jsonObject = JObject.Parse(jsonResponse);
                     string errorMessage = (string)jsonObject["message"];
@@ -69,6 +79,11 @@ namespace HostedInDesktop.Data.Services
 
                 if (response.IsSuccessStatusCode)
                 {
+                    if (response.Headers.TryGetValues("Set-Authorization", out IEnumerable<string> values))
+                    {
+                        string authorizationHeaderValue = values.FirstOrDefault();
+                        App.token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
+                    }
                     var options = new JsonSerializerOptions
                     {
                         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
@@ -79,6 +94,11 @@ namespace HostedInDesktop.Data.Services
                 }
                 else
                 {
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        throw new UnauthorizedAccessException("Acceso no autorizado. Por favor, vuelve a iniciar sesion");
+                    }
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     JObject jsonObject = JObject.Parse(jsonResponse);
                     string errorMessage = (string)jsonObject["message"];
@@ -103,11 +123,21 @@ namespace HostedInDesktop.Data.Services
 
                 if (response.IsSuccessStatusCode)
                 {
+                    if (response.Headers.TryGetValues("Set-Authorization", out IEnumerable<string> values))
+                    {
+                        string authorizationHeaderValue = values.FirstOrDefault();
+                        App.token = authorizationHeaderValue.Substring("Bearer ".Length).Trim();
+                    }
                     DeleteAccountResponse deleteResponse = await response.Content.ReadFromJsonAsync<DeleteAccountResponse>();
                     return await Task.FromResult(deleteResponse.UserId);
                 }
                 else
                 {
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        throw new UnauthorizedAccessException("Acceso no autorizado. Por favor, vuelve a iniciar sesion");
+                    }
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     JObject jsonObject = JObject.Parse(jsonResponse);
                     string errorMessage = (string)jsonObject["message"];

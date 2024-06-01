@@ -95,9 +95,14 @@ namespace HostedInDesktop.viewmodels
                     else
                     {
                         await Shell.Current.DisplayAlert("Error", "El usuario viene nulo, vuelva a iniciar sesión", "Ok");
-                        await Shell.Current.GoToAsync(nameof(Login));
+                        await Shell.Current.GoToAsync("///Login");
                         return;
                     }
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    await Shell.Current.DisplayAlert("La sesión caducó", "La sesión caducó debido a inactividad.", "Ir a inicio de sesión");
+                    await Shell.Current.GoToAsync("///Login");
                 }
                 catch (ApiException aex)
                 {
