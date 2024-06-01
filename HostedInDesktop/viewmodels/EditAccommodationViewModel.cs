@@ -149,11 +149,7 @@ public partial class EditAccommodationViewModel : ObservableObject
         var navegationParameter = new ShellNavigationQueryParameters
         {
             {"Accommodation", Accommodation },
-            {"index", 1 },
-            {"MainImage", MultimediaItems[0] },
-            {"SecondImage", MultimediaItems[1] },
-            {"ThirdImage", MultimediaItems[2] },
-            {"video", VideoFilePath }
+            {"index", 1 }
         };
         await Shell.Current.GoToAsync($"{nameof(EditAccommodationForm)}", navegationParameter);
     }
@@ -164,11 +160,7 @@ public partial class EditAccommodationViewModel : ObservableObject
         var navegationParameter = new ShellNavigationQueryParameters
         {
             {"Accommodation", Accommodation },
-            {"index", 2 },
-            {"MainImage", MultimediaItems[0] },
-            {"SecondImage", MultimediaItems[1] },
-            {"ThirdImage", MultimediaItems[2] },
-            {"video", VideoFilePath }
+            {"index", 2 }
         };
         await Shell.Current.GoToAsync($"{nameof(EditAccommodationForm)}", navegationParameter);
     }
@@ -179,11 +171,7 @@ public partial class EditAccommodationViewModel : ObservableObject
         var navegationParameter = new ShellNavigationQueryParameters
         {
             {"Accommodation", Accommodation },
-            {"index", 3 },
-            {"MainImage", MultimediaItems[0] },
-            {"SecondImage", MultimediaItems[1] },
-            {"ThirdImage", MultimediaItems[2] },
-            {"video", VideoFilePath }
+            {"index", 3 }
         };
         await Shell.Current.GoToAsync($"{nameof(EditAccommodationForm)}", navegationParameter);
     }
@@ -194,11 +182,7 @@ public partial class EditAccommodationViewModel : ObservableObject
         var navegationParameter = new ShellNavigationQueryParameters
         {
             {"Accommodation", Accommodation },
-            {"index", 4 },
-            {"MainImage", MultimediaItems[0] },
-            {"SecondImage", MultimediaItems[1] },
-            {"ThirdImage", MultimediaItems[2] },
-            {"video", VideoFilePath }
+            {"index", 4 }
         };
         await Shell.Current.GoToAsync($"{nameof(EditAccommodationForm)}", navegationParameter);
     }
@@ -206,16 +190,24 @@ public partial class EditAccommodationViewModel : ObservableObject
     [RelayCommand]
     private async Task EditAccommodationMediaAsync()
     {
-        var navegationParameter = new ShellNavigationQueryParameters
+        if (AreImagesLoaded)
         {
-            {"Accommodation", Accommodation },
-            {"index", 5 },
-            {"MainImage", MultimediaItems[0] },
-            {"SecondImage", MultimediaItems[1] },
-            {"ThirdImage", MultimediaItems[2] },
-            {"video", VideoFilePath }
-        };
-        await Shell.Current.GoToAsync($"{nameof(EditAccommodationForm)}", navegationParameter);
+
+            var navegationParameter = new ShellNavigationQueryParameters
+            {
+                {"Accommodation", Accommodation },
+                {"index", 5 },
+                {"MainImage", MultimediaItems[0] },
+                {"SecondImage", MultimediaItems[1] },
+                {"ThirdImage", MultimediaItems[2] },
+                {"video", VideoFilePath }
+            };
+            await Shell.Current.GoToAsync($"{nameof(EditAccommodationForm)}", navegationParameter);
+        }
+        else
+        {
+            await Shell.Current.DisplayAlert("No tan rapido vaquero", "Espera a que se cargue la multimedia para editarla", "ok");
+        }
     }
 
     [RelayCommand]
