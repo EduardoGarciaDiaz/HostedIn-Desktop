@@ -93,6 +93,10 @@ namespace HostedInDesktop.Data.Services
                 }
                 else
                 {
+                    if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                    {
+                        throw new UnauthorizedAccessException("Acceso no autorizado. Por favor, vuelve a iniciar sesion");
+                    }
                     string jsonResponse = await response.Content.ReadAsStringAsync();
                     JObject jsonObject = JObject.Parse(jsonResponse);
                     string errorMessage = (string)jsonObject["message"];

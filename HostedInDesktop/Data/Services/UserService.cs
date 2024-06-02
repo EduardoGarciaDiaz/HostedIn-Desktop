@@ -21,6 +21,7 @@ namespace HostedInDesktop.Data.Services
         {
             try             {
                 var httpClient = APIClient.GetHttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.token);
                 var path = $"users/{userId}";
 
                 HttpResponseMessage response = await httpClient.GetAsync(path);
@@ -66,6 +67,7 @@ namespace HostedInDesktop.Data.Services
             try
             {
                 var httpClient = APIClient.GetHttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.token);
                 var path = $"users/{userId}";
 
                 var settings = new JsonSerializerSettings
@@ -116,7 +118,7 @@ namespace HostedInDesktop.Data.Services
             try
             {
                 var httpClient = APIClient.GetHttpClient();
-
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.token);
                 var path = $"users/{userId}";
 
                 HttpResponseMessage response = await httpClient.DeleteAsync(path);

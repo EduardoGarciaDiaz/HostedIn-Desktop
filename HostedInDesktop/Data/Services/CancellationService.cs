@@ -19,6 +19,7 @@ namespace HostedInDesktop.Data.Services
             try
             {
                 var httpClient = APIClient.GetHttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", App.token);
                 var json = JsonConvert.SerializeObject(cancellation);
                 var content = new StringContent(json, Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await httpClient.PostAsync("cancellations/", content);
