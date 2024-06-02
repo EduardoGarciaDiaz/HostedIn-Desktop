@@ -8,6 +8,6 @@ namespace HostedInDesktop.Utils
 {
     public partial class GrcpServerData
     {
-        public static string BASE_ADDRESS = "http://localhost:3002";
+        public static string BASE_ADDRESS = "http://192.168.56.106/HostedIn-gRPC";
     }
 }
