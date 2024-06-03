@@ -53,7 +53,7 @@ namespace HostedInDesktop.viewmodels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Ocurrió un problema", ex.Message, "Aceptar");
+                await Shell.Current.DisplayAlert("Ocurrió un problema", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Aceptar");
                 return;
             }
         }

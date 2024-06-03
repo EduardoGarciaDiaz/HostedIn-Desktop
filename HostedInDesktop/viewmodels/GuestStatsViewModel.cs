@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using HostedInDesktop.Data.GrpcModels;
 using HostedInDesktop.Data.Services;
+using HostedInDesktop.Utils;
 
 namespace HostedInDesktop.viewmodels
 {
@@ -53,7 +54,7 @@ namespace HostedInDesktop.viewmodels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                await Shell.Current.DisplayAlert("Error ", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Ok");
                 return;
             }
         }

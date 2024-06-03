@@ -122,7 +122,7 @@ namespace HostedInDesktop.viewmodels
                 }
                 catch (Exception ex)
                 {
-                    await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                    await Shell.Current.DisplayAlert("Error ", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Ok");
                     return;
                 }
                 finally
