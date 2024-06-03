@@ -99,8 +99,7 @@ namespace HostedInDesktop.viewmodels
             PersonsNumber = selectedBooking.numberOfGuests;
             TotalCost = $"${selectedBooking.totalCost:F2} MXN";
             SelectetedBookingStatus = TranslatorToSpanish.TranslateBookingStatusValue(selectedBooking.bookingStatus);
-            if (App.hostMode
-                || selectedBooking.bookingStatus.Equals(BookingStatus.CURRENT.GetDescription())
+            if (App.hostMode || selectedBooking.bookingStatus.Equals(BookingStatus.CURRENT.GetDescription())
                 || selectedBooking.bookingStatus == BookingStatus.CANCELLED.GetDescription())
             {
                 IsRatingButtonVisible = false;

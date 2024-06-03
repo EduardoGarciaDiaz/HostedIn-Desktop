@@ -50,5 +50,13 @@ namespace HostedInDesktop.viewmodels
         {
             Shell.Current.GoToAsync(nameof(Profile));
         }
+
+        [RelayCommand]
+        public async Task OnLogOutClicked()
+        {
+           
+           await  Shell.Current.GoToAsync("///Login");
+           
+        }
     }
 }

@@ -37,7 +37,7 @@
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem x:Name="menItemChangeMode" Text="Modo anfitrion" Command="{Binding ChangeToHostCommand}"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Cerrar sesion"/>
+            <MenuFlyoutItem Text="Cerrar sesion" Command="{Binding LogOutClickedCommand}"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
