@@ -264,7 +264,7 @@ namespace HostedInDesktop.viewmodels
         {
             ProfilePhotoHost = "ic_user.png";
 
-            if (AccommodationData.user.profilePhoto != null && AccommodationData.user.profilePhoto.data != null && AccommodationData.user.profilePhoto.data.Length > 0)
+            if (AccommodationData?.user?.profilePhoto?.data != null && AccommodationData.user.profilePhoto.data.Length > 0)
             {
                 byte[] imageData = AccommodationData.user.profilePhoto.data;
                 ProfilePhotoHost = ImageSource.FromStream(() => new MemoryStream(imageData));
@@ -390,6 +390,8 @@ namespace HostedInDesktop.viewmodels
 
         private void ResetPricesValues()
         {
+            SelectedBookingDates.StartDate = null;
+            SelectedBookingDates.EndDate = null;
             StartDateSelected = "";
             EndDateSelected = "";
 

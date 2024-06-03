@@ -23,7 +23,7 @@ namespace HostedInDesktop.Enums
             return type switch
             {
                 "house" => "Casa",
-                "apartement" => "Departamento",
+                "apartment" => "Departamento",
                 "cabin" => "Cabaña",
                 "camp" => "Campamento",
                 "camper" => "Casa rodante",
