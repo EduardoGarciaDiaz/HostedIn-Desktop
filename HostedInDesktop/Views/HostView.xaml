@@ -37,7 +37,7 @@
             <MenuFlyoutSeparator/>
             <MenuFlyoutItem x:Name="menItemChangeMode" Text="Modo huesped" Command="{Binding ChangeToGuestClickedCommand}"/>
             <MenuFlyoutSeparator/>
-            <MenuFlyoutItem Text="Cerrar sesion"/>
+            <MenuFlyoutItem Text="Cerrar sesion" Command="{Binding LogOutClickedCommand}"/>
         </MenuBarItem>
     </ContentPage.MenuBarItems>
 
