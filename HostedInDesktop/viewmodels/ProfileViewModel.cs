@@ -25,6 +25,7 @@ namespace HostedInDesktop.viewmodels
         {
             WeakReferenceMessenger.Default.Register<ProfileMesssage>(this, (r, m) =>
             {
+                _userId = App.user._id;
                 AdditionalContent = null;
                 GetUserById();
             });

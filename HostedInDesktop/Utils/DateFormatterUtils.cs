@@ -49,18 +49,29 @@ namespace HostedInDesktop.Utils
 
         public static DateTime? ParseStringToDate(string date)
         {
-            string[] dateParts = date.Split(' ')[0].Split('/');
-            string formattedDate = $"{dateParts[0]}/{dateParts[1]}/{dateParts[2]}";
+            DateTime dateOut;
+            bool isValidDate = DateTime.TryParse(date, out dateOut);
 
-            DateTime parsedDate;
-            if (DateTime.TryParseExact(formattedDate, NORMAL_DATE_PATTERN, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
-            {
-                return parsedDate;
-            }
-            else
+            if (!isValidDate)
             {
                 return null;
             }
+            else
+            {
+                return dateOut;
+                string[] dateParts = date.Split(' ')[0].Split('/');
+                string formattedDate = $"{dateParts[0]}/{dateParts[1]}/{dateParts[2]}";
+
+                DateTime parsedDate;
+                if (DateTime.TryParseExact(formattedDate, NORMAL_DATE_PATTERN, CultureInfo.InvariantCulture, DateTimeStyles.None, out parsedDate))
+                {
+                    return parsedDate;
+                }
+                else
+                {
+                    return null;
+                }
+            }            
         }
 
         public static string ParseMongoDateToNaturalDate(string dateString)

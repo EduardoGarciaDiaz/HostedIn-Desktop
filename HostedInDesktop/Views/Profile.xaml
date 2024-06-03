@@ -77,6 +77,7 @@
 
                 <Button
                         Command="{Binding LogoutClikedCommand}"
+                        IsVisible="False"
                         x:Name="btn_logout"
                         Text="Cerrar sesión"
                         Background="Transparent"

@@ -241,6 +241,10 @@ namespace HostedInDesktop.viewmodels
             {
                 double averageScore = scores.Average();
                 AccommodationScore = averageScore.ToString();
+            } 
+            else
+            {
+                AccommodationScore = "Sin calif.";
             }
         }
 

@@ -52,10 +52,18 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public async void SelectPhoto()
         {
-            var result = await FilePicker.PickAsync(new PickOptions
+            var customFileType = new FilePickerFileType(new Dictionary<DevicePlatform, IEnumerable<string>>
             {
-                PickerTitle = "Seleccione una imagen"
+                { DevicePlatform.WinUI, new[] { ".jpg", ".jpeg", ".png" } }
             });
+
+            var pickOptions = new PickOptions
+            {
+                PickerTitle = "Seleccione una imagen",
+                FileTypes = customFileType
+            };
+
+            var result = await FilePicker.PickAsync(pickOptions);
 
             if (result != null)
             {
