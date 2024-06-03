@@ -214,7 +214,7 @@ namespace HostedInDesktop.viewmodels
                 }
                 catch (Exception ex)
                 {
-                    await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                    await Shell.Current.DisplayAlert("Error ", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Ok");
                     return;
                 }
                 finally
@@ -241,6 +241,10 @@ namespace HostedInDesktop.viewmodels
             {
                 double averageScore = scores.Average();
                 AccommodationScore = averageScore.ToString();
+            } 
+            else
+            {
+                AccommodationScore = "Sin calif.";
             }
         }
 
@@ -321,7 +325,7 @@ namespace HostedInDesktop.viewmodels
         {
             ProfilePhotoHost = "ic_user.png";
 
-            if (AccommodationData.user.profilePhoto != null && AccommodationData.user.profilePhoto.data != null && AccommodationData.user.profilePhoto.data.Length > 0)
+            if (AccommodationData?.user?.profilePhoto?.data != null && AccommodationData.user.profilePhoto.data.Length > 0)
             {
                 byte[] imageData = AccommodationData.user.profilePhoto.data;
                 ProfilePhotoHost = ImageSource.FromStream(() => new MemoryStream(imageData));

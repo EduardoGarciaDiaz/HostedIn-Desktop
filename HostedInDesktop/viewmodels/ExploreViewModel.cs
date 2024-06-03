@@ -69,9 +69,9 @@ namespace HostedInDesktop.viewmodels
                 await Shell.Current.DisplayAlert("Error", aex.Message, "Ok");
                 return;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                await Shell.Current.DisplayAlert("Error ", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Ok");
                 return;
             }
             finally
@@ -112,9 +112,9 @@ namespace HostedInDesktop.viewmodels
                 {
                     await Shell.Current.DisplayAlert("Accion no permitida", "Ingresa un lugar para buscar", "Aceptar");
                 }
-            } catch (Exception ex)
+            } catch (Exception)
             {
-                await Shell.Current.DisplayAlert("Error", ex.Message, "Aceptar");
+                await Shell.Current.DisplayAlert("Error", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Aceptar");
             }
             finally {
                 IsLoading = false;
@@ -156,7 +156,7 @@ namespace HostedInDesktop.viewmodels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                await Shell.Current.DisplayAlert("Error ", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Ok");
                 return;
             }
             finally

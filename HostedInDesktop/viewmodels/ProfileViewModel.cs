@@ -25,6 +25,7 @@ namespace HostedInDesktop.viewmodels
         {
             WeakReferenceMessenger.Default.Register<ProfileMesssage>(this, (r, m) =>
             {
+                _userId = App.user._id;
                 AdditionalContent = null;
                 GetUserById();
             });
@@ -122,7 +123,7 @@ namespace HostedInDesktop.viewmodels
                 }
                 catch (Exception ex)
                 {
-                    await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                    await Shell.Current.DisplayAlert("Error ", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Ok");
                     return;
                 }
                 finally

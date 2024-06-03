@@ -1,5 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+using HostedInDesktop.Messages;
 using HostedInDesktop.Views;
 using System;
 using System.Collections.Generic;
@@ -48,7 +50,16 @@ namespace HostedInDesktop.viewmodels
         [RelayCommand]
         public void MyProfileClicked()
         {
+            WeakReferenceMessenger.Default.Send(new ProfileMesssage(App.user));
             Shell.Current.GoToAsync(nameof(Profile));
+        }
+
+        [RelayCommand]
+        public async Task OnLogOutClicked()
+        {
+           
+           await  Shell.Current.GoToAsync("///Login");
+           
         }
     }
 }

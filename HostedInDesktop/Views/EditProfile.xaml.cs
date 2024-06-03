@@ -17,7 +17,7 @@ public partial class EditProfile : ContentView
             return;
 
         string newText = e.NewTextValue;
-        if (!Regex.IsMatch(newText, "^[0-9]*$"))
+        if (newText == null || !Regex.IsMatch(newText, "^[0-9]*$"))
         {
             entry.Text = e.OldTextValue;
         }

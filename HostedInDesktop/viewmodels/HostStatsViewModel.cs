@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using HostedInDesktop.Data.GrpcModels;
 using HostedInDesktop.Data.Services;
+using HostedInDesktop.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -37,7 +38,7 @@ namespace HostedInDesktop.viewmodels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                await Shell.Current.DisplayAlert("Error ", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Ok");
                 return;
             }
         }
@@ -55,7 +56,7 @@ namespace HostedInDesktop.viewmodels
             }
             catch (Exception ex)
             {
-                await Shell.Current.DisplayAlert("Error ", ex.Message, "Ok");
+                await Shell.Current.DisplayAlert("Error ", GenericExceptionMessage.GetDescription(ExceptionMessages.GENERIC_DESKTOP_EXCEPTION_MEESAGE), "Ok");
                 return;
             }
         }
